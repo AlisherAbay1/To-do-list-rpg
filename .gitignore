@@ -1,0 +1,3 @@
+app/.env
+.venv
+start_uvicorn.txt
