@@ -2,7 +2,7 @@ from passlib.hash import argon2
 from dotenv import dotenv_values 
 
 def hash_password(password: str):
-    paper = dotenv_values(".env")["PAPER"]
+    paper = dotenv_values(r"app\.env")["PAPER"]
     if not paper:
         paper = ''
     password_hash = argon2.using(time_cost=1, memory_cost=64*1024, parallelism=2).hash(password + paper)

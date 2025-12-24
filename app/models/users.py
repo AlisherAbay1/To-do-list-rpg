@@ -1,4 +1,5 @@
-from .base import Base, UUID
+from .base import Base
+from uuid import UUID
 from .skills import Skill
 from .items import Item
 from sqlalchemy import String, ForeignKey, text, BigInteger

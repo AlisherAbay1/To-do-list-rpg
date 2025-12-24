@@ -1,4 +1,5 @@
-from .base import Base, UUID
+from .base import Base
+from uuid import UUID
 from .skills import Skill
 from .users import User
 from .items import Item
