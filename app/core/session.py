@@ -11,7 +11,7 @@ def get_user_by_session(request: Request):
         raise HTTPException(401, "Invalid session")
     return user
 
-def  get_user_id_by_session(request: Request):
+def get_user_id_by_session(request: Request):
     session_id = request.cookies.get("session_id")
     if not session_id:
         raise HTTPException(401, "Not authenticated")

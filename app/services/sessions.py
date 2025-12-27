@@ -15,7 +15,6 @@ def delete_session(session_id):
         return True
     return False
     
-    
 def get_user_by_session_services(session_id):
     user = UserCRUD()
     username = redis_config.r.get(f"session:{session_id}")

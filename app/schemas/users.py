@@ -29,7 +29,6 @@ class UserSchemaCreate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class UserSchemaPatch(BaseModel):
-    username: Optional[str] = None
     email: Optional[EmailStr] = None
     password: Optional[str] = None
     lvl: int = 1
@@ -40,8 +39,12 @@ class UserSchemaPatch(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-class UserSchemaCreateAuth(BaseModel):
+class UserSchemaAuth(BaseModel):
     id: UUID7
+    username_or_email: str
+    password: str
+
+class UserSchemaCreateAuth(BaseModel):
     username: str
     email: EmailStr
     password: str

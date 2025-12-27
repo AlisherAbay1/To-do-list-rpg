@@ -14,7 +14,7 @@ class BaseCRUD(ABC, Generic[ModelType]):
 
     def select(self, *expression: ColumnExpressionArgument[bool]):
         value = select(self._model).where(*expression)
-        return self._session.scalar(value)
+        return self._session.scalar(value) or self._model()
     
     def select_many(self, limit=None, offset=None, *expression: ColumnExpressionArgument[bool]):
         values = select(self._model).where(*expression).limit(limit).offset(offset)

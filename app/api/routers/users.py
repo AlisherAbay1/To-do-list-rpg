@@ -27,16 +27,19 @@ def delete_current_user(request: Request, crud: UserCRUD = Depends()):
     deleted = crud.delete(User.id == get_user_id_by_session(request))
     return model_to_dto(deleted, UserSchemaRead)
 
+# admin
 @router.get("/{user_id}")
 def get_user(user_id: UUID7, crud: UserCRUD = Depends()):
     selected = crud.select(User.id == user_id)
     return model_to_dto(selected, UserSchemaRead)
 
+# admin
 @router.patch("/{user_id}")
 def update_user(user_id: UUID7, data: UserSchemaPatch, crud: UserCRUD = Depends()):
     updated = crud.update(User.id == user_id, **data.model_dump(exclude_unset=True))
     return model_to_dto(updated, UserSchemaRead) 
 
+# admin
 @router.delete("/{user_id}")
 def delete_user(user_id: UUID7, crud: UserCRUD = Depends()):
     deleted = crud.delete(User.id == user_id)
