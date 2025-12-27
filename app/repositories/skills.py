@@ -1,31 +1,12 @@
-from app.core import database
-from sqlalchemy import select, update
-from app.models import Skill as SkillModel
-from app.schemas import SkillSchemaRead
+from app.models.skills import Skill
+from sqlalchemy.orm import Session
+from fastapi import Depends
+from app.core.database import get_local_session
+from app.repositories.base import BaseCRUD
 
-def get_all_skills_rep():
-    with database.LocalSession.begin() as session:
-        skills = session.scalars(select(SkillModel)).all()
-        return [SkillSchemaRead.model_validate(skill).model_dump() for skill in skills]
+class SkillCRUD(BaseCRUD[Skill]):
+    def __init__(self, session: Session = Depends(get_local_session)):
+        super().__init__(model=Skill, session=session)
 
-def get_skill_by_id_rep(id):
-    with database.LocalSession.begin() as session:
-        skill = session.scalar(select(SkillModel).where(SkillModel.id == id))
-        return SkillSchemaRead.model_validate(skill).model_dump()
-
-def create_skill_rep(skill_info):
-    with database.LocalSession.begin() as session:
-        skill = SkillModel(**skill_info.model_dump())
-        session.add(skill)
-        return {"response": "Successfully created"}
-    
-def update_skill_rep(id, skill_info):
-    with database.LocalSession.begin() as session:
-        session.execute(update(SkillModel).where(SkillModel.id == id).values(**skill_info.model_dump()))
-        return {"response": "Successfully update"}
-    
-def delete_skill_rep(id):
-    with database.LocalSession.begin() as session:
-        skill = session.scalar(select(SkillModel).where(SkillModel.id == id))
-        session.delete(skill)
-        return {"response": "Successfully delete"}
+    def select_by_id(self):
+        return self.select(self._model.id == id)

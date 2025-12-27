@@ -1,6 +1,8 @@
 from uuid import uuid4
 from app.core import redis_config
-from app.repositories.auth import get_pydantic_user_object
+from fastapi import HTTPException
+from app.repositories.users import UserCRUD
+from app.models.users import User
 
 def create_session(username):
     session_id = str(uuid4())
@@ -15,7 +17,8 @@ def delete_session(session_id):
     
     
 def get_user_by_session_services(session_id):
+    user = UserCRUD()
     username = redis_config.r.get(f"session:{session_id}")
     if username:
-        return get_pydantic_user_object(username)
-    return None
+        return user.select(User.username == username)
+    raise HTTPException(400, "Session expired.")

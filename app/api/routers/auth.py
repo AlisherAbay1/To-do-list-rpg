@@ -4,21 +4,9 @@ from app.repositories import auth
 import app.services as services
 from app.core import security
 from app.core import redis_config
-from app.services import create_session, delete_session, get_user_by_session_services
+from app.services import create_session, delete_session
 
 router = APIRouter(prefix="/auth")
-
-def get_user_by_session(request: Request):
-    session_id = request.cookies.get("session_id")
-    if not session_id:
-        raise HTTPException(401, "Not authenticated")
-    user = get_user_by_session_services(session_id)
-    if not user:
-        raise HTTPException(401, "Invalid session")
-    return user
-
-def get_session_id(request: Request):
-    return {"session_id": request.cookies.get("session_id")}
 
 @router.post("/registration")
 def create_account(response: Response, credentials: UserSchemaCreateAuth):
@@ -32,7 +20,7 @@ def create_account(response: Response, credentials: UserSchemaCreateAuth):
         )
     )
     response.set_cookie(key="session_id", 
-                            value=create_session(credentials.username),
+                            value=create_session(credentials.id),
                             httponly=True,
                             max_age=redis_config.MAX_AGE, 
                             samesite="lax",
@@ -43,7 +31,7 @@ def create_account(response: Response, credentials: UserSchemaCreateAuth):
 def sign_in_account(response: Response, credentials: UserSchemaCreateAuth):
     if services.sign_in_account(credentials):
         response.set_cookie(key="session_id", 
-                            value=create_session(credentials.username),
+                            value=create_session(credentials.id),
                             httponly=True,
                             max_age=redis_config.MAX_AGE, 
                             samesite="lax",

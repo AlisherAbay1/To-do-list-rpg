@@ -2,8 +2,6 @@ from typing import Optional
 from pydantic import BaseModel, EmailStr, UUID7, ConfigDict, field_validator
 from fastapi import HTTPException
 from re import match
-from app.core import LocalSession
-from sqlalchemy import select, exists
 
 class UserSchemaRead(BaseModel):
     id: UUID7
@@ -30,7 +28,20 @@ class UserSchemaCreate(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+class UserSchemaPatch(BaseModel):
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+    lvl: int = 1
+    xp: int = 0
+    is_admin: bool = False
+    current_rank_id: Optional[UUID7] = None
+    profile_picture: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
 class UserSchemaCreateAuth(BaseModel):
+    id: UUID7
     username: str
     email: EmailStr
     password: str
@@ -39,7 +50,7 @@ class UserSchemaCreateAuth(BaseModel):
         
     @field_validator("username")
     def has_valid_chars_schema(cls, username: str):
-        pattern = r"^[a-zA-Z][a-zA-Z0-9!@#$%^&*_-]+$" 
+        pattern = r"^[a-zA-Z][a-zA-Z0-9!#$%^&*_-]+$" 
         if match(pattern, username):
             return username
         raise HTTPException(500, "You should use only english chars, !, @, #, $, %, ^, &, *, _, -.")
@@ -60,3 +71,4 @@ class RankSchema(BaseModel):
     id: UUID7
     user_id: UUID7
     title: str
+
