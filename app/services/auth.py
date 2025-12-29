@@ -3,20 +3,20 @@ from app.core import LocalSession
 from sqlalchemy import select, exists, ColumnExpressionArgument
 from fastapi import HTTPException
 
-def does_exist_in_schema(*expression: ColumnExpressionArgument[bool]):
-    with LocalSession.begin() as session:
-        does_exist = session.execute(
+async def does_exist_in_schema(*expression: ColumnExpressionArgument[bool]):
+    async with LocalSession.begin() as session:
+        does_exist = await session.execute(
             select(
                 exists().where(*expression)
                 )
-            ).scalar()
-    if does_exist:
+            )
+    if does_exist.scalar():
         return True
     return False
 
-def get_hashed_password_by_id(id):
-    with LocalSession.begin() as session:
-        password_hash = session.scalar(
+async def get_hashed_password_by_id(id):
+    async with LocalSession.begin() as session:
+        password_hash = await session.scalar(
             select(User.password).where(User.id == id)
             )
         

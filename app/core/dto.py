@@ -1,6 +1,7 @@
 from app.models import Base
 from pydantic import BaseModel
-from sqlalchemy import ScalarResult
+from sqlalchemy import ScalarResult, Result
+from sqlalchemy.ext.asyncio import AsyncScalarResult
 from fastapi import HTTPException
 from typing import TypeVar, Optional
 
