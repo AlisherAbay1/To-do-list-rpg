@@ -1,7 +1,7 @@
 from dotenv import dotenv_values
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
-engine = create_async_engine(f"postgresql+asyncpg://postgres:{dotenv_values(r"app\.env")["DB_PASSWORD"]}@localhost:5432/to-do-list-rpg")
+engine = create_async_engine(f"postgresql+asyncpg://postgres:{dotenv_values(r".env")["DB_PASSWORD"]}@localhost:5432/to-do-list-rpg")
 
 LocalSession = async_sessionmaker(bind=engine)
 
