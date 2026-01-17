@@ -16,16 +16,16 @@ async def get_all_users(limit: int = 20, offset: int = 0, crud: UserCRUD = Depen
 
 @router.get("/me")
 async def get_current_user(request: Request):
-    return model_to_dto(await get_user_by_session(request), UserSchemaRead)
-
+    return await get_user_by_session(request)
+ 
 @router.patch("/me")
-async def update_current_user(data: UserSchemaCreate, request: Request, crud: UserCRUD = Depends()):
-    updated = crud.update(User.id == get_user_id_by_session(request), **data.model_dump())
+async def update_current_user(data: UserSchemaPatch, request: Request, crud: UserCRUD = Depends()):
+    updated = crud.update(User.id == await get_user_id_by_session(request), **data.model_dump())
     return model_to_dto(await updated, UserSchemaRead)
 
 @router.delete("/me")
 async def delete_current_user(request: Request, crud: UserCRUD = Depends()):
-    deleted = crud.delete(User.id == get_user_id_by_session(request))
+    deleted = crud.delete(User.id == await get_user_id_by_session(request))
     return model_to_dto(await deleted, UserSchemaRead)
 
 # admin

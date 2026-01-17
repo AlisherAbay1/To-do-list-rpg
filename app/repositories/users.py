@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_local_session
 
 class UserCRUD(BaseCRUD[User]):
+    __slots__ = ()
     def __init__(self, session: AsyncSession = Depends(get_local_session)):
         super().__init__(model=User, session=session)
 

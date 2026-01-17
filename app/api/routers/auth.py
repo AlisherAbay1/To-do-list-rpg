@@ -6,14 +6,15 @@ from app.core.security import hash_password, password_verify
 from app.core import redis_config
 from app.services import create_session, delete_session, get_hashed_password_by_id
 from app.repositories.users import UserCRUD
+from app.models import User
 
 router = APIRouter(prefix="/auth")
 
 @router.post("/registration")
 async def create_account(response: Response, credentials: UserSchemaCreateAuth, crud: UserCRUD = Depends()):
-    if does_exist_in_schema(crud._model.username == credentials.username):
+    if await does_exist_in_schema(crud._model.username == credentials.username):
         raise HTTPException(409, "Username already taken.")
-    if does_exist_in_schema(crud._model.email == credentials.email):
+    if await does_exist_in_schema(crud._model.email == credentials.email):
         raise HTTPException(409, "Email already taken.")
     
     account = await auth.create_account_rep(UserSchemaCreate(
@@ -31,12 +32,19 @@ async def create_account(response: Response, credentials: UserSchemaCreateAuth, 
     return account
 
 @router.post("/login")
-async def sign_in_account(response: Response, credentials: UserSchemaAuth):
+async def sign_in_account(response: Response, credentials: UserSchemaAuth, crud: UserCRUD = Depends()):
+    if "@" in credentials.username_or_email:
+        model = (await crud.select(User.email == credentials.username_or_email))
+    else:
+        model = (await crud.select(User.username == credentials.username_or_email))
+    if model is None:
+        raise HTTPException(404, "Account doesn't exists")
+    id = model.id
     if password_verify(
         credentials.password, 
-        await get_hashed_password_by_id(credentials.id)):
+        await get_hashed_password_by_id(id)):
         response.set_cookie(key="session_id", 
-                            value=await create_session(str(credentials.id)),
+                            value=await create_session(str(id)),
                             httponly=True,
                             max_age=redis_config.MAX_AGE, 
                             samesite="lax",
@@ -51,3 +59,4 @@ async def logout(response: Response, request: Request):
         response.delete_cookie("session_id")
         return {"response": "Session deleted."}
     raise HTTPException(410, "Session already deleted")
+

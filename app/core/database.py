@@ -9,5 +9,6 @@ async def get_local_session():
     async with LocalSession() as session:
         try:
             yield session
-        except:
+        except Exception as e:
             await session.rollback()
+            raise e

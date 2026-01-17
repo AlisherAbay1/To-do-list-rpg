@@ -7,6 +7,7 @@ async def get_user_by_session(request: Request):
     if not session_id:
         raise HTTPException(401, "Not authenticated")
     user = await get_user_by_session_services(session_id)
+    print(user)
     if not user:
         raise HTTPException(401, "Invalid session")
     return user

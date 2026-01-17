@@ -5,6 +5,7 @@ from app.core.database import get_local_session
 from app.repositories.base import BaseCRUD
 
 class SkillCRUD(BaseCRUD[Skill]):
+    __slots__ = ()
     def __init__(self, session: AsyncSession = Depends(get_local_session)):
         super().__init__(model=Skill, session=session)
 

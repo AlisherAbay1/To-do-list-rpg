@@ -40,7 +40,6 @@ class UserSchemaPatch(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class UserSchemaAuth(BaseModel):
-    id: UUID7
     username_or_email: str
     password: str
 
@@ -56,7 +55,7 @@ class UserSchemaCreateAuth(BaseModel):
         pattern = r"^[a-zA-Z][a-zA-Z0-9!#$%^&*_-]+$" 
         if match(pattern, username):
             return username
-        raise HTTPException(500, "You should use only english chars, !, @, #, $, %, ^, &, *, _, -.")
+        raise HTTPException(500, "You should use only english chars, numbers, !, @, #, $, %, ^, &, *, _, -.")
     
     @field_validator("username")
     def is_correct_lenght_schema(cls, username: str):
