@@ -10,7 +10,7 @@ class User(Base):
     
     id: Mapped[UUID] = mapped_column(primary_key=True, server_default=text("uuid_generate_v7()"))
     username: Mapped[str] = mapped_column(String(25), unique=True)
-    email: Mapped[str | None] = mapped_column(nullable=True, unique=True)
+    email: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str]
     lvl: Mapped[int] = mapped_column(BigInteger)
     xp: Mapped[int] = mapped_column(BigInteger)

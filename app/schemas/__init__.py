@@ -1,10 +1,16 @@
-from .items import ItemSchemaRead, ItemSchemaCreate, ItemSchemaPatch
-from .skills import SkillSchemaRead, SkillSchemaCreate, SkillSchemaPatch
-from .tasks import TaskSchemaRead, TaskSchemaCreate, TaskSchemaPatch
-from .users import UserSchemaRead, UserSchemaCreate, UserSchemaCreateAuth, UserSchemaPatch, UserSchemaAuth
+from .items import ItemSchemaRead, ItemSchemaCreate
+from .skills import SkillSchemaRead, SkillSchemaCreate
+from .tasks import TaskSchemaRead, TaskSchemaCreate
+from .users import UserSchemaRead, UserSchemaCreate, UserSchemaCreateAuth, \
+                    UserSchemaPatchEmail, UserSchemaAuth, UserSchemaPatchPassword
+from .dto import TaskCreateOrUpdateDTO, UserEmailDTO, UserDTO, \
+                    UserPasswordDTO, SkillCreateOrUpdateDTO, ItemCreateOrUpdateDTO, \
+                    CreateUserDTO, CreateUserResultDTO, LoginIdentifierDTO
 
 __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead", 
-           "SkillSchemaCreate", "TaskSchemaRead", "TaskSchemaCreate", 
-           "UserSchemaRead", "UserSchemaCreate", "UserSchemaCreateAuth",
-           "TaskSchemaPatch", "UserSchemaPatch", "SkillSchemaPatch",
-           "ItemSchemaPatch", "UserSchemaAuth")
+            "SkillSchemaCreate", "TaskSchemaRead", "TaskSchemaCreate", 
+            "UserSchemaRead", "UserSchemaCreate", "UserSchemaCreateAuth",
+            "UserSchemaPatchEmail","UserSchemaAuth", "TaskCreateOrUpdateDTO", 
+           "UserEmailDTO", "UserDTO", "UserSchemaPatchPassword", 
+           "UserPasswordDTO", "SkillCreateOrUpdateDTO", "ItemCreateOrUpdateDTO", 
+           "CreateUserDTO", "CreateUserResultDTO", "LoginIdentifierDTO")

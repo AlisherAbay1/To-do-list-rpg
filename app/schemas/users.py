@@ -28,20 +28,35 @@ class UserSchemaCreate(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-class UserSchemaPatch(BaseModel):
-    email: Optional[EmailStr] = None
-    password: Optional[str] = None
-    lvl: int = 1
-    xp: int = 0
-    is_admin: bool = False
-    current_rank_id: Optional[UUID7] = None
-    profile_picture: Optional[str] = None
+class UserSchemaPatchEmail(BaseModel):
+    new_email: EmailStr
+    password: str
 
     model_config = ConfigDict(from_attributes=True)
+
+    @field_validator("password")
+    def is_lenght_correct_schema(cls, password: str):
+        if len(password) > 3 and len(password) < 50:
+            return password
+        raise HTTPException(500, "Password should be at least 8 chars and less than 50.")
+
+class UserSchemaPatchPassword(BaseModel):
+    old_password: str
+    new_password: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+    @field_validator("new_password")
+    def is_lenght_correct_schema(cls, password: str):
+        if len(password) > 3 and len(password) < 50:
+            return password
+        raise HTTPException(500, "Password should be at least 8 chars and less than 50.")
 
 class UserSchemaAuth(BaseModel):
     username_or_email: str
     password: str
+
+    model_config = ConfigDict(from_attributes=True)
 
 class UserSchemaCreateAuth(BaseModel):
     username: str
@@ -67,7 +82,7 @@ class UserSchemaCreateAuth(BaseModel):
     def is_lenght_correct_schema(cls, password: str):
         if len(password) > 3 and len(password) < 50:
             return password
-        raise HTTPException(500, "Username should be at least 8 chars and less than 50.")
+        raise HTTPException(500, "Password should be at least 8 chars and less than 50.")
 
 class RankSchema(BaseModel):
     id: UUID7

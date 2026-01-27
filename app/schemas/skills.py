@@ -6,7 +6,7 @@ class SkillSchemaRead(BaseModel):
     user_id: UUID7
     title: str
     description: str
-    ico: str | None
+    ico: Optional[str]
     lvl: int
     xp: int
 
@@ -15,17 +15,9 @@ class SkillSchemaRead(BaseModel):
 class SkillSchemaCreate(BaseModel):
     title: str
     description: str
-    ico: str | None
+    ico: Optional[str]
     lvl: int
     xp: int
 
     model_config = ConfigDict(from_attributes=True)
 
-class SkillSchemaPatch(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    ico: Optional[str] = None
-    lvl: Optional[int] = None
-    xp: Optional[int] = None
-
-    model_config = ConfigDict(from_attributes=True)

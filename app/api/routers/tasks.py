@@ -1,74 +1,80 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
 from pydantic import UUID7
-from app.schemas import TaskSchemaCreate, TaskSchemaRead, TaskSchemaPatch, UserSchemaRead
-from app.repositories import TaskCRUD, UserCRUD
-from app.models import Task, User
-from app.core.session import get_user_by_session
-from app.core.dto import model_to_dto, models_to_dtos
-from app.core.session import get_user_id_by_session
+from app.schemas import TaskSchemaCreate, TaskSchemaRead, TaskCreateOrUpdateDTO
+from app.repositories import TaskRepository, RedisRepository
+from app.services.interactors import GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, \
+                                    GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor
+from app.core.database import get_local_session
+from sqlalchemy.ext.asyncio import AsyncSession
+from redis.asyncio import Redis
+from app.core.redis_config import get_redis_session
 
 router = APIRouter(prefix="/tasks")
 
 # admin
-@router.get("")
-async def get_all_tasks(limit: int = 20, offset: int = 0, crud: TaskCRUD = Depends()):
-    selected = crud.select_many(limit, offset)
-    return models_to_dtos(await selected, TaskSchemaRead)
+@router.get("", response_model=list[TaskSchemaRead])
+async def get_all_tasks(limit: int = 20, 
+                        offset: int = 0, 
+                        session: AsyncSession = Depends(get_local_session)):
+    repo = TaskRepository(session)
+    interactor = GetAllTasksInteractor(repo)
+    return await interactor(limit, offset)
 
-@router.post("/me")
-async def create_current_user_task(data: TaskSchemaCreate, request: Request, crud: TaskCRUD = Depends()):
-    info = data.model_dump()
-    info["user_id"] = await get_user_id_by_session(request)
-    return model_to_dto(await crud.insert(**info), TaskSchemaRead)
+@router.post("/me", response_model=TaskSchemaRead)
+async def create_current_user_task(data: TaskSchemaCreate, 
+                                   request: Request, 
+                                   session: AsyncSession = Depends(get_local_session),
+                                   cash_session: Redis = Depends(get_redis_session)):
+    repo = TaskRepository(session)
+    cash_repo = RedisRepository(cash_session)
+    interactor = CreateCurrentUserTaskInteractor(repo, cash_repo)
+    session_id = request.cookies.get("session_id")
+    if session_id is None:
+        raise HTTPException(401, "Not authenticated")
+    dto = TaskCreateOrUpdateDTO(
+        title=data.title, 
+        description=data.description, 
+        xp=data.xp, 
+        is_done=data.is_done,
+        repeat_limit=data.repeat_limit,
+        repeat_type=data.repeat_type
+    )
+    return await interactor(session_id, dto)
 
-@router.get("/me")
-async def get_current_user_tasks(request: Request, limit: int = 20, offset: int = 0, crud: TaskCRUD = Depends()):
-    current_user_id = await get_user_id_by_session(request)
-    selected = crud.select_many(limit, offset, Task.user_id == current_user_id)
-    return models_to_dtos(await selected, TaskSchemaRead)
+@router.get("/me", response_model=TaskSchemaRead)
+async def get_current_user_tasks(request: Request, 
+                                 limit: int = 20, 
+                                 offset: int = 0, 
+                                 session: AsyncSession = Depends(get_local_session),
+                                 cash_session: Redis = Depends(get_redis_session)):
+    repo = TaskRepository(session)
+    cash_repo = RedisRepository(cash_session)
+    interactor = GetCurentUserTasksInteractor(repo, cash_repo)
+    session_id = request.cookies.get("session_id")
+    if session_id is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(session_id, limit, offset)
 
-@router.get("/{task_id}")
-async def get_task(task_id: UUID7, request: Request, crud: TaskCRUD = Depends()):
-    selected = crud.select(
-        Task.user_id == await get_user_by_session(request), 
-        Task.id == task_id
-    )
-    return model_to_dto(await selected, TaskSchemaRead) 
+@router.get("/{task_id}", response_model=TaskSchemaRead)
+async def get_task(task_id: UUID7, 
+                   request: Request, 
+                   session: AsyncSession = Depends(get_local_session)):
+    repo = TaskRepository(session)
+    interactor = GetTaskInteractor(repo)
+    return await interactor(task_id)
 
-@router.patch("/{task_id}")
-async def update_task(task_id: UUID7, request: Request, data: TaskSchemaPatch, crud: TaskCRUD = Depends()):
-    info = data.model_dump(exclude_unset=True)
-    updated = crud.update(
-        Task.user_id == await get_user_by_session(request), 
-        Task.id == task_id,  
-        **info
-    )
-    return model_to_dto(await updated, TaskSchemaRead)
+@router.delete("/{task_id}", status_code=204)
+async def delete_task(task_id: UUID7, 
+                      request: Request, 
+                      session: AsyncSession = Depends(get_local_session)):
+    repo = TaskRepository(session)
+    interactor = DeleteTaskInteractor(repo)
+    await interactor(task_id)
 
-@router.delete("/{task_id}")
-async def delete_task(task_id: UUID7, request: Request, crud: TaskCRUD = Depends()):
-    deleted = crud.delete(
-        Task.user_id == await get_user_id_by_session(request), 
-        Task.id == task_id
-    )
-    return model_to_dto(await deleted, TaskSchemaRead)
-
-@router.patch("/{task_id}/complete")
-async def complete_task(task_id: UUID7, request: Request, task_crud: TaskCRUD = Depends(), user_crud: UserCRUD = Depends()):
-    user_id = await get_user_id_by_session(request)
-    updated_task = task_crud.update(
-        Task.user_id == user_id, 
-        Task.id == task_id, 
-        is_done=True
-    )
-    get_xp = TaskSchemaRead.model_validate(await updated_task, from_attributes=True).xp
-    selected_user = user_crud.select(
-        User.id == user_id
-    )
-    user_info = UserSchemaRead.model_validate(await selected_user, from_attributes=True)
-    user_info.xp += get_xp
-    updated_user = user_crud.update(
-        User.id == user_id,
-        **user_info.model_dump()
-    )
-    return model_to_dto(await updated_user, UserSchemaRead)
+@router.patch("/{task_id}/complete", response_model=TaskSchemaRead)
+async def complete_task(task_id: UUID7, 
+                        request: Request,
+                        session: AsyncSession = Depends(get_local_session)):
+    repo = TaskRepository(session)
+    interactor = CompleteTaskInteractor(repo)
+    return await interactor(task_id)

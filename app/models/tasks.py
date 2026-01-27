@@ -12,7 +12,7 @@ class Task(Base):
     __tablename__ = "task"
     
     id: Mapped[UUID] = mapped_column(primary_key=True, server_default=text("uuid_generate_v7()"))
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
+    user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
     title: Mapped[str]
     description: Mapped[str | None] = mapped_column(String(255), nullable=True)
     xp: Mapped[int] = mapped_column(BigInteger)

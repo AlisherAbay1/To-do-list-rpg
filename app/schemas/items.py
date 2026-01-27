@@ -18,9 +18,3 @@ class ItemSchemaCreate(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-class ItemSchemaPatch(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    amount: Optional[int] = None
-
-    model_config = ConfigDict(from_attributes=True)

@@ -1,6 +1,7 @@
-from .users import UserCRUD
-from .skills import SkillCRUD
-from .tasks import TaskCRUD
-from .items import ItemCRUD
+from .users import UserRepository
+from .skills import SkillRepository
+from .tasks import TaskRepository
+from .items import ItemRepository
+from .redis import RedisRepository
 
-__all__ = ("UserCRUD", "SkillCRUD", "TaskCRUD", "ItemCRUD")
+__all__ = ("UserRepository", "SkillRepository", "TaskRepository", "ItemRepository")
