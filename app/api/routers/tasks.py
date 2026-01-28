@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
 from pydantic import UUID7
 from app.schemas import TaskSchemaCreate, TaskSchemaRead, TaskCreateOrUpdateDTO
-from app.repositories import TaskRepository, RedisRepository
+from app.repositories import TaskRepository, RedisRepository, TransactionAlchemyManager
 from app.services.interactors import GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, \
                                     GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor
 from app.core.database import get_local_session
@@ -20,14 +20,15 @@ async def get_all_tasks(limit: int = 20,
     interactor = GetAllTasksInteractor(repo)
     return await interactor(limit, offset)
 
-@router.post("/me", response_model=TaskSchemaRead)
+@router.post("/me", response_model=TaskSchemaRead, status_code=204)
 async def create_current_user_task(data: TaskSchemaCreate, 
                                    request: Request, 
                                    session: AsyncSession = Depends(get_local_session),
                                    cash_session: Redis = Depends(get_redis_session)):
     repo = TaskRepository(session)
     cash_repo = RedisRepository(cash_session)
-    interactor = CreateCurrentUserTaskInteractor(repo, cash_repo)
+    transaction = TransactionAlchemyManager(session)
+    interactor = CreateCurrentUserTaskInteractor(repo, cash_repo, transaction)
     session_id = request.cookies.get("session_id")
     if session_id is None:
         raise HTTPException(401, "Not authenticated")
@@ -39,7 +40,7 @@ async def create_current_user_task(data: TaskSchemaCreate,
         repeat_limit=data.repeat_limit,
         repeat_type=data.repeat_type
     )
-    return await interactor(session_id, dto)
+    await interactor(session_id, dto)
 
 @router.get("/me", response_model=TaskSchemaRead)
 async def get_current_user_tasks(request: Request, 
@@ -64,17 +65,17 @@ async def get_task(task_id: UUID7,
     return await interactor(task_id)
 
 @router.delete("/{task_id}", status_code=204)
-async def delete_task(task_id: UUID7, 
-                      request: Request, 
+async def delete_task(task_id: UUID7,
                       session: AsyncSession = Depends(get_local_session)):
     repo = TaskRepository(session)
-    interactor = DeleteTaskInteractor(repo)
+    transaction = TransactionAlchemyManager(session)
+    interactor = DeleteTaskInteractor(repo, transaction)
     await interactor(task_id)
 
 @router.patch("/{task_id}/complete", response_model=TaskSchemaRead)
-async def complete_task(task_id: UUID7, 
-                        request: Request,
+async def complete_task(task_id: UUID7,
                         session: AsyncSession = Depends(get_local_session)):
     repo = TaskRepository(session)
-    interactor = CompleteTaskInteractor(repo)
+    transaction = TransactionAlchemyManager(session)
+    interactor = CompleteTaskInteractor(repo, transaction)
     return await interactor(task_id)

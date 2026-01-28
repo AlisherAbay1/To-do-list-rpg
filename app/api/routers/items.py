@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
 from pydantic import UUID7
-from app.schemas import ItemSchemaCreate, ItemSchemaRead, ItemCreateOrUpdateDTO
-from app.repositories import ItemRepository, RedisRepository
+from app.schemas import ItemSchemaCreate, ItemSchemaRead, ItemCreateDTO
+from app.repositories import ItemRepository, RedisRepository, TransactionAlchemyManager
 from app.services.interactors import GetAllItemsInteractor, GetCurrentUserItemsInteractor, CreateCurrentUserItemInteractor, \
                                     GetItemInteractor, DeleteItemInteractor
 from app.core.database import get_local_session
@@ -40,11 +40,12 @@ async def create_current_user_item(data: ItemSchemaCreate,
                                    cash_session: Redis = Depends(get_redis_session)):
     repo = ItemRepository(session)
     cash_repo = RedisRepository(cash_session)
-    interactor = CreateCurrentUserItemInteractor(repo, cash_repo)
+    transaction = TransactionAlchemyManager(session)
+    interactor = CreateCurrentUserItemInteractor(repo, cash_repo, transaction)
     session_id = request.cookies.get("session_id")
     if session_id is None:
         raise HTTPException(401, "Not authenticated")
-    dto = ItemCreateOrUpdateDTO(
+    dto = ItemCreateDTO(
         title=data.title, 
         description=data.description, 
         amount=data.amount
@@ -62,5 +63,6 @@ async def get_item(item_id: UUID7,
 async def delete_item(item_id: UUID7,
                       session: AsyncSession = Depends(get_local_session)):
     repo = ItemRepository(session)
-    interactor = DeleteItemInteractor(repo)
+    transaction = TransactionAlchemyManager(session)
+    interactor = DeleteItemInteractor(repo, transaction)
     return await interactor(item_id)

@@ -1,10 +1,11 @@
-from app.repositories.interfaces import UserRepositoryProtocol, RedisRepositoryProtocol
+from app.repositories.interfaces import UserRepositoryProtocol, RedisRepositoryProtocol, TransactionProtocol
 from app.schemas.dto import UserEmailDTO, UserPasswordDTO, CreateUserDTO, \
                             CreateUserResultDTO, LoginIdentifierDTO
 from app.core.security import hash_password, password_verify
 from app.exceptions import UserNotFoundError, EmailAlreadyTakenError, IncorrectPasswordError, \
                         UsernameAlreadyTakenError, SessionNotFoundError
 from app.models import User
+from uuid import UUID
 
 class GetUsersInteractor:
     def __init__(self, repo: UserRepositoryProtocol) -> None:
@@ -21,60 +22,76 @@ class GetCurrentUser:
 
     async def __call__(self, session_id):
         user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
-        user = await self.repo.get_user(user_id)
+        if user_id is None:
+            raise SessionNotFoundError()
+        user = await self.repo.get_user(UUID(user_id))
         return user
 
 class UpdateCurrentUserEmailInteractor:
-    def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
+    def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
+        self.transaction = transaction
 
     async def __call__(self, dto: UserEmailDTO, session_id: str):
         user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
-        user = await self.repo.get_user(user_id)
+        if user_id is None:
+            raise SessionNotFoundError()
+        user = await self.repo.get_user(UUID(user_id))
         if not user:
             raise UserNotFoundError()
-        user.password = hash_password(dto.password)
-        if self.repo.get_user_by_email(dto.new_email) is None:
+        if not password_verify(dto.password, user.password):
+            raise IncorrectPasswordError()
+        if self.repo.get_user_by_email(dto.new_email):
             raise EmailAlreadyTakenError()
         user.email = dto.new_email
-        return user
+        await self.transaction.commit()
+        return dto.new_email
     
 class UpdateCurrentUserPasswordInteractor:
-    def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
+    def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
+        self.transaction = transaction
 
     async def __call__(self, dto: UserPasswordDTO, session_id: str):
         user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
-        user = await self.repo.get_user(user_id)
+        if user_id is None:
+            raise SessionNotFoundError()
+        user = await self.repo.get_user(UUID(user_id))
         if not user:
             raise UserNotFoundError()
         if not password_verify(dto.old_password, user.password): 
             raise IncorrectPasswordError()
-        return user
+        user.password = dto.new_password
+        await self.transaction.commit()
 
 class DeleteCurrentUserInteractor:
-    def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
+    def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
+        self.transaction = transaction
 
     async def __call__(self, session_id):
         user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
-        user = await self.repo.get_user(user_id)
+        if user_id is None:
+            raise SessionNotFoundError()
+        user = await self.repo.get_user(UUID(user_id))
         if not user:
             raise UserNotFoundError()
         await self.repo.delete(user)
+        await self.transaction.commit()
 
 class CreateUserInteractor:
-    def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
+    def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
+        self.transaction = transaction
 
     async def __call__(self, dto: CreateUserDTO) -> CreateUserResultDTO:
-        if not self.repo.does_username_exists(dto.username):
+        if self.repo.does_username_exists(dto.username):
             raise UsernameAlreadyTakenError()
-        if not self.repo.does_email_exists(dto.email):
+        if self.repo.does_email_exists(dto.email):
             raise EmailAlreadyTakenError()
         hashed_password = hash_password(dto.password)
         user = User(
@@ -86,9 +103,10 @@ class CreateUserInteractor:
         session_id = await self.cash_repo.create_session(str(user.id))
         user_result = CreateUserResultDTO(
             username=user.username, 
-            email=user.username, 
+            email=user.email, 
             session_id=session_id
         )
+        await self.transaction.commit()
         return user_result
 
 class AuthenticateUserInteractor:

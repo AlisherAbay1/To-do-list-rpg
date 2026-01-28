@@ -1,24 +1,23 @@
-from .base import Base
+from app.models import Base, Skill, User, Item
 from uuid import UUID
-from .skills import Skill
-from .users import User
-from .items import Item
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, ForeignKey, text, BigInteger
+from sqlalchemy import String, ForeignKey, BigInteger
 from sqlalchemy.dialects.postgresql import ENUM
 from app.enums import RepeatTypes
+from uuid_utils import uuid7
+from typing import Optional
 
 class Task(Base): 
     __tablename__ = "task"
     
-    id: Mapped[UUID] = mapped_column(primary_key=True, server_default=text("uuid_generate_v7()"))
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
     user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
     title: Mapped[str]
-    description: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    description: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     xp: Mapped[int] = mapped_column(BigInteger)
     is_done: Mapped[bool] = mapped_column(default=False)
-    repeat_limit: Mapped[int | None] = mapped_column(nullable=True)
-    repeat_type: Mapped[RepeatTypes] = mapped_column(ENUM(RepeatTypes, name="repeat_types"), nullable=True) 
+    repeat_limit: Mapped[Optional[int]] = mapped_column(nullable=True)
+    repeat_type: Mapped[Optional[RepeatTypes]] = mapped_column(ENUM(RepeatTypes, name="repeat_types"), nullable=True) 
 
     # relationships
     user: Mapped["User"] = relationship(passive_deletes=True)

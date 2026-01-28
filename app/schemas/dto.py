@@ -15,6 +15,15 @@ class UserDTO:
     profile_picture: Optional[str] = None
 
 @dataclass(slots=True)
+class TaskDTO:
+    title: str
+    description: Optional[str]
+    xp: int
+    is_done: bool
+    repeat_limit: Optional[int]
+    repeat_type: Optional[RepeatTypes]
+
+@dataclass(slots=True)
 class CreateUserDTO:
     username: str
     email: str
@@ -51,7 +60,15 @@ class TaskCreateOrUpdateDTO:
     repeat_type: Optional[RepeatTypes]
 
 @dataclass(slots=True)
-class SkillCreateOrUpdateDTO:
+class SkillCreateDTO:
+    title: str
+    description: Optional[str]
+    ico: Optional[str]
+    lvl: int
+    xp: int
+
+@dataclass(slots=True)
+class SkillUpdateDTO:
     title: Optional[str]
     description: Optional[str]
     ico: Optional[str]
@@ -59,7 +76,13 @@ class SkillCreateOrUpdateDTO:
     xp: Optional[int]
 
 @dataclass(slots=True)
-class ItemCreateOrUpdateDTO:
+class ItemUpdateDTO:
     title: Optional[str]
     description: Optional[str]
     amount: Optional[int]
+
+@dataclass(slots=True)
+class ItemCreateDTO:
+    title: str
+    description: Optional[str]
+    amount: int

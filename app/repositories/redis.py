@@ -1,6 +1,7 @@
 from uuid import uuid4, UUID
 from redis.asyncio import Redis
 from app.core.redis_config import MAX_AGE
+from typing import Optional
 
 class RedisRepository:
     __slots__ = ("_session",)
@@ -12,9 +13,9 @@ class RedisRepository:
         await self._session.setex(f"session:{session_id}", MAX_AGE, user_id)
         return session_id
     
-    async def delete_session(self, session_id) -> None:
+    async def delete_session(self, session_id: str) -> None:
         is_deleted = await self._session.delete(f"session:{session_id}")
     
-    async def get_user_id_by_session_id(self, session_id) -> UUID:
+    async def get_user_id_by_session_id(self, session_id: str) -> Optional[str]:
         id = await self._session.get(f"session:{session_id}")
-        return UUID(id)
+        return id

@@ -5,7 +5,7 @@ class SkillSchemaRead(BaseModel):
     id: UUID7
     user_id: UUID7
     title: str
-    description: str
+    description: Optional[str]
     ico: Optional[str]
     lvl: int
     xp: int
@@ -14,7 +14,7 @@ class SkillSchemaRead(BaseModel):
 
 class SkillSchemaCreate(BaseModel):
     title: str
-    description: str
+    description: Optional[str]
     ico: Optional[str]
     lvl: int
     xp: int

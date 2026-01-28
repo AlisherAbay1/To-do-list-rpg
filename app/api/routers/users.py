@@ -3,7 +3,7 @@ from pydantic import UUID7
 from app.schemas import UserSchemaPatchEmail, UserSchemaRead, UserEmailDTO, \
                         UserSchemaPatchPassword, UserPasswordDTO, UserSchemaCreateAuth, \
                         CreateUserDTO, UserSchemaAuth, LoginIdentifierDTO
-from app.repositories import UserRepository, RedisRepository
+from app.repositories import UserRepository, RedisRepository, TransactionAlchemyManager
 from fastapi import Depends, Request, HTTPException
 from app.services.interactors import GetUsersInteractor, UpdateCurrentUserEmailInteractor, DeleteCurrentUserInteractor, \
                                     GetUserInteractor, DeleteUserInteractor, UpdateCurrentUserPasswordInteractor, \
@@ -37,14 +37,15 @@ async def get_current_user(request: Request,
     interactor = GetCurrentUser(repo, cash_repo)
     return await interactor(session_id)
 
-@router.get("/auth/registration")
+@router.post("/auth/registration")
 async def create_user(response: Response, 
                       credentials: UserSchemaCreateAuth, 
                       session: AsyncSession = Depends(get_local_session),
                       cash_session: Redis = Depends(get_redis_session)):
     repo = UserRepository(session)
     cash_repo = RedisRepository(cash_session)
-    interactor = CreateUserInteractor(repo, cash_repo)
+    transaction = TransactionAlchemyManager(session)
+    interactor = CreateUserInteractor(repo, cash_repo, transaction)
     dto = CreateUserDTO(
         username=credentials.username, 
         email=credentials.email, 
@@ -107,26 +108,32 @@ async def update_current_user_email(data: UserSchemaPatchEmail,
                                     cash_session: Redis = Depends(get_redis_session)):
     repo = UserRepository(session)
     cash_repo = RedisRepository(cash_session)
+    transaction = TransactionAlchemyManager(session)
     session_id = request.cookies.get("session_id")
     if session_id is None:
         raise HTTPException(401, "Not authenticated")
-    interactor = UpdateCurrentUserEmailInteractor(repo, cash_repo)
+    interactor = UpdateCurrentUserEmailInteractor(repo, cash_repo, transaction)
     dto = UserEmailDTO(new_email=data.new_email, password=data.password)
-    return await interactor(dto, session_id)
+    new_email = await interactor(dto, session_id)
+    return {
+        "message": "Email updated successfully", 
+        "new_email": new_email
+    }
 
-@router.patch("/me/password-change", response_model=UserSchemaRead)
+@router.patch("/me/password-change", response_model=UserSchemaRead, status_code=204)
 async def update_current_user_password(data: UserSchemaPatchPassword,
                                        request: Request, 
                                        session: AsyncSession = Depends(get_local_session),
                                        cash_session: Redis = Depends(get_redis_session)):
     repo = UserRepository(session)
     cash_repo = RedisRepository(cash_session)
+    transaction = TransactionAlchemyManager(session)
     session_id = request.cookies.get("session_id")
     if session_id is None:
         raise HTTPException(401, "Not authenticated")
-    interactor = UpdateCurrentUserPasswordInteractor(repo, cash_repo)
+    interactor = UpdateCurrentUserPasswordInteractor(repo, cash_repo, transaction)
     dto = UserPasswordDTO(old_password=data.old_password, new_password=data.new_password)
-    return await interactor(dto, session_id)
+    await interactor(dto, session_id)
 
 @router.delete("/me", status_code=204)
 async def delete_current_user(request: Request, 
@@ -134,11 +141,12 @@ async def delete_current_user(request: Request,
                               cash_session: Redis = Depends(get_redis_session)):
     repo = UserRepository(session)
     cash_repo = RedisRepository(cash_session)
+    transaction = TransactionAlchemyManager(session)
     session_id = request.cookies.get("session_id")
     if session_id is None:
         raise HTTPException(401, "Not authenticated")
     
-    interactor = DeleteCurrentUserInteractor(repo, cash_repo)
+    interactor = DeleteCurrentUserInteractor(repo, cash_repo, transaction)
     await interactor(session_id)
 
 # admin

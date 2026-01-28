@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
-from app.schemas import SkillSchemaCreate, SkillSchemaRead, SkillCreateOrUpdateDTO
+from app.schemas import SkillSchemaCreate, SkillSchemaRead, SkillCreateDTO
 from pydantic import UUID7
-from app.repositories import SkillRepository, RedisRepository
+from app.repositories import SkillRepository, RedisRepository, TransactionAlchemyManager
 from app.core.database import get_local_session
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.services.interactors import GetAllSkillsInteractor, GetCurrentUserSkillsInteractor, CreateCurrentUserSkillInteractor, \
@@ -40,11 +40,12 @@ async def create_current_user_skill(data: SkillSchemaCreate,
                                     cash_session: Redis = Depends(get_redis_session)):
     repo = SkillRepository(session)
     cash_repo = RedisRepository(cash_session)
-    interactor = CreateCurrentUserSkillInteractor(repo, cash_repo)
+    transaction = TransactionAlchemyManager(session)
+    interactor = CreateCurrentUserSkillInteractor(repo, cash_repo, transaction)
     session_id = request.cookies.get("session_id")
     if session_id is None:
         raise HTTPException(401, "Not authenticated")
-    dto = SkillCreateOrUpdateDTO(
+    dto = SkillCreateDTO(
         title=data.title,
         description=data.description, 
         ico=data.ico, 
@@ -64,5 +65,6 @@ async def get_skill(skill_id: UUID7,
 async def delete_skill(skill_id: UUID7, 
                        session: AsyncSession = Depends(get_local_session)):
     repo = SkillRepository(session)
-    interactor = DeleteSkillInteractor(repo)
-    return await interactor(skill_id)
+    transaction = TransactionAlchemyManager(session)
+    interactor = DeleteSkillInteractor(repo, transaction)
+    await interactor(skill_id)

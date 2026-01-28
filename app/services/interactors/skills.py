@@ -1,7 +1,8 @@
-from app.repositories.interfaces import SkillRepositoryProtocol, RedisRepositoryProtocol
-from app.schemas import SkillCreateOrUpdateDTO
+from app.repositories.interfaces import SkillRepositoryProtocol, RedisRepositoryProtocol, TransactionProtocol
+from app.schemas import SkillCreateDTO
 from app.models import Skill
-from app.exceptions import SkillNotFoundError
+from app.exceptions import SkillNotFoundError, SessionNotFoundError
+from uuid import UUID
 
 class GetAllSkillsInteractor:
     def __init__(self, repo: SkillRepositoryProtocol) -> None:
@@ -18,15 +19,18 @@ class GetCurrentUserSkillsInteractor:
 
     async def __call__(self, session_id: str, limit: int, offset: int):
         user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
-        skills = await self.repo.get_skills_by_user_id(user_id, limit, offset)
+        if user_id is None:
+            raise SessionNotFoundError()
+        skills = await self.repo.get_skills_by_user_id(UUID(user_id), limit, offset)
         return skills
 
 class CreateCurrentUserSkillInteractor:
-    def __init__(self, repo: SkillRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
+    def __init__(self, repo: SkillRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
+        self.transaction = transaction
 
-    async def __call__(self, session_id: str, dto: SkillCreateOrUpdateDTO):
+    async def __call__(self, session_id: str, dto: SkillCreateDTO):
         user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
         user = Skill(
             user_id=user_id, 
@@ -37,6 +41,7 @@ class CreateCurrentUserSkillInteractor:
             xp=dto.xp
         )
         self.repo.save(user)
+        await self.transaction.commit()
         return dto
 
 class GetSkillInteractor:
@@ -48,12 +53,13 @@ class GetSkillInteractor:
         return skill
 
 class DeleteSkillInteractor:
-    def __init__(self, repo: SkillRepositoryProtocol) -> None:
+    def __init__(self, repo: SkillRepositoryProtocol, transaction: TransactionProtocol) -> None:
         self.repo = repo
+        self.transaction = transaction
 
     async def __call__(self, skill_id):
         skill = await self.repo.get_skill_by_id(skill_id)
         if skill is None:
             raise SkillNotFoundError()
         await self.repo.delete(skill)
-        return skill
+        await self.transaction.commit()
