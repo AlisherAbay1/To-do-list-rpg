@@ -19,7 +19,7 @@ async def get_all_items(limit: int = 20,
     interactor = GetAllItemsInteractor(repo)
     return await interactor(limit, offset)
 
-@router.get("/me", response_model=ItemSchemaRead)
+@router.get("/me", response_model=list[ItemSchemaRead])
 async def get_current_user_items(request: Request, 
                                  limit: int = 20, 
                                  offset: int = 0, 

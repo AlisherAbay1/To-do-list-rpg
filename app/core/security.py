@@ -1,6 +1,8 @@
 from passlib.hash import argon2
 from dotenv import dotenv_values 
 
+IS_PRODUCTION = dotenv_values(r".env")["IS_PRODUCTION"] == "TRUE"
+
 def hash_password(password: str):
     paper = dotenv_values(r".env")["PAPER"]
     if not paper:

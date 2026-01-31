@@ -18,4 +18,6 @@ class RedisRepository:
     
     async def get_user_id_by_session_id(self, session_id: str) -> Optional[str]:
         id = await self._session.get(f"session:{session_id}")
+        if id == "None":
+            id = None
         return id

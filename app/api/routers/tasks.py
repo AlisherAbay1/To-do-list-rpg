@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
 from pydantic import UUID7
-from app.schemas import TaskSchemaCreate, TaskSchemaRead, TaskCreateOrUpdateDTO
+from app.schemas import TaskSchemaCreate, TaskSchemaRead, TaskCreateDTO, TaskUpdateDTO
 from app.repositories import TaskRepository, RedisRepository, TransactionAlchemyManager
 from app.services.interactors import GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, \
                                     GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor
@@ -20,7 +20,7 @@ async def get_all_tasks(limit: int = 20,
     interactor = GetAllTasksInteractor(repo)
     return await interactor(limit, offset)
 
-@router.post("/me", response_model=TaskSchemaRead, status_code=204)
+@router.post("/me", response_model=TaskSchemaRead)
 async def create_current_user_task(data: TaskSchemaCreate, 
                                    request: Request, 
                                    session: AsyncSession = Depends(get_local_session),
@@ -32,7 +32,7 @@ async def create_current_user_task(data: TaskSchemaCreate,
     session_id = request.cookies.get("session_id")
     if session_id is None:
         raise HTTPException(401, "Not authenticated")
-    dto = TaskCreateOrUpdateDTO(
+    dto = TaskCreateDTO(
         title=data.title, 
         description=data.description, 
         xp=data.xp, 
@@ -40,9 +40,10 @@ async def create_current_user_task(data: TaskSchemaCreate,
         repeat_limit=data.repeat_limit,
         repeat_type=data.repeat_type
     )
-    await interactor(session_id, dto)
+    task = await interactor(session_id, dto)
+    return task
 
-@router.get("/me", response_model=TaskSchemaRead)
+@router.get("/me", response_model=list[TaskSchemaRead])
 async def get_current_user_tasks(request: Request, 
                                  limit: int = 20, 
                                  offset: int = 0, 
@@ -58,7 +59,6 @@ async def get_current_user_tasks(request: Request,
 
 @router.get("/{task_id}", response_model=TaskSchemaRead)
 async def get_task(task_id: UUID7, 
-                   request: Request, 
                    session: AsyncSession = Depends(get_local_session)):
     repo = TaskRepository(session)
     interactor = GetTaskInteractor(repo)
@@ -74,8 +74,14 @@ async def delete_task(task_id: UUID7,
 
 @router.patch("/{task_id}/complete", response_model=TaskSchemaRead)
 async def complete_task(task_id: UUID7,
-                        session: AsyncSession = Depends(get_local_session)):
+                        request: Request, 
+                        session: AsyncSession = Depends(get_local_session), 
+                        cash_session: Redis = Depends(get_redis_session)):
     repo = TaskRepository(session)
+    cash_repo = RedisRepository(cash_session)
     transaction = TransactionAlchemyManager(session)
-    interactor = CompleteTaskInteractor(repo, transaction)
-    return await interactor(task_id)
+    session_id = request.cookies.get("session_id")
+    if session_id is None:
+        raise HTTPException(401, "Not authenticated")
+    interactor = CompleteTaskInteractor(repo, cash_repo, transaction)
+    return await interactor(task_id, session_id)

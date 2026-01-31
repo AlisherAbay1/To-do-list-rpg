@@ -1,8 +1,10 @@
 from app.repositories.interfaces import TaskRepositoryProtocol, RedisRepositoryProtocol, TransactionProtocol
-from app.exceptions import TaskNotFoundError, TaskAlreadyDoneError, SessionNotFoundError
-from app.schemas.dto import TaskCreateOrUpdateDTO, TaskDTO
+from app.exceptions import TaskNotFoundError, TaskAlreadyDoneError, SessionNotFoundError, \
+                           TaskAccessDeniedError
+from app.schemas.dto import TaskCreateDTO, TaskDTO, TaskUpdateDTO
 from app.models import Task
 from uuid import UUID
+from uuid_utils import uuid7
 
 class GetAllTasksInteractor:
     def __init__(self, repo: TaskRepositoryProtocol) -> None:
@@ -18,9 +20,13 @@ class CreateCurrentUserTaskInteractor:
         self.cash_repo = cash_repo
         self.transaction = transaction
 
-    async def __call__(self, session_id, dto: TaskCreateOrUpdateDTO):
+    async def __call__(self, session_id, dto: TaskCreateDTO):
         user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
+        if user_id is None:
+            raise SessionNotFoundError()
+        task_id=uuid7()
         task = Task(
+            id=task_id,
             user_id=user_id,
             title=dto.title,
             description=dto.description,
@@ -31,6 +37,16 @@ class CreateCurrentUserTaskInteractor:
         )
         self.repo.save(task)
         await self.transaction.commit()
+        return TaskDTO(
+            id=UUID(str(task_id)),
+            user_id=UUID(str(user_id)),
+            title=dto.title,
+            description=dto.description,
+            xp=dto.xp, 
+            is_done=dto.is_done, 
+            repeat_limit=dto.repeat_limit,
+            repeat_type=dto.repeat_type
+        )
 
 class GetCurentUserTasksInteractor:
     def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
@@ -50,17 +66,25 @@ class GetTaskInteractor:
 
     async def __call__(self, task_id: UUID):
         task = await self.repo.get_task_by_id(task_id)
+        if task is None:
+            raise TaskNotFoundError()
         return task
 
 class CompleteTaskInteractor:
-    def __init__(self, repo: TaskRepositoryProtocol, transaction: TransactionProtocol) -> None:
+    def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
         self.repo = repo
+        self.cash_repo = cash_repo
         self.transaction = transaction
 
-    async def __call__(self, task_id: UUID):
+    async def __call__(self, task_id: UUID, session_id: str):
         task = await self.repo.get_task_with_user(task_id)
+        user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
+        if user_id is None:
+            raise SessionNotFoundError()
         if task is None:
             raise TaskNotFoundError()
+        if task.user_id != UUID(user_id):
+            raise TaskAccessDeniedError()
         if task.is_done:
             raise TaskAlreadyDoneError()
         if task.repeat_limit is not None:
@@ -74,6 +98,8 @@ class CompleteTaskInteractor:
         task.user.xp += task.xp
         task.user.lvl = task.user.xp // 1000
         dto = TaskDTO(
+            id=task.id,
+            user_id=task.user_id,
             title=task.title, 
             description=task.description, 
             xp=task.xp, 

@@ -6,6 +6,7 @@ from app.exceptions import UserNotFoundError, EmailAlreadyTakenError, IncorrectP
                         UsernameAlreadyTakenError, SessionNotFoundError
 from app.models import User
 from uuid import UUID
+from uuid_utils import uuid7
 
 class GetUsersInteractor:
     def __init__(self, repo: UserRepositoryProtocol) -> None:
@@ -25,6 +26,8 @@ class GetCurrentUser:
         if user_id is None:
             raise SessionNotFoundError()
         user = await self.repo.get_user(UUID(user_id))
+        if user is None:
+            raise UserNotFoundError()
         return user
 
 class UpdateCurrentUserEmailInteractor:
@@ -42,7 +45,7 @@ class UpdateCurrentUserEmailInteractor:
             raise UserNotFoundError()
         if not password_verify(dto.password, user.password):
             raise IncorrectPasswordError()
-        if self.repo.get_user_by_email(dto.new_email):
+        if await self.repo.get_user_by_email(dto.new_email):
             raise EmailAlreadyTakenError()
         user.email = dto.new_email
         await self.transaction.commit()
@@ -63,7 +66,7 @@ class UpdateCurrentUserPasswordInteractor:
             raise UserNotFoundError()
         if not password_verify(dto.old_password, user.password): 
             raise IncorrectPasswordError()
-        user.password = dto.new_password
+        user.password = hash_password(dto.new_password)
         await self.transaction.commit()
 
 class DeleteCurrentUserInteractor:
@@ -89,23 +92,26 @@ class CreateUserInteractor:
         self.transaction = transaction
 
     async def __call__(self, dto: CreateUserDTO) -> CreateUserResultDTO:
-        if self.repo.does_username_exists(dto.username):
+        if await self.repo.does_username_exists(dto.username):
             raise UsernameAlreadyTakenError()
-        if self.repo.does_email_exists(dto.email):
+        if await self.repo.does_email_exists(dto.email):
             raise EmailAlreadyTakenError()
         hashed_password = hash_password(dto.password)
         user = User(
+            id=uuid7(),
             username=dto.username, 
             email=dto.email,
-            password=hashed_password
+            password=hashed_password, 
         )
         self.repo.save(user)
+        
         session_id = await self.cash_repo.create_session(str(user.id))
         user_result = CreateUserResultDTO(
             username=user.username, 
             email=user.email, 
             session_id=session_id
         )
+
         await self.transaction.commit()
         return user_result
 
@@ -143,7 +149,8 @@ class GetUserInteractor:
         self.repo = repo
 
     async def __call__(self, user_id):
-        pass
+        user = await self.repo.get_user(user_id)
+        return user
 
 #admin 
 class UpdateUserInteractor:

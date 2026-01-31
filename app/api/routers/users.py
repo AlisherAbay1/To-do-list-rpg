@@ -14,6 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.redis_config import MAX_AGE
 from redis.asyncio import Redis
 from app.core.redis_config import get_redis_session
+from app.core.security import IS_PRODUCTION
 
 router = APIRouter(prefix="/users")
 
@@ -58,7 +59,7 @@ async def create_user(response: Response,
                         httponly=True,
                         max_age=MAX_AGE, 
                         samesite="lax",
-                        secure=True)
+                        secure=IS_PRODUCTION)
     
     return {"username": user_result.username, 
             "email": user_result.email, 
@@ -83,7 +84,7 @@ async def sign_in_account(response: Response,
                         httponly=True,
                         max_age=MAX_AGE, 
                         samesite="lax",
-                        secure=True)
+                        secure=IS_PRODUCTION)
     
     return {"username": user_result.username, 
             "email": user_result.email, 
@@ -101,7 +102,7 @@ async def logout(response: Response,
         await interactor(session_id)
     return {"message": "Session is deleted"}
 
-@router.patch("/me/email-change", response_model=UserSchemaRead)
+@router.patch("/me/email-change")
 async def update_current_user_email(data: UserSchemaPatchEmail, 
                                     request: Request, 
                                     session: AsyncSession = Depends(get_local_session), 
@@ -109,10 +110,10 @@ async def update_current_user_email(data: UserSchemaPatchEmail,
     repo = UserRepository(session)
     cash_repo = RedisRepository(cash_session)
     transaction = TransactionAlchemyManager(session)
+    interactor = UpdateCurrentUserEmailInteractor(repo, cash_repo, transaction)
     session_id = request.cookies.get("session_id")
     if session_id is None:
         raise HTTPException(401, "Not authenticated")
-    interactor = UpdateCurrentUserEmailInteractor(repo, cash_repo, transaction)
     dto = UserEmailDTO(new_email=data.new_email, password=data.password)
     new_email = await interactor(dto, session_id)
     return {
@@ -120,7 +121,7 @@ async def update_current_user_email(data: UserSchemaPatchEmail,
         "new_email": new_email
     }
 
-@router.patch("/me/password-change", response_model=UserSchemaRead, status_code=204)
+@router.patch("/me/password-change")
 async def update_current_user_password(data: UserSchemaPatchPassword,
                                        request: Request, 
                                        session: AsyncSession = Depends(get_local_session),
@@ -134,6 +135,10 @@ async def update_current_user_password(data: UserSchemaPatchPassword,
     interactor = UpdateCurrentUserPasswordInteractor(repo, cash_repo, transaction)
     dto = UserPasswordDTO(old_password=data.old_password, new_password=data.new_password)
     await interactor(dto, session_id)
+
+    return {
+        "message": "Password updated successfully"
+    }
 
 @router.delete("/me", status_code=204)
 async def delete_current_user(request: Request, 
@@ -173,4 +178,3 @@ async def delete_user(user_id: UUID7,
     repo = UserRepository(session)
     interactor = DeleteUserInteractor(repo)
     await interactor(user_id)
-    return None

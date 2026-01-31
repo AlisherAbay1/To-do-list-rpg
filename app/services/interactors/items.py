@@ -1,8 +1,9 @@
 from app.repositories.interfaces import ItemRepositoryProtocol, RedisRepositoryProtocol, TransactionProtocol
 from app.models import Item
-from app.schemas.dto import ItemCreateDTO
+from app.schemas.dto import ItemCreateDTO, ItemDTO
 from app.exceptions import ItemNotFoundError, SessionNotFoundError
 from uuid import UUID
+from uuid_utils import uuid7
 
 class GetAllItemsInteractor:
     def __init__(self, repo: ItemRepositoryProtocol) -> None:
@@ -32,7 +33,9 @@ class CreateCurrentUserItemInteractor:
 
     async def __call__(self, session_id: str, dto: ItemCreateDTO):
         user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
+        item_id = uuid7()
         user = Item(
+            id=item_id,
             user_id=user_id, 
             title=dto.title, 
             description=dto.description, 
@@ -40,7 +43,13 @@ class CreateCurrentUserItemInteractor:
         )
         self.repo.save(user)
         await self.transaction.commit()
-        return dto
+        return ItemDTO(
+            id=UUID(str(item_id)),
+            user_id=UUID(str(user_id)), 
+            title=dto.title, 
+            description=dto.description, 
+            amount=dto.amount
+        )
 
 class GetItemInteractor:
     def __init__(self, repo: ItemRepositoryProtocol) -> None:
@@ -48,6 +57,8 @@ class GetItemInteractor:
 
     async def __call__(self, item_id):
         item = await self.repo.get_item_by_id(item_id)
+        if item is None:
+            raise ItemNotFoundError()
         return item
 
 class DeleteItemInteractor:

@@ -1,4 +1,6 @@
-from app.models import Base, Skill, Item
+from app.models.base import Base
+from app.models.skills import Skill
+from app.models.items import Item
 from uuid import UUID
 from sqlalchemy import String, ForeignKey, text, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -12,11 +14,11 @@ class User(Base):
     username: Mapped[str] = mapped_column(String(25), unique=True)
     email: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str]
-    lvl: Mapped[int] = mapped_column(BigInteger)
-    xp: Mapped[int] = mapped_column(BigInteger)
-    is_admin: Mapped[bool]
-    current_rank_id: Mapped[Optional[UUID]] = mapped_column(nullable=True)
-    profile_picture: Mapped[Optional[str]] = mapped_column(nullable=True)
+    lvl: Mapped[int] = mapped_column(BigInteger, default=1)
+    xp: Mapped[int] = mapped_column(BigInteger, default=0)
+    is_admin: Mapped[bool] = mapped_column(default=False)
+    current_rank_id: Mapped[Optional[UUID]] = mapped_column(nullable=True, default=None)
+    profile_picture: Mapped[Optional[str]] = mapped_column(nullable=True, default=None)
 
     # relationships
     skills: Mapped[list["Skill"]] = relationship(passive_deletes=True)

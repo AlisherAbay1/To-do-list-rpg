@@ -19,7 +19,7 @@ async def get_all_skills(limit: int = 20,
     interactor = GetAllSkillsInteractor(repo)
     return await interactor(limit, offset)
 
-@router.get("/me", response_model=SkillSchemaRead)
+@router.get("/me", response_model=list[SkillSchemaRead])
 async def get_current_user_skills(request: Request, 
                                   limit: int = 20, 
                                   offset: int = 0, 

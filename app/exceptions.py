@@ -24,3 +24,6 @@ class UsernameAlreadyTakenError(Exception):
 
 class SessionNotFoundError(Exception):
     pass
+
+class TaskAccessDeniedError(Exception):
+    pass
