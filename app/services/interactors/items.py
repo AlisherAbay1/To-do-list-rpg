@@ -18,8 +18,8 @@ class GetCurrentUserItemsInteractor:
         self.repo = repo
         self.cash_repo = cash_repo
 
-    async def __call__(self, session_id: str, limit: int, offset: int):
-        user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
+    async def __call__(self, session_token: str, limit: int, offset: int):
+        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         items = await self.repo.get_items_by_user_id(UUID(user_id), limit, offset)
@@ -31,24 +31,22 @@ class CreateCurrentUserItemInteractor:
         self.cash_repo = cash_repo
         self.transaction = transaction
 
-    async def __call__(self, session_id: str, dto: ItemCreateDTO):
-        user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
+    async def __call__(self, session_token: str, dto: ItemCreateDTO):
+        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         item_id = uuid7()
         user = Item(
             id=item_id,
             user_id=user_id, 
             title=dto.title, 
-            description=dto.description, 
-            amount=dto.amount
+            description=dto.description
         )
-        self.repo.save(user)
+        await self.transaction.save(user)
         await self.transaction.commit()
         return ItemDTO(
             id=UUID(str(item_id)),
-            user_id=UUID(str(user_id)), 
+            user_id=UUID(user_id), 
             title=dto.title, 
-            description=dto.description, 
-            amount=dto.amount
+            description=dto.description
         )
 
 class GetItemInteractor:
@@ -66,9 +64,6 @@ class DeleteItemInteractor:
         self.repo = repo
         self.transaction = transaction
 
-    async def __call__(self, item_id):
-        item = await self.repo.get_item_by_id(item_id)
-        if item is None:
-            raise ItemNotFoundError()
-        await self.repo.delete(item)
+    async def __call__(self, item_id: UUID):
+        await self.repo.delete(item_id)
         await self.transaction.commit()

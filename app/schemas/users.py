@@ -7,12 +7,14 @@ class UserSchemaRead(BaseModel):
     id: UUID7
     username: str
     email: EmailStr
-    password: str
-    lvl: int = 1
-    xp: int = 0
-    is_admin: bool = False
-    current_rank_id: Optional[UUID7] = None
-    profile_picture: Optional[str] = None
+    lvl: int
+    xp: int
+    is_admin: bool
+    current_rank_id: Optional[UUID7]
+    profile_picture: Optional[str]
+    gold: int
+    language: str
+    timezone: str
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -25,6 +27,9 @@ class UserSchemaCreate(BaseModel):
     is_admin: bool = False
     current_rank_id: Optional[UUID7] = None
     profile_picture: Optional[str] = None
+    gold: int = 0
+    language: str = "eng"
+    timezone: str = "UTC"
 
     model_config = ConfigDict(from_attributes=True)
 

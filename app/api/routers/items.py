@@ -47,8 +47,7 @@ async def create_current_user_item(data: ItemSchemaCreate,
         raise HTTPException(401, "Not authenticated")
     dto = ItemCreateDTO(
         title=data.title, 
-        description=data.description, 
-        amount=data.amount
+        description=data.description
     )
     return await interactor(session_id, dto)
 

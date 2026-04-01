@@ -21,8 +21,8 @@ class GetCurrentUser:
         self.repo = repo
         self.cash_repo = cash_repo
 
-    async def __call__(self, session_id):
-        user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
+    async def __call__(self, session_token):
+        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         user = await self.repo.get_user(UUID(user_id))
@@ -36,8 +36,8 @@ class UpdateCurrentUserEmailInteractor:
         self.cash_repo = cash_repo
         self.transaction = transaction
 
-    async def __call__(self, dto: UserEmailDTO, session_id: str):
-        user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
+    async def __call__(self, dto: UserEmailDTO, session_token: str):
+        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         user = await self.repo.get_user(UUID(user_id))
@@ -57,8 +57,8 @@ class UpdateCurrentUserPasswordInteractor:
         self.cash_repo = cash_repo
         self.transaction = transaction
 
-    async def __call__(self, dto: UserPasswordDTO, session_id: str):
-        user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
+    async def __call__(self, dto: UserPasswordDTO, session_token: str):
+        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         user = await self.repo.get_user(UUID(user_id))
@@ -75,8 +75,8 @@ class DeleteCurrentUserInteractor:
         self.cash_repo = cash_repo
         self.transaction = transaction
 
-    async def __call__(self, session_id):
-        user_id = await self.cash_repo.get_user_id_by_session_id(session_id)
+    async def __call__(self, session_token):
+        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         user = await self.repo.get_user(UUID(user_id))
@@ -105,15 +105,39 @@ class CreateUserInteractor:
         )
         self.repo.save(user)
         
-        session_id = await self.cash_repo.create_session(str(user.id))
+        session_token = await self.cash_repo.create_session(str(user.id))
         user_result = CreateUserResultDTO(
             username=user.username, 
             email=user.email, 
-            session_id=session_id
+            session_token=session_token
         )
 
         await self.transaction.commit()
         return user_result
+
+class RefreshSessionTokenInteractor:
+    def __init__(self, cash_repo: RedisRepositoryProtocol) -> None:
+        self.cash_repo = cash_repo
+
+    async def __call__(self, session_token: str | None):
+        if session_token is None:
+            raise SessionNotFoundError()
+        await self.cash_repo.extend_token_time(session_token)
+        return {"message": "time extended"}
+    
+class GetSessionTimeInteractor:
+    def __init__(self, cash_repo: RedisRepositoryProtocol) -> None:
+        self.cash_repo = cash_repo
+
+    async def __call__(self, session_token: str | None):
+        if session_token is None:
+            raise SessionNotFoundError()
+        session_time = await self.cash_repo.get_session_time(session_token)
+        hours = session_time // 3600
+        minutes = (session_time % 3600) // 60
+        seconds = session_time % 60
+        formated_time = f"hours: {hours}, minutes: {minutes}, seconds: {seconds}"
+        return {"message": formated_time}
 
 class AuthenticateUserInteractor:
     def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
@@ -129,19 +153,19 @@ class AuthenticateUserInteractor:
             raise UserNotFoundError()
         if not password_verify(dto.password, user.password):
             raise IncorrectPasswordError()
-        session_id = await self.cash_repo.create_session(str(user.id))
+        session_token = await self.cash_repo.create_session(str(user.id))
         return CreateUserResultDTO(
             username=user.username, 
             email=user.email, 
-            session_id=session_id
+            session_token=session_token
         )
 
 class DeleteSessionInteractor:
     def __init__(self, cash_repo: RedisRepositoryProtocol) -> None:
         self.cash_repo = cash_repo
 
-    async def __call__(self, session_id: str) -> None:
-        await self.cash_repo.delete_session(session_id)
+    async def __call__(self, session_token: str) -> None:
+        await self.cash_repo.delete_session(session_token)
 
 #admin 
 class GetUserInteractor:

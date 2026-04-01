@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Request, HTTPException
+from fastapi import APIRouter, Depends, Cookie, HTTPException
 from app.schemas import SkillSchemaCreate, SkillSchemaRead, SkillCreateDTO
 from pydantic import UUID7
 from app.repositories import SkillRepository, RedisRepository, TransactionAlchemyManager
@@ -20,7 +20,7 @@ async def get_all_skills(limit: int = 20,
     return await interactor(limit, offset)
 
 @router.get("/me", response_model=list[SkillSchemaRead])
-async def get_current_user_skills(request: Request, 
+async def get_current_user_skills(session_token = Cookie(None), 
                                   limit: int = 20, 
                                   offset: int = 0, 
                                   session: AsyncSession = Depends(get_local_session), 
@@ -28,22 +28,20 @@ async def get_current_user_skills(request: Request,
     repo = SkillRepository(session)
     cash_repo = RedisRepository(cash_session)
     interactor = GetCurrentUserSkillsInteractor(repo, cash_repo)
-    session_id = request.cookies.get("session_id")
-    if session_id is None:
+    if session_token is None:
         raise HTTPException(401, "Not authenticated")
-    return await interactor(session_id, limit, offset)
+    return await interactor(session_token, limit, offset)
 
 @router.post("/me", response_model=SkillSchemaRead)
 async def create_current_user_skill(data: SkillSchemaCreate, 
-                                    request: Request, 
+                                    session_token = Cookie(None), 
                                     session: AsyncSession = Depends(get_local_session), 
                                     cash_session: Redis = Depends(get_redis_session)):
     repo = SkillRepository(session)
     cash_repo = RedisRepository(cash_session)
     transaction = TransactionAlchemyManager(session)
     interactor = CreateCurrentUserSkillInteractor(repo, cash_repo, transaction)
-    session_id = request.cookies.get("session_id")
-    if session_id is None:
+    if session_token is None:
         raise HTTPException(401, "Not authenticated")
     dto = SkillCreateDTO(
         title=data.title,
@@ -52,7 +50,7 @@ async def create_current_user_skill(data: SkillSchemaCreate,
         lvl=data.lvl, 
         xp=data.xp
     )
-    return await interactor(session_id, dto)
+    return await interactor(session_token, dto)
 
 @router.get("/{skill_id}", response_model=SkillSchemaRead)
 async def get_skill(skill_id: UUID7, 

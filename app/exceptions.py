@@ -10,7 +10,13 @@ class IncorrectPasswordError(Exception):
 class TaskNotFoundError(Exception):
     pass
 
+class TaskNotFoundInHistoryError(Exception):
+    pass
+
 class TaskAlreadyDoneError(Exception):
+    pass
+
+class TaskExecutedTooEarlyError(Exception):
     pass
 
 class SkillNotFoundError(Exception):

@@ -1,7 +1,5 @@
 from app.models.base import Base
 from app.core.database import engine
-from sqlalchemy import text
-import pathlib
 import asyncio
 
 async def create_database_models():
