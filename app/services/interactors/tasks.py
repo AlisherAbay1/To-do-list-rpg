@@ -1,5 +1,5 @@
 from app.repositories.interfaces import TaskRepositoryProtocol, RedisRepositoryProtocol, TransactionProtocol, \
-                                        TaskHistoryProtocol
+                                        TaskHistoryRepositoryProtocol
 from app.exceptions import TaskNotFoundError, TaskAlreadyDoneError, SessionNotFoundError, \
                            TaskAccessDeniedError, TaskExecutedTooEarlyError
 from app.schemas.dto import TaskCreateDTO, TaskDTO, TaskFilterParamsDTO, \
@@ -246,7 +246,7 @@ class CompleteTaskInteractor:
         return dto
 
 class UncompleteTaskInteractor:
-    def __init__(self, task_repo: TaskRepositoryProtocol, task_history_repo: TaskHistoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
+    def __init__(self, task_repo: TaskRepositoryProtocol, task_history_repo: TaskHistoryRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
         self.task_repo = task_repo
         self.task_history_repo = task_history_repo
         self.cash_repo = cash_repo

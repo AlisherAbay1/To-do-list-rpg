@@ -4,27 +4,21 @@ from app.schemas import TaskSchemaCreate, TaskSchemaRead, TaskCreateDTO, \
                         TaskFilterParams, TaskSortParams, TaskFilterParamsDTO, \
                         TaskSortParamsDTO, TaskSchemaReadable, TaskWithSkillsAndItemsSchemaRead, \
                         TaskSchemaUpdate, TaskUpdateDTO
-from app.repositories import TaskRepository, RedisRepository, TransactionAlchemyManager, TaskHistoryRepository
 from app.services.interactors import GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, \
                                      GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor, \
                                      UpdateTaskInteractor, UncompleteTaskInteractor
-from app.core.database import get_local_session
-from sqlalchemy.ext.asyncio import AsyncSession
-from redis.asyncio import Redis
-from app.core.redis_config import get_redis_session
 from app.schemas.sentinel_types import UNSET
+from dishka.integrations.fastapi import FromDishka, DishkaRoute
 
-router = APIRouter(prefix="/tasks")
+router = APIRouter(prefix="/tasks", route_class=DishkaRoute)
 
 # admin
 @router.get("", response_model=list[TaskSchemaRead])
-async def get_all_tasks(filters: TaskFilterParams = Depends(),
+async def get_all_tasks(interactor: FromDishka[GetAllTasksInteractor], 
+                        filters: TaskFilterParams = Depends(),
                         sorting: TaskSortParams = Depends(),
                         limit: int = 20, 
-                        offset: int = 0, 
-                        session: AsyncSession = Depends(get_local_session)):
-    repo = TaskRepository(session)
-    interactor = GetAllTasksInteractor(repo)
+                        offset: int = 0):
     filters_dto = TaskFilterParamsDTO(difficulty=filters.difficulty,
                                       priority=filters.priority, 
                                       type=filters.type, 
@@ -35,14 +29,9 @@ async def get_all_tasks(filters: TaskFilterParams = Depends(),
     return await interactor(filters_dto, sorting_dto, limit, offset)
 
 @router.post("/me", response_model=TaskSchemaReadable)
-async def create_current_user_task(data: TaskSchemaCreate, 
-                                   session_token = Cookie(None), 
-                                   session: AsyncSession = Depends(get_local_session),
-                                   cash_session: Redis = Depends(get_redis_session)):
-    repo = TaskRepository(session)
-    cash_repo = RedisRepository(cash_session)
-    transaction = TransactionAlchemyManager(session)
-    interactor = CreateCurrentUserTaskInteractor(repo, cash_repo, transaction)
+async def create_current_user_task(interactor: FromDishka[CreateCurrentUserTaskInteractor], 
+                                   data: TaskSchemaCreate, 
+                                   session_token = Cookie(None)):
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
     dto = TaskCreateDTO(
@@ -64,14 +53,10 @@ async def create_current_user_task(data: TaskSchemaCreate,
     return task
 
 @router.get("/me", response_model=list[TaskSchemaRead])
-async def get_current_user_tasks(session_token = Cookie(None), 
+async def get_current_user_tasks(interactor: FromDishka[GetCurentUserTasksInteractor], 
+                                 session_token = Cookie(None), 
                                  limit: int = 20, 
-                                 offset: int = 0, 
-                                 session: AsyncSession = Depends(get_local_session),
-                                 cash_session: Redis = Depends(get_redis_session)):
-    repo = TaskRepository(session)
-    cash_repo = RedisRepository(cash_session)
-    interactor = GetCurentUserTasksInteractor(repo, cash_repo)
+                                 offset: int = 0):
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
     return await interactor(session_token, limit, offset)
@@ -80,58 +65,37 @@ async def get_current_user_tasks(session_token = Cookie(None),
 async def get_task(task_id: UUID7, 
                    get_related_skills: bool, 
                    get_related_items: bool,
-                   session: AsyncSession = Depends(get_local_session)):
-    repo = TaskRepository(session)
-    interactor = GetTaskInteractor(repo)
+                   interactor: FromDishka[GetTaskInteractor]):
     return await interactor(task_id, get_related_skills, get_related_items)
 
 @router.delete("/{task_id}", status_code=204)
 async def delete_task(task_id: UUID7,
-                      session: AsyncSession = Depends(get_local_session)):
-    repo = TaskRepository(session)
-    transaction = TransactionAlchemyManager(session)
-    interactor = DeleteTaskInteractor(repo, transaction)
+                      interactor: FromDishka[DeleteTaskInteractor]):
     await interactor(task_id)
 
 @router.patch("/{task_id}/complete", response_model=TaskSchemaReadable) 
-async def complete_task(task_id: UUID7, 
-                        session_token = Cookie(None), 
-                        session: AsyncSession = Depends(get_local_session), 
-                        cash_session: Redis = Depends(get_redis_session)): 
-    repo = TaskRepository(session)
-    cash_repo = RedisRepository(cash_session)
-    transaction = TransactionAlchemyManager(session)
+async def complete_task(interactor: FromDishka[CompleteTaskInteractor], 
+                        task_id: UUID7, 
+                        session_token = Cookie(None)): 
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
-    interactor = CompleteTaskInteractor(repo, cash_repo, transaction)
     return await interactor(task_id, session_token)
 
 @router.patch("/{task_id}/uncomplete", response_model=TaskSchemaReadable) 
-async def uncomplete_task(task_id: UUID7, 
-                        session_token = Cookie(None), 
-                        session: AsyncSession = Depends(get_local_session), 
-                        cash_session: Redis = Depends(get_redis_session)): 
-    task_repo = TaskRepository(session)
-    task_history_repo = TaskHistoryRepository(session)
-    cash_repo = RedisRepository(cash_session)
-    transaction = TransactionAlchemyManager(session)
+async def uncomplete_task(interactor: FromDishka[UncompleteTaskInteractor], 
+                          task_id: UUID7, 
+                          session_token = Cookie(None)): 
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
-    interactor = UncompleteTaskInteractor(task_repo, task_history_repo, cash_repo, transaction)
     return await interactor(task_id, session_token)
 
 @router.patch("/{task_id}", response_model=TaskSchemaReadable)
-async def patch_task(task_id: UUID7, 
+async def patch_task(interactor: FromDishka[UpdateTaskInteractor], 
+                     task_id: UUID7, 
                      data: TaskSchemaUpdate, 
-                     session_token = Cookie(None), 
-                     session: AsyncSession = Depends(get_local_session), 
-                     cash_session: Redis = Depends(get_redis_session)):
-    repo = TaskRepository(session)
-    cash_repo = RedisRepository(cash_session)
-    transaction = TransactionAlchemyManager(session)
+                     session_token = Cookie(None)):
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
-    interactor = UpdateTaskInteractor(repo, cash_repo, transaction)
     clean_data = data.model_dump(exclude_unset=True)
     dto = TaskUpdateDTO(
         title=clean_data.get("title") or UNSET,

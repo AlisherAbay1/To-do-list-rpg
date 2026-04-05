@@ -1,46 +1,31 @@
 from fastapi import APIRouter, Depends, Cookie, HTTPException
 from app.schemas import SkillSchemaCreate, SkillSchemaRead, SkillCreateDTO
 from pydantic import UUID7
-from app.repositories import SkillRepository, RedisRepository, TransactionAlchemyManager
-from app.core.database import get_local_session
-from sqlalchemy.ext.asyncio import AsyncSession
 from app.services.interactors import GetAllSkillsInteractor, GetCurrentUserSkillsInteractor, CreateCurrentUserSkillInteractor, \
                                     GetSkillInteractor, DeleteSkillInteractor
-from redis.asyncio import Redis
-from app.core.redis_config import get_redis_session
+from dishka.integrations.fastapi import FromDishka, DishkaRoute
 
-router = APIRouter(prefix="/skill")
+router = APIRouter(prefix="/skill", route_class=DishkaRoute)
 
 @router.get("", response_model=list[SkillSchemaRead])
-async def get_all_skills(limit: int = 20, 
-                         offset: int = 0, 
-                         session: AsyncSession = Depends(get_local_session)):
-    repo = SkillRepository(session)
-    interactor = GetAllSkillsInteractor(repo)
+async def get_all_skills(interactor: FromDishka[GetAllSkillsInteractor], 
+                         limit: int = 20, 
+                         offset: int = 0):
     return await interactor(limit, offset)
 
 @router.get("/me", response_model=list[SkillSchemaRead])
-async def get_current_user_skills(session_token = Cookie(None), 
+async def get_current_user_skills(interactor: FromDishka[GetCurrentUserSkillsInteractor], 
+                                  session_token = Cookie(None), 
                                   limit: int = 20, 
-                                  offset: int = 0, 
-                                  session: AsyncSession = Depends(get_local_session), 
-                                  cash_session: Redis = Depends(get_redis_session)):
-    repo = SkillRepository(session)
-    cash_repo = RedisRepository(cash_session)
-    interactor = GetCurrentUserSkillsInteractor(repo, cash_repo)
+                                  offset: int = 0):
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
     return await interactor(session_token, limit, offset)
 
 @router.post("/me", response_model=SkillSchemaRead)
-async def create_current_user_skill(data: SkillSchemaCreate, 
-                                    session_token = Cookie(None), 
-                                    session: AsyncSession = Depends(get_local_session), 
-                                    cash_session: Redis = Depends(get_redis_session)):
-    repo = SkillRepository(session)
-    cash_repo = RedisRepository(cash_session)
-    transaction = TransactionAlchemyManager(session)
-    interactor = CreateCurrentUserSkillInteractor(repo, cash_repo, transaction)
+async def create_current_user_skill(interactor: FromDishka[CreateCurrentUserSkillInteractor], 
+                                    data: SkillSchemaCreate, 
+                                    session_token = Cookie(None)):
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
     dto = SkillCreateDTO(
@@ -54,15 +39,10 @@ async def create_current_user_skill(data: SkillSchemaCreate,
 
 @router.get("/{skill_id}", response_model=SkillSchemaRead)
 async def get_skill(skill_id: UUID7, 
-                    session: AsyncSession = Depends(get_local_session)):
-    repo = SkillRepository(session)
-    interactor = GetSkillInteractor(repo)
+                    interactor: FromDishka[GetSkillInteractor], ):
     return await interactor(skill_id)
 
 @router.delete("/{skill_id}", status_code=204)
 async def delete_skill(skill_id: UUID7, 
-                       session: AsyncSession = Depends(get_local_session)):
-    repo = SkillRepository(session)
-    transaction = TransactionAlchemyManager(session)
-    interactor = DeleteSkillInteractor(repo, transaction)
+                       interactor: FromDishka[DeleteSkillInteractor]):
     await interactor(skill_id)
