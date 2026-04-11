@@ -7,6 +7,7 @@ from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtoc
 from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
 from src.app.infrastructure.database.repositories import RedisRepository, TransactionAlchemyManager
 from collections.abc import AsyncGenerator
+from typing import Any
 
 class AppProvider(Provider):
     @provide(scope=Scope.APP)
@@ -16,11 +17,12 @@ class AppProvider(Provider):
     @provide(scope=Scope.REQUEST)
     async def get_pgsql_session(self, session_maker: async_sessionmaker[AsyncSession]) -> AsyncGenerator[AsyncSession]:
         async with session_maker() as session:
-            try:
-                yield session
-            except Exception as e:
-                await session.rollback()
-                raise e
+            async with session.begin():
+                try:
+                    yield session
+                except Exception as e:
+                    await session.rollback()
+                    raise e
 
     @provide(scope=Scope.REQUEST)
     async def get_redis_session(self) -> AsyncGenerator[Redis]:
