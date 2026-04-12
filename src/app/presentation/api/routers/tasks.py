@@ -7,7 +7,7 @@ from src.app.application.dto.tasks import (TaskCreateDTO, TaskFilterParamsDTO, T
                                         TaskUpdateDTO)
 from src.app.application.interactors import (GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, 
                                      GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor, 
-                                     UpdateTaskInteractor, UncompleteTaskInteractor)
+                                     UpdateTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksByUserIdInteractor)
 from src.app.presentation.schemas.sentinel_types import UNSET
 from dishka.integrations.fastapi import FromDishka, DishkaRoute
 
@@ -61,6 +61,11 @@ async def get_current_user_tasks(interactor: FromDishka[GetCurentUserTasksIntera
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
     return await interactor(session_token, limit, offset)
+
+@router.get("/archived")
+async def get_deleted_tasks_by_user_id(interactor: FromDishka[GetDeletedTasksByUserIdInteractor], 
+                                       session_token = Cookie(None)):
+    return await interactor(session_token)
 
 @router.get("/{task_id}", response_model=TaskWithSkillsAndItemsSchemaRead)
 async def get_task(task_id: UUID7, 

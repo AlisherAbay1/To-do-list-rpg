@@ -7,7 +7,6 @@ from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtoc
 from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
 from src.app.infrastructure.database.repositories import RedisRepository, TransactionAlchemyManager
 from collections.abc import AsyncGenerator
-from typing import Any
 
 class AppProvider(Provider):
     @provide(scope=Scope.APP)

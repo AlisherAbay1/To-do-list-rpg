@@ -4,7 +4,7 @@ from .users import GetAllUsersInteractor, UpdateCurrentUserEmailInteractor, Dele
                     RefreshSessionTokenInteractor, GetSessionTimeInteractor
 from .tasks import GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, \
                    GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor, \
-                   UpdateTaskInteractor, UncompleteTaskInteractor
+                   UpdateTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksByUserIdInteractor
 from .skills import GetAllSkillsInteractor, GetCurrentUserSkillsInteractor, CreateCurrentUserSkillInteractor, \
                     GetSkillInteractor, DeleteSkillInteractor, ClearExpiredSkillsInteractor
 from .items import GetAllItemsInteractor, GetCurrentUserItemsInteractor, CreateCurrentUserItemInteractor, \

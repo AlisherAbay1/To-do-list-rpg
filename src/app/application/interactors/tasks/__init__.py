@@ -6,7 +6,8 @@ from .delete_task import DeleteTaskInteractor
 from .complete_task import CompleteTaskInteractor
 from .update_task import UpdateTaskInteractor
 from .uncomplete_task import UncompleteTaskInteractor
+from .get_deleted_tasks_by_user_id import GetDeletedTasksByUserIdInteractor
 
 __all__ = ("GetAllTasksInteractor", "CreateCurrentUserTaskInteractor", "GetCurentUserTasksInteractor",
            "GetTaskInteractor", "DeleteTaskInteractor", "CompleteTaskInteractor",
-           "UpdateTaskInteractor", "UncompleteTaskInteractor",)
+           "UpdateTaskInteractor", "UncompleteTaskInteractor", "GetDeletedTasksByUserIdInteractor")

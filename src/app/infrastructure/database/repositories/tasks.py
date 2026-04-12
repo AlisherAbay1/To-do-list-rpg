@@ -1,6 +1,6 @@
 from src.app.infrastructure.database.models.tasks import Task
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, desc
+from sqlalchemy import select, desc, and_
 from sqlalchemy.orm import joinedload, selectinload
 from typing import Optional, Sequence
 from uuid import UUID
@@ -46,6 +46,17 @@ class TaskRepository:
         result = await self._session.scalars(tasks)
         return result.all()
     
+    async def get_deleted_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]:
+        tasks = select(
+            Task
+            ).where(
+                and_(Task.user_id == user_id, 
+                     Task.deleted == True
+                     )
+                    )
+        result = await self._session.scalars(tasks)
+        return result.all()
+
     async def get_tasks_by_user_id(self, user_id: UUID, limit: int, offset: int) -> Sequence[Task]:
         tasks = select(Task).where(Task.user_id == user_id).limit(limit).offset(offset)
         result = await self._session.scalars(tasks)
