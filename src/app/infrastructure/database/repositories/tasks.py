@@ -1,4 +1,6 @@
 from src.app.infrastructure.database.models.tasks import Task
+from src.app.infrastructure.mappers import TaskMapper
+from src.app.domain import TaskDomain
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, desc, and_
 from sqlalchemy.orm import joinedload, selectinload
@@ -77,7 +79,7 @@ class TaskRepository:
         result = await self._session.scalar(task)
         return result
 
-    async def get_task_with_user_and_skills(self, task_id: UUID) -> Optional[Task]:
+    async def get_task_with_user_and_skills(self, task_id: UUID) -> Optional[TaskDomain]:
         task_skills = select(
             Task
             ).where(
@@ -87,7 +89,9 @@ class TaskRepository:
                     selectinload(Task.skills)
                     )
         result = await self._session.scalar(task_skills)
-        return result
+        if result is None:
+            return None
+        return TaskMapper.to_domain(result)
     
     async def get_daily_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]: 
         tasks = select(
@@ -100,3 +104,26 @@ class TaskRepository:
                 )
         result = await self._session.scalars(tasks)
         return result.all()
+    
+    async def save_completion(self, domain_task: TaskDomain) -> None:
+        task = await self._session.get(
+            Task, 
+            domain_task.id, 
+            options=[selectinload(Task.user), selectinload(Task.skills)]
+            )
+        if task is None:
+            return 
+        task.repeat_limit = domain_task.repeat_limit
+        task.last_completed_at = domain_task.last_completed_at
+
+        if task.user:
+            task.user.xp = domain_task.user.xp
+            task.user.lvl = domain_task.user.lvl
+            task.user.gold = domain_task.user.gold
+
+        domain_skills_map = {s.id: s for s in domain_task.skills}
+        for orm_skill in task.skills:
+            domain_skill = domain_skills_map.get(orm_skill.id)
+            if domain_skill:
+                orm_skill.xp = domain_skill.xp
+                orm_skill.lvl = domain_skill.lvl

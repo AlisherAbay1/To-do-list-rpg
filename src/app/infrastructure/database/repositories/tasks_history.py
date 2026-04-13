@@ -1,4 +1,7 @@
 from src.app.infrastructure.database.models.tasks import TaskHistory
+from src.app.infrastructure.database.models.relations import Tasks_history_to_skills
+from src.app.domain import TaskDomain
+from src.app.application.dto.tasks import TaskReward
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, desc
 from sqlalchemy.orm import selectinload
@@ -25,3 +28,21 @@ class TaskHistoryRepository:
         
         results = await self._session.scalars(task_history)
         return results.all()
+    
+    async def save_completion(self, task: TaskDomain, rewards: TaskReward) -> None:
+        task_history = TaskHistory(
+            user_id=task.user_id,
+            task_id=task.id, 
+            title=task.title, 
+            xp_earned=rewards.xp, 
+            gold_earned=rewards.gold
+        )
+        self._session.add(task_history)
+        await self._session.flush()
+
+        for skill in task.skills:
+            skill_history = Tasks_history_to_skills(
+                task_history_id=task_history.id, 
+                skill_id=skill.id
+            )
+            self._session.add(skill_history)
