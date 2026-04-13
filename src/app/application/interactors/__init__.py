@@ -4,7 +4,8 @@ from .users import GetAllUsersInteractor, UpdateCurrentUserEmailInteractor, Dele
                     RefreshSessionTokenInteractor, GetSessionTimeInteractor
 from .tasks import GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, \
                    GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor, \
-                   UpdateTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksByUserIdInteractor
+                   UpdateTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksBySessionTokenInteractor, \
+                   GetDailyTasksBySessionTokenInteractor
 from .skills import GetAllSkillsInteractor, GetCurrentUserSkillsInteractor, CreateCurrentUserSkillInteractor, \
                     GetSkillInteractor, DeleteSkillInteractor, ClearExpiredSkillsInteractor
 from .items import GetAllItemsInteractor, GetCurrentUserItemsInteractor, CreateCurrentUserItemInteractor, \
@@ -20,4 +21,5 @@ __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteC
            "GetAllItemsInteractor", "GetCurrentUserItemsInteractor", "CreateCurrentUserItemInteractor", 
            "GetItemInteractor", "DeleteItemInteractor", "CreateUserInteractor", 
            "GetCurrentUser", "AuthenticateUserInteractor", "DeleteSessionInteractor", 
-           "RefreshSessionTokenInteractor", "GetSessionTimeInteractor", "ClearExpiredSkillsInteractor")
+           "RefreshSessionTokenInteractor", "GetSessionTimeInteractor", "ClearExpiredSkillsInteractor", 
+           "GetDeletedTasksBySessionTokenInteractor", "GetDailyTasksBySessionTokenInteractor")

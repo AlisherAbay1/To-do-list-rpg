@@ -5,6 +5,7 @@ from sqlalchemy.orm import joinedload, selectinload
 from typing import Optional, Sequence
 from uuid import UUID
 from src.app.application.dto.tasks import TaskFilterParamsDTO, TaskSortParamsDTO
+from src.app.domain.enums import TaskRepeatFrequency
 
 class TaskRepository:
     __slots__ = ("_session",)
@@ -87,3 +88,15 @@ class TaskRepository:
                     )
         result = await self._session.scalar(task_skills)
         return result
+    
+    async def get_daily_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]: 
+        tasks = select(
+            Task
+            ).where(
+                and_(
+                    Task.user_id == user_id, 
+                    Task.repeat_frequency == TaskRepeatFrequency.DAILY
+                    )
+                )
+        result = await self._session.scalars(tasks)
+        return result.all()

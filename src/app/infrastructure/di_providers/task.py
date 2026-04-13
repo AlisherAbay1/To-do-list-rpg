@@ -3,7 +3,8 @@ from src.app.infrastructure.database.repositories import TaskRepository, TaskHis
 from src.app.application.interfaces.repositories_interfaces import TaskRepositoryProtocol, TaskHistoryRepositoryProtocol
 from src.app.application.interactors import GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, \
                                      GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor, \
-                                     UpdateTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksByUserIdInteractor
+                                     UpdateTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksBySessionTokenInteractor, \
+                                     GetDailyTasksBySessionTokenInteractor
 
 class TaskProvider(Provider):
     scope = Scope.REQUEST
@@ -17,4 +18,5 @@ class TaskProvider(Provider):
     delete_task = provide(DeleteTaskInteractor)
     complete_task = provide(CompleteTaskInteractor)
     uncomplete_task = provide(UncompleteTaskInteractor)
-    get_deleted_tasks_by_user_id = provide(GetDeletedTasksByUserIdInteractor)
+    get_deleted_tasks_by_user_id = provide(GetDeletedTasksBySessionTokenInteractor)
+    get_daily_tasks_by_user_id = provide(GetDailyTasksBySessionTokenInteractor)
