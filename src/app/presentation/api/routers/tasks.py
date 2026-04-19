@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Cookie, HTTPException
 from pydantic import UUID7
 from src.app.presentation.schemas import (TaskSchemaCreate, TaskSchemaRead, TaskFilterParams, 
                         TaskSortParams, TaskSchemaReadable, TaskWithSkillsAndItemsSchemaRead, 
-                        TaskSchemaUpdate)
+                        TaskSchemaUpdate, CompleteTaskSchema)
 from src.app.application.dto.tasks import (TaskCreateDTO, TaskFilterParamsDTO, TaskSortParamsDTO, 
                                         TaskUpdateDTO)
 from src.app.application.interactors import (GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, 
@@ -85,7 +85,7 @@ async def delete_task(task_id: UUID7,
                       interactor: FromDishka[DeleteTaskInteractor]):
     await interactor(task_id)
 
-@router.patch("/{task_id}/complete", response_model=TaskSchemaReadable) 
+@router.patch("/{task_id}/complete", response_model=CompleteTaskSchema) 
 async def complete_task(interactor: FromDishka[CompleteTaskInteractor], 
                         task_id: UUID7, 
                         session_token = Cookie(None)): 

@@ -24,6 +24,6 @@ class SkillDomain:
         self.deleted = deleted
         self.deleted_at = deleted_at
 
-    def add_xp(self, xp: int):
+    def apply_reward(self, xp: int):
         self.xp += xp
         self.lvl = self.xp // 1000

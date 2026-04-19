@@ -1,5 +1,5 @@
-from src.app.infrastructure.database.repositories.tasks import Task
-from src.app.domain import TaskDomain, SkillDomain, UserDomain
+from src.app.infrastructure.database.models.tasks import Task
+from src.app.domain import TaskDomain
 
 class TaskMapper:
     @staticmethod
@@ -19,29 +19,24 @@ class TaskMapper:
             difficulty=orm.difficulty,
             priority=orm.priority,
             custom_xp_reward=orm.custom_xp_reward,
-            custom_gold_reward=orm.custom_gold_reward,
-            user=UserDomain(
-                id=orm.user.id,
-                username=orm.user.username,
-                email=orm.user.email,
-                password=orm.user.password,
-                lvl=orm.user.lvl,
-                xp=orm.user.xp,
-                is_admin=orm.user.is_admin,
-                current_rank_id=orm.user.current_rank_id,
-                profile_picture=orm.user.profile_picture,
-                gold=orm.user.gold
-            ),
-            skills=[SkillDomain(
-                id=skill.id,
-                user_id=skill.user_id,
-                title=skill.title,
-                description=skill.description,
-                ico=skill.ico,
-                lvl=skill.lvl,
-                xp=skill.xp,
-                deleted=skill.deleted,
-                deleted_at=skill.deleted_at,
-            ) for skill in orm.skills]
+            custom_gold_reward=orm.custom_gold_reward
         )
         return task
+    
+    @staticmethod
+    def update_orm(domain: TaskDomain, orm: Task) -> None:
+        orm.id = domain.id
+        orm.user_id = domain.user_id
+        orm.title = domain.title
+        orm.description = domain.description
+        orm.category_id = domain.category_id
+        orm.repeat_limit = domain.repeat_limit
+        orm.repeat_frequency = domain.repeat_frequency
+        orm.deadline = domain.deadline
+        orm.last_completed_at = domain.last_completed_at
+        orm.created_at = domain.created_at
+        orm.type = domain.type
+        orm.difficulty = domain.difficulty
+        orm.priority = domain.priority
+        orm.custom_xp_reward = domain.custom_xp_reward
+        orm.custom_gold_reward = domain.custom_gold_reward

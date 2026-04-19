@@ -1,4 +1,7 @@
 from src.app.infrastructure.database.models.skills import Skill
+from src.app.infrastructure.database.models.tasks import Task
+from src.app.domain import SkillDomain
+from src.app.infrastructure.mappers import SkillMapper
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, delete
 from typing import Optional, Sequence
@@ -30,3 +33,14 @@ class SkillRepository:
         print(f"Удаляю всё старше: {year_ago}")
         stmt = delete(Skill).where(Skill.deleted_at < year_ago)
         await self._session.execute(stmt)
+
+    async def get_skills_by_task_id(self, task_id: UUID) -> list[SkillDomain]: 
+        skills = select(Skill).join(Task.skills).where(Task.id == task_id)
+        result = await self._session.scalars(skills)
+        return SkillMapper.to_domain_list(result.all())
+    
+    async def update(self, domain: SkillDomain) -> None:
+        skill = await self._session.get(Skill, domain.id)
+        if skill is None:
+            return 
+        SkillMapper.update_orm(domain, skill)

@@ -1,6 +1,8 @@
 from pydantic import UUID7, BaseModel, ConfigDict
 from src.app.domain.enums import TaskRepeatFrequency, TaskDifficulty, TaskPriority, TaskType
-from src.app.presentation.schemas import ItemSchemaRead, SkillSchemaRead
+from src.app.presentation.schemas.items import ItemSchemaRead
+from src.app.presentation.schemas.skills import SkillSchemaRead
+from src.app.presentation.schemas.users import UserShortSchema
 from typing import Optional, Literal
 from datetime import datetime
 
@@ -34,6 +36,20 @@ class TaskSchemaReadable(BaseModel):
     repeat_limit: Optional[int]
     repeat_frequency: Optional[TaskRepeatFrequency]
     deadline: Optional[datetime]
+
+class CompleteTaskSchema(BaseModel):
+    id: UUID7
+    title: str
+    description: Optional[str]
+    category_id: Optional[UUID7]
+    xp: int
+    gold: int
+    repeat_limit: Optional[int]
+    repeat_frequency: Optional[TaskRepeatFrequency]
+    deadline: Optional[datetime]
+
+    user: UserShortSchema
+    skills: list[SkillSchemaRead]
 
 class TaskWithSkillsAndItemsSchemaRead(BaseModel):
     id: UUID7

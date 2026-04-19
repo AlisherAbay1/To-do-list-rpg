@@ -4,11 +4,13 @@ from uuid import UUID
 
 @dataclass(slots=True)
 class UserDTO:
+    id: UUID
     username: str
     email: str
     password: str
-    lvl: int = 1
-    xp: int = 0
+    lvl: int
+    xp: int 
+    gold: int
     is_admin: bool = False
     current_rank_id: Optional[UUID] = None
     profile_picture: Optional[str] = None

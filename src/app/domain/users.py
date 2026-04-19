@@ -1,7 +1,6 @@
-
 from uuid import UUID
 from typing import Optional
-
+from src.app.application.dto.tasks import TaskReward
 
 class UserDomain:
     def __init__(
@@ -28,9 +27,7 @@ class UserDomain:
         self.profile_picture = profile_picture
         self.gold = gold
 
-    def add_xp(self, xp: int):
-        self.xp += xp
+    def apply_rewards(self, rewards: TaskReward):
+        self.xp += rewards.xp
         self.lvl = self.xp // 1000
-
-    def add_gold(self, gold: int):
-        self.gold += gold
+        self.gold += rewards.gold

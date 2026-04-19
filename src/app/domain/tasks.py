@@ -1,6 +1,4 @@
 from src.app.domain.enums import TaskType, TaskDifficulty, TaskPriority
-from src.app.domain.users import UserDomain
-from src.app.domain.skills import SkillDomain
 from src.app.application.dto.tasks import TaskReward
 from src.app.domain.enums import TaskRepeatFrequency
 from src.app.application.exceptions import TaskAlreadyDoneError, TaskExecutedTooEarlyError
@@ -25,9 +23,7 @@ class TaskDomain:
             difficulty: Optional[TaskDifficulty],
             priority: Optional[TaskPriority],
             custom_xp_reward: Optional[int],
-            custom_gold_reward: Optional[int],
-            user: UserDomain, 
-            skills: list[SkillDomain]
+            custom_gold_reward: Optional[int]
             ) -> None:
         self.id = id
         self.user_id = user_id
@@ -44,8 +40,6 @@ class TaskDomain:
         self.priority = priority
         self.custom_xp_reward = custom_xp_reward
         self.custom_gold_reward = custom_gold_reward
-        self.user = user
-        self.skills = skills
 
         self.difficulty_multiplier = 0
         self.priority_multiplier = 0

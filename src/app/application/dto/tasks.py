@@ -4,6 +4,7 @@ from uuid import UUID
 from src.app.domain.enums import TaskRepeatFrequency, TaskType, TaskDifficulty, TaskPriority
 from datetime import datetime
 from src.app.presentation.schemas.sentinel_types import Unset, UNSET
+from src.app.application.dto.users import UserDTO
 from src.app.application.dto.items import ItemDTO
 from src.app.application.dto.skills import SkillDTO
 
@@ -58,6 +59,21 @@ class TaskDryDTO:
 class TaskReward:
     xp: int
     gold: int
+
+@dataclass(slots=True)
+class CompleteTaskDTO:
+    id: UUID
+    title: str
+    description: Optional[str]
+    category_id: Optional[UUID]
+    xp: int
+    gold: int
+    repeat_limit: Optional[int]
+    repeat_frequency: Optional[TaskRepeatFrequency]
+    deadline: Optional[datetime]
+
+    user: UserDTO
+    skills: list[SkillDTO]
 
 @dataclass(slots=True)
 class TaskWithSkillsAndItemsDTO:

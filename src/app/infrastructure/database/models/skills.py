@@ -18,3 +18,5 @@ class Skill(Base):
     xp: Mapped[int] = mapped_column(default=0)
     deleted: Mapped[bool] = mapped_column(default=False)
     deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True, default=None)
+
+    
