@@ -2,7 +2,7 @@ from pydantic import UUID7, BaseModel, ConfigDict
 from src.app.domain.enums import TaskRepeatFrequency, TaskDifficulty, TaskPriority, TaskType
 from src.app.presentation.schemas.items import ItemSchemaRead
 from src.app.presentation.schemas.skills import SkillSchemaRead
-from src.app.presentation.schemas.users import UserShortSchema
+from src.app.presentation.schemas.users import UserSchemaRead
 from typing import Optional, Literal
 from datetime import datetime
 
@@ -48,7 +48,7 @@ class CompleteTaskSchema(BaseModel):
     repeat_frequency: Optional[TaskRepeatFrequency]
     deadline: Optional[datetime]
 
-    user: UserShortSchema
+    user: UserSchemaRead
     skills: list[SkillSchemaRead]
 
 class TaskWithSkillsAndItemsSchemaRead(BaseModel):

@@ -29,7 +29,9 @@ class CompleteTaskDtoMapper:
                 gold=user_domain.gold,
                 is_admin=user_domain.is_admin,
                 current_rank_id=user_domain.current_rank_id,
-                profile_picture=user_domain.profile_picture
+                profile_picture=user_domain.profile_picture, 
+                timezone=user_domain.timezone,
+                language=user_domain.language
             ),
             skills=[SkillDTO(
                 id=skill_domain.id,

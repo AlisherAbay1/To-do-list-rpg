@@ -4,8 +4,7 @@ from .tasks import TaskSchemaRead, TaskSchemaCreate, TaskSortParams, \
                     TaskFilterParams, TaskSchemaReadable, TaskWithSkillsAndItemsSchemaRead, \
                     TaskSchemaUpdate, CompleteTaskSchema
 from .users import UserSchemaRead, UserSchemaCreate, UserSchemaCreateAuth, \
-                    UserSchemaPatchEmail, UserSchemaAuth, UserSchemaPatchPassword, \
-                    UserShortSchema
+                    UserSchemaPatchEmail, UserSchemaAuth, UserSchemaPatchPassword
 
 __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead", 
            "SkillSchemaCreate", "TaskSchemaRead", "TaskSchemaCreate", 
@@ -13,4 +12,4 @@ __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead",
            "UserSchemaPatchEmail","UserSchemaAuth", "UserSchemaPatchPassword", 
            "TaskSortParams", "TaskFilterParams", "TaskSchemaReadable", 
            "TaskWithSkillsAndItemsSchemaRead", "TaskSchemaUpdate", 
-           "CompleteTaskSchema", "UserShortSchema")
+           "CompleteTaskSchema")

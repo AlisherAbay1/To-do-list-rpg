@@ -25,5 +25,6 @@ class UpdateCurrentUserEmailInteractor:
         if await self.repo.get_user_by_email(dto.new_email):
             raise EmailAlreadyTakenError()
         user.email = dto.new_email
+        await self.repo.update(user)
         await self.transaction.commit()
         return dto.new_email

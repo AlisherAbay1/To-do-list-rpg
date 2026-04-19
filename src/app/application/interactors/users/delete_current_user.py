@@ -14,8 +14,5 @@ class DeleteCurrentUserInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        user = await self.repo.get_user(UUID(user_id))
-        if not user:
-            raise UserNotFoundError()
-        await self.repo.delete(user)
+        await self.repo.delete(UUID(user_id))
         await self.transaction.commit()

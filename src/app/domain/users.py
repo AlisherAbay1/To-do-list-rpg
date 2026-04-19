@@ -14,7 +14,9 @@ class UserDomain:
         is_admin: bool,
         current_rank_id: Optional[UUID],
         profile_picture: Optional[str],
-        gold: int
+        gold: int,
+        timezone: str,
+        language: str
     ) -> None:
         self.id = id
         self.username = username
@@ -26,6 +28,8 @@ class UserDomain:
         self.current_rank_id = current_rank_id
         self.profile_picture = profile_picture
         self.gold = gold
+        self.timezone = timezone
+        self.language = language
 
     def apply_rewards(self, rewards: TaskReward):
         self.xp += rewards.xp

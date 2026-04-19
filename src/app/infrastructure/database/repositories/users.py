@@ -5,6 +5,7 @@ from sqlalchemy import select, exists
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional, Sequence
 from uuid import UUID
+from src.app.application.exceptions import UserNotFoundError
 
 class UserRepository:
     __slots__ = ("_session")
@@ -36,7 +37,10 @@ class UserRepository:
     def save(self, user: User) -> None:
         self._session.add(user)
 
-    async def delete(self, user: User) -> None:
+    async def delete(self, user_id: UUID) -> None:
+        user = await self._session.get(User, user_id)
+        if not user:
+            raise UserNotFoundError()
         await self._session.delete(user)
 
     async def does_username_exists(self, username: str) -> Optional[bool]:

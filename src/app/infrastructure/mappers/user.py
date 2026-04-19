@@ -14,7 +14,9 @@ class UserMapper:
             is_admin=orm.is_admin,
             current_rank_id=orm.current_rank_id,
             profile_picture=orm.profile_picture,
-            gold=orm.gold
+            gold=orm.gold,
+            language=orm.language,
+            timezone=orm.timezone
         )
         return user
     

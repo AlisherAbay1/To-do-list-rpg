@@ -18,19 +18,6 @@ class UserSchemaRead(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-class UserShortSchema(BaseModel):
-    id: UUID7
-    username: str
-    email: EmailStr
-    lvl: int
-    xp: int
-    is_admin: bool
-    current_rank_id: Optional[UUID7]
-    profile_picture: Optional[str]
-    gold: int
-
-    model_config = ConfigDict(from_attributes=True)
-
 class UserSchemaCreate(BaseModel):
     username: str
     email: EmailStr

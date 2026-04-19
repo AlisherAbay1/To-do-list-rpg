@@ -11,6 +11,8 @@ class UserDTO:
     lvl: int
     xp: int 
     gold: int
+    timezone: str
+    language: str
     is_admin: bool = False
     current_rank_id: Optional[UUID] = None
     profile_picture: Optional[str] = None

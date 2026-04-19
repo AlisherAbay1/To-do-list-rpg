@@ -22,4 +22,5 @@ class UpdateCurrentUserPasswordInteractor:
         if not password_verify(dto.old_password, user.password): 
             raise IncorrectPasswordError()
         user.password = hash_password(dto.new_password)
+        await self.repo.update(user)
         await self.transaction.commit()
