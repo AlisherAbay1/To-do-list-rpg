@@ -10,10 +10,10 @@ class DeleteTaskInteractor:
         self.transaction = transaction
 
     async def __call__(self, task_id: UUID):
-        task = await self.repo.get_task_by_id(task_id, get_related_skills=False, get_related_items=False)
+        task = await self.repo.get_task_by_id(task_id)
         if task is None:
             raise TaskNotFoundError()
         task.deleted = True
         task.deleted_at = datetime.now(tz=timezone.utc)
-        await self.transaction.delete(task)
+        await self.repo.delete(task_id)
         await self.transaction.commit()

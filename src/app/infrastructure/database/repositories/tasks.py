@@ -2,8 +2,8 @@ from src.app.infrastructure.database.models.tasks import Task
 from src.app.infrastructure.mappers import TaskMapper
 from src.app.domain import TaskDomain
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, desc, and_
-from sqlalchemy.orm import joinedload, selectinload
+from sqlalchemy import select, desc, and_, delete
+from sqlalchemy.orm import joinedload
 from typing import Optional, Sequence
 from uuid import UUID
 from src.app.application.dto.tasks import TaskFilterParamsDTO, TaskSortParamsDTO
@@ -70,12 +70,8 @@ class TaskRepository:
         result = await self._session.scalar(task_and_user)
         return result
     
-    async def get_task_by_id(self, task_id: UUID, get_related_skills: bool = False, get_related_items: bool = False) -> Optional[TaskDomain]:
+    async def get_task_by_id(self, task_id: UUID) -> Optional[TaskDomain]:
         task = select(Task).where(Task.id == task_id)
-        if get_related_skills:
-            task = task.options(selectinload(Task.skills))
-        if get_related_items:
-            task = task.options(selectinload(Task.items))
         result = await self._session.scalar(task)
         if result is None: 
             return
@@ -98,3 +94,7 @@ class TaskRepository:
         if task is None:
             return 
         TaskMapper.update_orm(domain, task)
+
+    async def delete(self, task_id: UUID) -> None:
+        task = delete(Task).where(Task.id == task_id)
+        await self._session.execute(task)

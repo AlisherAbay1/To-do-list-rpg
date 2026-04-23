@@ -19,7 +19,9 @@ class TaskMapper:
             difficulty=orm.difficulty,
             priority=orm.priority,
             custom_xp_reward=orm.custom_xp_reward,
-            custom_gold_reward=orm.custom_gold_reward
+            custom_gold_reward=orm.custom_gold_reward,
+            deleted=orm.deleted,
+            deleted_at=orm.deleted_at
         )
         return task
     

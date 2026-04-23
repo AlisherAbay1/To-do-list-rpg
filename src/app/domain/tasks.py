@@ -5,44 +5,30 @@ from src.app.application.exceptions import TaskAlreadyDoneError, TaskExecutedToo
 from uuid import UUID
 from datetime import datetime, timezone, timedelta
 from typing import Optional
+from dataclasses import dataclass, field
 
+@dataclass
 class TaskDomain:
-    def __init__(
-            self, 
-            id: UUID,
-            user_id: UUID,
-            title: str,
-            description: Optional[str],
-            category_id: Optional[UUID],
-            repeat_limit: Optional[int],
-            repeat_frequency: Optional[TaskRepeatFrequency],
-            deadline: Optional[datetime],
-            last_completed_at: Optional[datetime],
-            created_at: datetime,
-            type: Optional[TaskType],
-            difficulty: Optional[TaskDifficulty],
-            priority: Optional[TaskPriority],
-            custom_xp_reward: Optional[int],
-            custom_gold_reward: Optional[int]
-            ) -> None:
-        self.id = id
-        self.user_id = user_id
-        self.title = title
-        self.description = description
-        self.category_id = category_id
-        self.repeat_limit = repeat_limit
-        self.repeat_frequency = repeat_frequency
-        self.deadline = deadline
-        self.last_completed_at = last_completed_at
-        self.created_at = created_at
-        self.type = type
-        self.difficulty = difficulty
-        self.priority = priority
-        self.custom_xp_reward = custom_xp_reward
-        self.custom_gold_reward = custom_gold_reward
+    id: UUID
+    user_id: UUID
+    title: str
+    created_at: datetime
+    deleted: bool
+    deleted_at: Optional[datetime]
+    description: Optional[str] = None
+    category_id: Optional[UUID] = None
+    repeat_limit: Optional[int] = None
+    repeat_frequency: Optional[TaskRepeatFrequency] = None
+    deadline: Optional[datetime] = None
+    last_completed_at: Optional[datetime] = None
+    type: Optional[TaskType] = None
+    difficulty: Optional[TaskDifficulty] = None
+    priority: Optional[TaskPriority] = None
+    custom_xp_reward: Optional[int] = None
+    custom_gold_reward: Optional[int] = None
 
-        self.difficulty_multiplier = 0
-        self.priority_multiplier = 0
+    difficulty_multiplier = field(init=False, default=0)
+    priority_multiplier = field(init=False, default=0)
 
     def complete(self):
         current_time = datetime.now(timezone.utc)
@@ -107,25 +93,18 @@ class TaskDomain:
 
 
 
+# для совместимости
 
 
-
+@dataclass
 class TaskRewardCalculatorDomain:
-    def __init__(
-            self, 
-            task_type: Optional[TaskType], 
-            task_difficulty: Optional[TaskDifficulty], 
-            task_priority: Optional[TaskPriority], 
-            custom_xp_reward: Optional[int], 
-            custom_gold_reward: Optional[int]
-            ) -> None:
-        self.task_type = task_type
-        self.task_difficulty = task_difficulty
-        self.task_priority = task_priority
-        self.custom_xp_reward = custom_xp_reward
-        self.custom_gold_reward = custom_gold_reward
-        self.difficulty_multiplier = 0
-        self.priority_multiplier = 0
+    task_type: Optional[TaskType]
+    task_difficulty: Optional[TaskDifficulty]
+    task_priority: Optional[TaskPriority]
+    custom_xp_reward: Optional[int]
+    custom_gold_reward: Optional[int]
+    difficulty_multiplier: int = field(init=False, default=0)
+    priority_multiplier: int = field(init=False, default=0)
 
     def calculate_task_rewards(self) -> TaskReward:
         xp = 0

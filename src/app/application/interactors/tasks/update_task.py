@@ -66,5 +66,6 @@ class UpdateTaskInteractor:
                     repeat_frequency=task.repeat_frequency,
                     deadline=task.deadline,
                 )
+        await self.repo.update(task)
         await self.transaction.commit()
         return new_dto
