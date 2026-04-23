@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, ForeignKey, BigInteger, DateTime
 from sqlalchemy.dialects.postgresql import ENUM
 from src.app.domain.enums import TaskRepeatFrequency, TaskDifficulty, TaskPriority, TaskType
-from uuid_utils import uuid7
+from uuid6 import uuid7
 from typing import Optional
 from datetime import datetime, timezone
 

@@ -2,7 +2,7 @@ from src.app.infrastructure.database.models.base import Base
 from uuid import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import ForeignKey, DateTime, String
-from uuid_utils import uuid7
+from uuid6 import uuid7
 from typing import Optional
 from datetime import datetime, timezone
 

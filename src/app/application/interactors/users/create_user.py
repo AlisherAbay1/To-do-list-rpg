@@ -5,7 +5,7 @@ from src.app.application.dto.users import CreateUserDTO, CreateUserResultDTO
 from src.app.core.security import hash_password
 from src.app.application.exceptions import UsernameAlreadyTakenError, EmailAlreadyTakenError
 from src.app.infrastructure.database.models import User
-from uuid_utils import uuid7
+from uuid6 import uuid7
 
 class CreateUserInteractor:
     def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:

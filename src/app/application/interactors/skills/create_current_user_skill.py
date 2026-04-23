@@ -4,7 +4,7 @@ from src.app.application.interfaces.transaction_interfaces import TransactionPro
 from src.app.application.dto.skills import SkillCreateDTO, SkillDTO
 from src.app.infrastructure.database.models import Skill
 from uuid import UUID
-from uuid_utils import uuid7
+from uuid6 import uuid7
 
 class CreateCurrentUserSkillInteractor:
     def __init__(self, repo: SkillRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
