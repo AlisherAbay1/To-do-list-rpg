@@ -1,16 +1,17 @@
 from typing import Optional
-from pydantic import BaseModel, EmailStr, UUID7, ConfigDict, field_validator
+from pydantic import BaseModel, EmailStr, ConfigDict, field_validator
 from fastapi import HTTPException
 from re import match
+from uuid import UUID
 
 class UserSchemaRead(BaseModel):
-    id: UUID7
+    id: UUID
     username: str
     email: EmailStr
     lvl: int
     xp: int
     is_admin: bool
-    current_rank_id: Optional[UUID7]
+    current_rank_id: Optional[UUID]
     profile_picture: Optional[str]
     gold: int
     language: str
@@ -25,7 +26,7 @@ class UserSchemaCreate(BaseModel):
     lvl: int = 1
     xp: int = 0
     is_admin: bool = False
-    current_rank_id: Optional[UUID7] = None
+    current_rank_id: Optional[UUID] = None
     profile_picture: Optional[str] = None
     gold: int = 0
     language: str = "eng"
@@ -90,7 +91,7 @@ class UserSchemaCreateAuth(BaseModel):
         raise HTTPException(500, "Password should be at least 8 chars and less than 50.")
 
 class RankSchema(BaseModel):
-    id: UUID7
-    user_id: UUID7
+    id: UUID
+    user_id: UUID
     title: str
 

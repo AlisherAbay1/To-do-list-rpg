@@ -1,10 +1,11 @@
-from pydantic import UUID7, BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from datetime import datetime
+from uuid import UUID
 
 class ItemSchemaRead(BaseModel):
-    id: UUID7
-    user_id: UUID7
+    id: UUID
+    user_id: UUID
     title: str
     description: Optional[str]
     deleted: bool

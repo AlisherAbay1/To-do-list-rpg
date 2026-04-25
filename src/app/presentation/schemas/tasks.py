@@ -1,17 +1,18 @@
-from pydantic import UUID7, BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict
 from src.app.domain.enums import TaskRepeatFrequency, TaskDifficulty, TaskPriority, TaskType
 from src.app.presentation.schemas.items import ItemSchemaRead
 from src.app.presentation.schemas.skills import SkillSchemaRead
 from src.app.presentation.schemas.users import UserSchemaRead
 from typing import Optional, Literal
 from datetime import datetime
+from uuid import UUID
 
 class TaskSchemaRead(BaseModel):   
-    id: UUID7
-    user_id: UUID7
+    id: UUID
+    user_id: UUID
     title: str
     description: Optional[str]
-    category_id: Optional[UUID7]
+    category_id: Optional[UUID]
     repeat_limit: Optional[int]
     repeat_frequency: Optional[TaskRepeatFrequency]
     deadline: Optional[datetime]
@@ -26,11 +27,11 @@ class TaskSchemaRead(BaseModel):
     deleted_at: Optional[datetime] = None
 
 class TaskSchemaReadable(BaseModel):
-    id: UUID7
-    user_id: UUID7
+    id: UUID
+    user_id: UUID
     title: str
     description: Optional[str]
-    category_id: Optional[UUID7]
+    category_id: Optional[UUID]
     xp: int
     gold: int
     repeat_limit: Optional[int]
@@ -38,10 +39,10 @@ class TaskSchemaReadable(BaseModel):
     deadline: Optional[datetime]
 
 class CompleteTaskSchema(BaseModel):
-    id: UUID7
+    id: UUID
     title: str
     description: Optional[str]
-    category_id: Optional[UUID7]
+    category_id: Optional[UUID]
     xp: int
     gold: int
     repeat_limit: Optional[int]
@@ -52,11 +53,11 @@ class CompleteTaskSchema(BaseModel):
     skills: list[SkillSchemaRead]
 
 class TaskWithSkillsAndItemsSchemaRead(BaseModel):
-    id: UUID7
-    user_id: UUID7
+    id: UUID
+    user_id: UUID
     title: str
     description: Optional[str] = None
-    category_id: Optional[UUID7] = None
+    category_id: Optional[UUID] = None
     repeat_limit: Optional[int] = None
     repeat_frequency: Optional[TaskRepeatFrequency] = None
     deadline: Optional[datetime] = None
@@ -89,7 +90,7 @@ class TaskSortParams(BaseModel):
 class TaskSchemaCreate(BaseModel): 
     title: str
     description: Optional[str] = None
-    category_id: Optional[UUID7] = None
+    category_id: Optional[UUID] = None
     repeat_limit: Optional[int] = None
     repeat_frequency: Optional[TaskRepeatFrequency] = None
     deadline: Optional[datetime] = None
@@ -99,13 +100,13 @@ class TaskSchemaCreate(BaseModel):
     custom_xp_reward: Optional[int] = None
     custom_gold_reward: Optional[int] = None
 
-    related_skills: list[UUID7] = []
-    related_items: list[UUID7] = []
+    related_skills: list[UUID] = []
+    related_items: list[UUID] = []
 
 class TaskSchemaUpdate(BaseModel):
     title: str | None = None
     description: str | None = None
-    category_id: UUID7 | None = None
+    category_id: UUID | None = None
     repeat_limit: int | None = None
     repeat_frequency: TaskRepeatFrequency | None = None
     deadline: datetime | None = None
