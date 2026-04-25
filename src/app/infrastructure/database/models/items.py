@@ -9,10 +9,10 @@ def get_item_table():
         "item",
         Base.metadata, 
         Column("id", UUID, primary_key=True, default=uuid7),
-        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE")),
-        Column("title", String(255)),
+        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False),
+        Column("title", String(255), nullable=False),
         Column("description", String, nullable=True, default=None),
-        Column("deleted", Boolean, default=False),
+        Column("deleted", Boolean, default=False, nullable=False),
         Column("deleted_at", DateTime(timezone=True), nullable=True, default=None)
     )
     return item_table
@@ -21,9 +21,10 @@ def get_item_usage_history_table():
     item_usage_history_table = Table(
         "item_usage_history",
         Base.metadata,
-        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), primary_key=True),
+        Column("id", UUID, primary_key=True, default=uuid7),
+        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False),
         Column("item_id", UUID, ForeignKey("item.id", ondelete="SET NULL"), nullable=True),
-        Column("title", String(255)),
-        Column("used_at", DateTime(timezone=True), default=lambda: datetime.now(tz=timezone.utc))
+        Column("title", String(255), nullable=False),
+        Column("used_at", DateTime(timezone=True), default=lambda: datetime.now(tz=timezone.utc), nullable=False)
     )
     return item_usage_history_table

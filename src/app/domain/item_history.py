@@ -5,6 +5,7 @@ from typing import Optional
 
 @dataclass(kw_only=True)
 class ItemHistoryDomain:
+    id: UUID
     user_id: UUID
     item_id: Optional[UUID]
     title: str

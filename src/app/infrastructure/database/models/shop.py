@@ -8,9 +8,9 @@ def get_shop_table():
         "shop",
         Base.metadata,
         Column("id", UUID, primary_key=True, default=uuid7),
-        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE")),
-        Column("item_id", UUID, ForeignKey("item.id", ondelete="CASCADE")),
-        Column("price", BigInteger),
-        Column("quantity", BigInteger)
+        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False),
+        Column("item_id", UUID, ForeignKey("item.id", ondelete="CASCADE"), nullable=False),
+        Column("price", BigInteger, nullable=False),
+        Column("quantity", BigInteger, nullable=False)
     )
     return shop_table

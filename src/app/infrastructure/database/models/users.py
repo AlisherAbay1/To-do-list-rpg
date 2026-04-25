@@ -8,17 +8,17 @@ def get_user_table():
         "user",
         Base.metadata,
         Column("id", UUID, primary_key=True, default=uuid7),
-        Column("username", String(25), unique=True),
-        Column("email", String, unique=True),
-        Column("password", String),
-        Column("lvl", BigInteger, default=1),
-        Column("xp", BigInteger, default=0),
-        Column("is_admin", Boolean, default=False),
-        Column("current_rank_id", UUID, ForeignKey("rank.id"), nullable=True, default=None),
+        Column("username", String(25), unique=True, nullable=False),
+        Column("email", String, unique=True, nullable=False),
+        Column("password", String, nullable=False),
+        Column("lvl", BigInteger, default=1, nullable=False),
+        Column("xp", BigInteger, default=0, nullable=False),
+        Column("is_admin", Boolean, default=False, nullable=False),
+        Column("current_rank_id", UUID, ForeignKey("rank.id", use_alter=True), nullable=True, default=None),
         Column("profile_picture", String, nullable=True, default=None),
-        Column("gold", BigInteger, default=0),
-        Column("language", String(255), default="eng"),
-        Column("timezone", String(255), default="UTC")
+        Column("gold", BigInteger, default=0, nullable=False),
+        Column("language", String(255), default="eng", nullable=False),
+        Column("timezone", String(255), default="UTC", nullable=False)
     )
     return user_table
 
@@ -27,7 +27,7 @@ def get_rank_table():
         "rank",
         Base.metadata,
         Column("id", UUID, primary_key=True, default=uuid7),
-        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE")),
-        Column("title", String(255))
+        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False),
+        Column("title", String(255), nullable=False)
     )
     return rank_table

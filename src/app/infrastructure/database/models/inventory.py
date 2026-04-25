@@ -7,6 +7,6 @@ def get_inventory_table():
         Base.metadata, 
         Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), primary_key=True),
         Column("item_id", UUID, ForeignKey("item.id", ondelete="CASCADE"), primary_key=True),
-        Column("quantity", BigInteger)
+        Column("quantity", BigInteger, nullable=False)
     )
     return inventory_table
