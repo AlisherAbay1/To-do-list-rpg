@@ -10,10 +10,10 @@ def get_item_table():
         Base.metadata, 
         Column("id", UUID, primary_key=True, default=uuid7),
         Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE")),
-        Column("title", String),
+        Column("title", String(255)),
         Column("description", String, nullable=True, default=None),
         Column("deleted", Boolean, default=False),
-        Column("deleted_at", DateTime(timezone=True), nullable=True)
+        Column("deleted_at", DateTime(timezone=True), nullable=True, default=None)
     )
     return item_table
 

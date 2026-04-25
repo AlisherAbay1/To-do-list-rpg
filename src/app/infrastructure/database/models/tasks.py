@@ -12,9 +12,9 @@ def get_task_table():
         Base.metadata,
         Column("id", UUID, primary_key=True, default=uuid7),
         Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE")),
-        Column("title", String),
-        Column("description", String(255), nullable=True, default=None),
-        Column("category_id", UUID, ForeignKey("task_category.id", ondelete="SET NULL"), nullable=True),
+        Column("title", String(255)),
+        Column("description", String, nullable=True, default=None),
+        Column("category_id", UUID, ForeignKey("task_category.id", ondelete="SET NULL"), nullable=True, default=None),
         Column("repeat_limit", Integer, nullable=True, default=None),
         Column("repeat_frequency", ENUM(TaskRepeatFrequency, name="repeat_frequency"), nullable=True, default=None),
         Column("deadline", DateTime(timezone=True), nullable=True, default=None),
@@ -26,7 +26,7 @@ def get_task_table():
         Column("custom_xp_reward", BigInteger, nullable=True),
         Column("custom_gold_reward", BigInteger, nullable=True),
         Column("deleted", Boolean, default=False),
-        Column("deleted_at", DateTime(timezone=True), nullable=True)
+        Column("deleted_at", DateTime(timezone=True), nullable=True, default=None)
     )
     return task_table
 

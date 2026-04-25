@@ -32,15 +32,19 @@ def map_imperativly_models():
                                    properties={
                                             "user": relationship(UserDomain, passive_deletes=True, lazy="noload"),
                                             "skills": relationship(SkillDomain, secondary="tasks_to_skills", lazy="noload"),
-                                            "items": relationship(ItemDomain, secondary="tasks_to_items", lazy="noload"),
+                                            "items": relationship(ItemDomain, secondary="tasks_to_items", lazy="noload")
                                             })
     Base.registry.map_imperatively(TaskCategoryDomain, get_task_category_table())
     Base.registry.map_imperatively(TaskHistoryDomain, get_task_history_table(),
                                    properties={
-                                       relationship(secondary="tasks_history_to_skills", lazy="noload")
+                                       "skills": relationship(SkillDomain, secondary="tasks_history_to_skills", lazy="noload"),
+                                       "items": relationship(ItemDomain, secondary="tasks_history_to_items", lazy="noload")
                                    })
     Base.registry.map_imperatively(SkillDomain, get_skill_table())
-    Base.registry.map_imperatively(ItemDomain, get_item_table())
+    Base.registry.map_imperatively(ItemDomain, get_item_table(), 
+                                   properties={
+                                       "skills": relationship(SkillDomain, secondary="items_to_skills", lazy="noload")
+                                   })
     Base.registry.map_imperatively(ItemHistoryDomain, get_item_usage_history_table())
     Base.registry.map_imperatively(ShopDomain, get_shop_table())
     Base.registry.map_imperatively(InventoryDomain, get_inventory_table())

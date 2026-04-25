@@ -21,5 +21,5 @@ class UserDomain:
 
     def apply_rewards(self, rewards: TaskReward):
         self.xp += rewards.xp
-        self.lvl = self.xp // 1000
+        self.lvl = 1 + self.xp // 1000
         self.gold += rewards.gold

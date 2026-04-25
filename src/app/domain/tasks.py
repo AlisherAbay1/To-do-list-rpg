@@ -7,6 +7,9 @@ from datetime import datetime, timezone, timedelta
 from typing import Optional
 from dataclasses import dataclass, field
 from uuid6 import uuid7
+from src.app.domain.users import UserDomain
+from src.app.domain.skills import SkillDomain
+from src.app.domain.items import ItemDomain
 
 @dataclass(kw_only=True)
 class TaskDomain:
@@ -14,7 +17,7 @@ class TaskDomain:
     user_id: UUID
     title: str
     description: Optional[str] = None
-    category_id: Optional[UUID]
+    category_id: Optional[UUID] = None
     repeat_limit: Optional[int] = None
     repeat_frequency: Optional[TaskRepeatFrequency] = None
     deadline: Optional[datetime] = None
@@ -26,7 +29,11 @@ class TaskDomain:
     custom_xp_reward: Optional[int]
     custom_gold_reward: Optional[int]
     deleted: bool = False
-    deleted_at: Optional[datetime]
+    deleted_at: Optional[datetime] = None
+
+    user: Optional[UserDomain] = field(init=False, default=None)
+    skills: list[SkillDomain] = field(init=False, default_factory=list)
+    items: list[ItemDomain] = field(init=False, default_factory=list)
 
     difficulty_multiplier: int = field(init=False, default=0)
     priority_multiplier: int = field(init=False, default=0)
