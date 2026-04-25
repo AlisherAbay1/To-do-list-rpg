@@ -1,25 +1,29 @@
 from src.app.infrastructure.database.models.base import Base
 from uuid import UUID
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import ForeignKey, DateTime, String
+from sqlalchemy import ForeignKey, DateTime, String, Table, Column, UUID, Boolean
 from uuid6 import uuid7
-from typing import Optional
 from datetime import datetime, timezone
 
-class Item(Base):
-    __tablename__ = "item"
+def get_item_table():
+    item_table = Table(
+        "item",
+        Base.metadata, 
+        Column("id", UUID, primary_key=True, default=uuid7),
+        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE")),
+        Column("title", String),
+        Column("description", String, nullable=True, default=None),
+        Column("deleted", Boolean, default=False),
+        Column("deleted_at", DateTime(timezone=True), nullable=True)
+    )
+    return item_table
 
-    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
-    user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
-    title: Mapped[str]
-    description: Mapped[Optional[str]] = mapped_column(nullable=True, default=None)
-    deleted: Mapped[bool] = mapped_column(default=False)
-    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
-    
-class ItemUsageHistory(Base):
-    __tablename__ = "item_usage_history"
-
-    user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"), primary_key=True)
-    item_id: Mapped[UUID] = mapped_column(ForeignKey("item.id", ondelete="SET NULL"))
-    title: Mapped[str] = mapped_column(String(255))
-    used_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(tz=timezone.utc))
+def get_item_usage_history_table():
+    item_usage_history_table = Table(
+        "item_usage_history",
+        Base.metadata,
+        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), primary_key=True),
+        Column("item_id", UUID, ForeignKey("item.id", ondelete="SET NULL"), nullable=True),
+        Column("title", String(255)),
+        Column("used_at", DateTime(timezone=True), default=lambda: datetime.now(tz=timezone.utc))
+    )
+    return item_usage_history_table

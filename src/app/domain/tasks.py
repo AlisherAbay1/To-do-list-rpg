@@ -6,29 +6,30 @@ from uuid import UUID
 from datetime import datetime, timezone, timedelta
 from typing import Optional
 from dataclasses import dataclass, field
+from uuid6 import uuid7
 
-@dataclass
+@dataclass(kw_only=True)
 class TaskDomain:
-    id: UUID
+    id: UUID = field(default_factory=uuid7)
     user_id: UUID
     title: str
-    created_at: datetime
-    deleted: bool
-    deleted_at: Optional[datetime]
     description: Optional[str] = None
-    category_id: Optional[UUID] = None
+    category_id: Optional[UUID]
     repeat_limit: Optional[int] = None
     repeat_frequency: Optional[TaskRepeatFrequency] = None
     deadline: Optional[datetime] = None
     last_completed_at: Optional[datetime] = None
-    type: Optional[TaskType] = None
-    difficulty: Optional[TaskDifficulty] = None
-    priority: Optional[TaskPriority] = None
-    custom_xp_reward: Optional[int] = None
-    custom_gold_reward: Optional[int] = None
+    created_at: datetime = field(default_factory=lambda: datetime.now(tz=timezone.utc))
+    type: Optional[TaskType] = TaskType.AUTO
+    difficulty: Optional[TaskDifficulty]
+    priority: Optional[TaskPriority]
+    custom_xp_reward: Optional[int]
+    custom_gold_reward: Optional[int]
+    deleted: bool = False
+    deleted_at: Optional[datetime]
 
-    difficulty_multiplier = field(init=False, default=0)
-    priority_multiplier = field(init=False, default=0)
+    difficulty_multiplier: int = field(init=False, default=0)
+    priority_multiplier: int = field(init=False, default=0)
 
     def complete(self):
         current_time = datetime.now(timezone.utc)

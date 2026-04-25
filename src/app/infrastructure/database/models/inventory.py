@@ -1,11 +1,12 @@
 from src.app.infrastructure.database.models.base import Base
-from sqlalchemy.orm import Mapped, mapped_column, registry
 from sqlalchemy import ForeignKey, BigInteger, Table, Column, UUID
-from uuid6 import uuid7
-class Inventory(Base):
-    __tablename__ = "inventory"
 
-    user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"), primary_key=True)
-    item_id: Mapped[UUID] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"), primary_key=True)
-    quantity: Mapped[int] = mapped_column(BigInteger)
-
+def get_inventory_table():
+    inventory_table = Table(
+        "inventory",
+        Base.metadata, 
+        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), primary_key=True),
+        Column("item_id", UUID, ForeignKey("item.id", ondelete="CASCADE"), primary_key=True),
+        Column("quantity", BigInteger)
+    )
+    return inventory_table

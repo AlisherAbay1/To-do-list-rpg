@@ -1,15 +1,19 @@
 from .base import Base
-from .items import Item, ItemUsageHistory
 from .relations import Tasks_to_items, Tasks_to_skills, Items_to_skills, \
                         Tasks_history_to_items, Tasks_history_to_skills
-from .skills import Skill
-from .tasks import Task, TaskCategory, TaskHistory
-from .users import User
-from .inventory import Inventory
-from .shop import Shop
+from .users import get_user_table, get_rank_table
+from .tasks import get_task_table, get_task_history_table, get_task_category_table
+from .skills import get_skill_table
+from .shop import get_shop_table
+from .items import get_item_table, get_item_usage_history_table
+from .inventory import get_inventory_table
 
-__all__ = ("Base", "Item", "Tasks_to_items", 
-           "Tasks_to_skills", "Skill", "Task", 
-           "User", "Inventory", "Shop", 
-           "Items_to_skills", "Tasks_history_to_items", "Tasks_history_to_skills", 
-           "ItemUsageHistory", "TaskCategory", "TaskHistory")
+
+__all__ = (
+    "Base", "Tasks_to_items", "Tasks_to_skills",
+    "Items_to_skills", "Tasks_history_to_items", "Tasks_history_to_skills",
+    "get_user_table", "get_rank_table", "get_task_table",
+    "get_task_history_table", "get_task_category_table", "get_skill_table",
+    "get_shop_table", "get_item_table", "get_item_usage_history_table",
+    "get_inventory_table",
+)
