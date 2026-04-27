@@ -49,7 +49,7 @@ class Task(Base):
                 raise TaskAlreadyDoneError()
             if self.repeat_limit > 0:
                 self.repeat_limit -= 1
-        if self.last_completed_at != None:
+        if self.last_completed_at is not None:
             match self.repeat_frequency:
                 case TaskRepeatFrequency.DAILY:
                     if current_time < self.last_completed_at + timedelta(days=1):
