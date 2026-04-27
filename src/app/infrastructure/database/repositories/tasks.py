@@ -1,13 +1,14 @@
-from src.app.infrastructure.database.models.tasks import Task
-from src.app.infrastructure.mappers import TaskMapper
-from src.app.domain import TaskDomain
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, desc, and_, delete
-from sqlalchemy.orm import joinedload
 from typing import Optional, Sequence
 from uuid import UUID
-from src.app.application.dto.tasks import TaskFilterParamsDTO, TaskSortParamsDTO
+
+from sqlalchemy import and_, delete, desc, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.app.application.dto.tasks import (TaskFilterParamsDTO,
+                                           TaskSortParamsDTO)
+from src.app.domain import Task
 from src.app.domain.enums import TaskRepeatFrequency
+
 
 class TaskRepository:
     __slots__ = ("_session",)
@@ -65,12 +66,10 @@ class TaskRepository:
         result = await self._session.scalars(tasks)
         return result.all()
     
-    async def get_task_by_id(self, task_id: UUID) -> Optional[TaskDomain]:
+    async def get_task_by_id(self, task_id: UUID) -> Optional[Task]:
         task = select(Task).where(Task.id == task_id)
         result = await self._session.scalar(task)
-        if result is None: 
-            return
-        return TaskMapper.to_domain(result)
+        return result
     
     async def get_daily_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]: 
         tasks = select(
@@ -83,12 +82,6 @@ class TaskRepository:
                 )
         result = await self._session.scalars(tasks)
         return result.all()
-    
-    async def update(self, domain: TaskDomain) -> None:
-        task = await self._session.get(Task, domain.id)
-        if task is None:
-            return 
-        TaskMapper.update_orm(domain, task)
 
     async def delete(self, task_id: UUID) -> None:
         task = delete(Task).where(Task.id == task_id)

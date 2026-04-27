@@ -1,11 +1,12 @@
-from src.app.infrastructure.database.models.users import User
-from src.app.domain import UserDomain
-from src.app.infrastructure.mappers import UserMapper
-from sqlalchemy import select, exists
-from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional, Sequence
 from uuid import UUID
+
+from sqlalchemy import exists, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from src.app.application.exceptions import UserNotFoundError
+from src.app.domain import User
+
 
 class UserRepository:
     __slots__ = ("_session")
@@ -17,12 +18,10 @@ class UserRepository:
         users = await self._session.scalars(stmt)
         return users.all()
     
-    async def get_user(self, user_id: UUID) -> Optional[UserDomain]:
+    async def get_user(self, user_id: UUID) -> Optional[User]:
         stmt = select(User).where(User.id == user_id)
         user = await self._session.scalar(stmt)
-        if user is None:
-            return
-        return UserMapper.to_domain(user)
+        return user
     
     async def get_user_by_username(self, username: str) -> Optional[User]:
         stmt = select(User).where(User.username == username)
@@ -58,9 +57,3 @@ class UserRepository:
                 )
             )
         return does_exist
-    
-    async def update(self, domain: UserDomain) -> None:
-        user = await self._session.get(User, domain.id)
-        if user is None:
-            return 
-        UserMapper.update_orm(domain, user)

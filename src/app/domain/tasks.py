@@ -15,7 +15,6 @@ from src.app.domain.enums import (TaskDifficulty, TaskPriority,
                                   TaskRepeatFrequency, TaskType)
 from src.app.domain.items import Item
 from src.app.domain.skills import Skill
-from src.app.domain.users import User
 from src.app.infrastructure.database.models.base import Base
 
 

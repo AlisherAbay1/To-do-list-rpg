@@ -1,13 +1,14 @@
-from src.app.domain import TaskDomain, SkillDomain, UserDomain
+from src.app.domain import Task, Skill, User
 from src.app.application.dto.tasks import CompleteTaskDTO, TaskReward
 from src.app.application.dto.users import UserDTO
 from src.app.application.dto.skills import SkillDTO
+from typing import Sequence
 
 class CompleteTaskDtoMapper:
     @staticmethod
-    def to_dto(task_domain: TaskDomain, 
-               user_domain: UserDomain,
-               skill_domains: list[SkillDomain], 
+    def to_dto(task_domain: Task, 
+               user_domain: User,
+               skill_domains: Sequence[Skill], 
                rewards: TaskReward):
         dto = CompleteTaskDTO(
             id=task_domain.id,

@@ -43,11 +43,8 @@ class CompleteTaskInteractor:
 
         for skill in skills:
             skill.apply_reward(rewards.xp)
-            await self.skill_repo.update(skill)
         user.apply_rewards(rewards)
         
-        await self.user_repo.update(user)
-        await self.task_repo.update(task)
         await self.task_history_repo.save_completion(task, skills, rewards)
 
         dto = CompleteTaskDtoMapper.to_dto(task, user, skills, rewards)

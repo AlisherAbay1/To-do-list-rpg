@@ -1,12 +1,12 @@
-from src.app.infrastructure.database.models.skills import Skill
-from src.app.infrastructure.database.models.tasks import Task
-from src.app.domain import SkillDomain
-from src.app.infrastructure.mappers import SkillMapper
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, delete
+from datetime import datetime, timedelta, timezone
 from typing import Optional, Sequence
 from uuid import UUID
-from datetime import datetime, timezone, timedelta
+
+from sqlalchemy import delete, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.app.domain import Skill, Task
+
 
 class SkillRepository:
     __slots__ = ("_session",)
@@ -34,13 +34,7 @@ class SkillRepository:
         stmt = delete(Skill).where(Skill.deleted_at < year_ago)
         await self._session.execute(stmt)
 
-    async def get_skills_by_task_id(self, task_id: UUID) -> list[SkillDomain]: 
+    async def get_skills_by_task_id(self, task_id: UUID) -> Sequence[Skill]: 
         skills = select(Skill).join(Task.skills).where(Task.id == task_id)
         result = await self._session.scalars(skills)
-        return SkillMapper.to_domain_list(result.all())
-    
-    async def update(self, domain: SkillDomain) -> None:
-        skill = await self._session.get(Skill, domain.id)
-        if skill is None:
-            return 
-        SkillMapper.update_orm(domain, skill)
+        return result.all()

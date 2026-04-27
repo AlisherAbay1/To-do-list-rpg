@@ -1,8 +1,11 @@
-from sqlalchemy import select, delete
-from src.app.infrastructure.database.models.inventory import Inventory
-from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Sequence
 from uuid import UUID
+
+from sqlalchemy import delete, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.app.domain import Inventory
+
 
 class InventoryRepository:
     __slots__ = ("_session", )
