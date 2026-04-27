@@ -18,13 +18,13 @@ class TaskSchemaRead(BaseModel):
     deadline: Optional[datetime]
     last_completed_at: Optional[datetime]
     created_at: datetime
-    type: Optional[TaskType] = None
+    type: Optional[TaskType]
     difficulty: Optional[TaskDifficulty]
     priority: Optional[TaskPriority]
     custom_xp_reward: Optional[int]
     custom_gold_reward: Optional[int]
-    deleted: bool = False
-    deleted_at: Optional[datetime] = None
+    deleted: bool
+    deleted_at: Optional[datetime]
 
 class TaskSchemaReadable(BaseModel):
     id: UUID

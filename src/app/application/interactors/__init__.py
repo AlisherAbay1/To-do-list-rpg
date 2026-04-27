@@ -10,7 +10,8 @@ from .tasks import (CompleteTaskInteractor, CreateCurrentUserTaskInteractor,
                     GetCurentUserTasksInteractor,
                     GetDailyTasksBySessionTokenInteractor,
                     GetDeletedTasksBySessionTokenInteractor, GetTaskInteractor,
-                    UncompleteTaskInteractor, UpdateTaskInteractor)
+                    UncompleteTaskInteractor, UpdateTaskInteractor, 
+                    GetOverdueTasksInteractor)
 from .users import (AuthenticateUserInteractor, CreateUserInteractor,
                     DeleteCurrentUserInteractor, DeleteSessionInteractor,
                     GetAllUsersInteractor, GetCurrentUser,

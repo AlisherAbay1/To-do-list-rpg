@@ -8,7 +8,7 @@ from src.app.application.dto.tasks import (TaskCreateDTO, TaskFilterParamsDTO, T
 from src.app.application.interactors import (GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, 
                                      GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor, 
                                      UpdateTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksBySessionTokenInteractor, 
-                                     GetDailyTasksBySessionTokenInteractor)
+                                     GetDailyTasksBySessionTokenInteractor, GetOverdueTasksInteractor)
 from src.app.presentation.schemas.sentinel_types import UNSET
 from dishka.integrations.fastapi import FromDishka, DishkaRoute
 
@@ -64,12 +64,17 @@ async def get_current_user_tasks(interactor: FromDishka[GetCurentUserTasksIntera
     return await interactor(session_token, limit, offset)
 
 @router.get("/archived")
-async def get_deleted_tasks_by_user_id(interactor: FromDishka[GetDeletedTasksBySessionTokenInteractor], 
+async def get_deleted_tasks_by_session_token(interactor: FromDishka[GetDeletedTasksBySessionTokenInteractor], 
                                        session_token = Cookie(None)):
     return await interactor(session_token)
 
 @router.get("/daily")
-async def get_daily_tasks_by_user_id(interactor: FromDishka[GetDailyTasksBySessionTokenInteractor], 
+async def get_daily_tasks_by_session_token(interactor: FromDishka[GetDailyTasksBySessionTokenInteractor], 
+                                       session_token = Cookie(None)):
+    return await interactor(session_token)
+
+@router.get("/overdue")
+async def get_overdue_tasks_by_session_token(interactor: FromDishka[GetOverdueTasksInteractor], 
                                        session_token = Cookie(None)):
     return await interactor(session_token)
 

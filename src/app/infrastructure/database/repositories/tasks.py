@@ -1,5 +1,6 @@
 from typing import Optional, Sequence
 from uuid import UUID
+from datetime import datetime, timezone
 
 from sqlalchemy import and_, delete, desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -54,12 +55,28 @@ class TaskRepository:
         tasks = select(
             Task
             ).where(
-                and_(Task.user_id == user_id, 
-                     Task.deleted == True
-                     )
+                and_(
+                    Task.user_id == user_id, 
+                    Task.deleted == True
                     )
+                )
         result = await self._session.scalars(tasks)
         return result.all()
+    
+    async def get_overdue_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]: 
+        tasks = select(
+            Task
+            ).where(
+                and_(
+                    Task.user_id == user_id,
+                    Task.deadline < datetime.now(tz=timezone.utc),
+                    Task.deleted == False
+                    )
+                )
+        result = await self._session.scalars(tasks)
+        m = result.all()
+        print(len(m), [t.id for t in m])
+        return m
 
     async def get_tasks_by_user_id(self, user_id: UUID, limit: int, offset: int) -> Sequence[Task]:
         tasks = select(Task).where(Task.user_id == user_id).limit(limit).offset(offset)

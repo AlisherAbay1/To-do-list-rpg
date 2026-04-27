@@ -10,8 +10,9 @@ from .get_deleted_tasks_by_session_token import \
 from .get_task import GetTaskInteractor
 from .uncomplete_task import UncompleteTaskInteractor
 from .update_task import UpdateTaskInteractor
+from .get_overdue_tasks import GetOverdueTasksInteractor
 
 __all__ = ("GetAllTasksInteractor", "CreateCurrentUserTaskInteractor", "GetCurentUserTasksInteractor",
            "GetTaskInteractor", "DeleteTaskInteractor", "CompleteTaskInteractor",
            "UpdateTaskInteractor", "UncompleteTaskInteractor", "GetDeletedTasksBySessionTokenInteractor", 
-           "GetDailyTasksBySessionTokenInteractor")
+           "GetDailyTasksBySessionTokenInteractor", "GetOverdueTasksInteractor")
