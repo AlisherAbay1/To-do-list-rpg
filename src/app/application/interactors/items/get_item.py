@@ -1,5 +1,7 @@
-from src.app.application.interfaces.repositories_interfaces import ItemRepositoryProtocol
 from src.app.application.exceptions import ItemNotFoundError
+from src.app.application.interfaces.repositories_interfaces import \
+    ItemRepositoryProtocol
+
 
 class GetItemInteractor:
     def __init__(self, repo: ItemRepositoryProtocol) -> None:

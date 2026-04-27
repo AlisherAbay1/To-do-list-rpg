@@ -1,10 +1,16 @@
-from src.app.application.interfaces.repositories_interfaces import SkillRepositoryProtocol
-from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
-from src.app.application.dto.skills import SkillCreateDTO, SkillDTO
-from src.app.infrastructure.database.models import Skill
 from uuid import UUID
+
 from uuid6 import uuid7
+
+from src.app.application.dto.skills import SkillCreateDTO, SkillDTO
+from src.app.application.interfaces.cash_interfaces import \
+    RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import \
+    SkillRepositoryProtocol
+from src.app.application.interfaces.transaction_interfaces import \
+    TransactionProtocol
+from src.app.domain import Skill
+
 
 class CreateCurrentUserSkillInteractor:
     def __init__(self, repo: SkillRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:

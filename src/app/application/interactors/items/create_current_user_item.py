@@ -1,10 +1,16 @@
-from src.app.application.interfaces.repositories_interfaces import ItemRepositoryProtocol 
-from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
-from src.app.application.dto.items import ItemCreateDTO, ItemDTO
-from src.app.infrastructure.database.models import Item
 from uuid import UUID
+
 from uuid6 import uuid7
+
+from src.app.application.dto.items import ItemCreateDTO, ItemDTO
+from src.app.application.interfaces.cash_interfaces import \
+    RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import \
+    ItemRepositoryProtocol
+from src.app.application.interfaces.transaction_interfaces import \
+    TransactionProtocol
+from src.app.domain import Item
+
 
 class CreateCurrentUserItemInteractor:
     def __init__(self, repo: ItemRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:

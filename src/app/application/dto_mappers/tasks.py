@@ -1,11 +1,13 @@
-from src.app.domain import TaskDomain, SkillDomain, ItemDomain
+from typing import Sequence
+
+from src.app.domain import Task, Skill, Item
 from src.app.application.dto.tasks import TaskDTO, TaskReward, TaskWithSkillsAndItemsDTO
 from src.app.application.dto.skills import SkillDTO
 from src.app.application.dto.items import ItemDTO
 
 class TaskDtoMapper:
     @staticmethod
-    def to_dto(domain: TaskDomain, rewards: TaskReward):
+    def to_dto(domain: Task, rewards: TaskReward):
         dto = TaskDTO(
             id=domain.id,
             user_id=domain.user_id,
@@ -19,11 +21,11 @@ class TaskDtoMapper:
             deadline=domain.deadline,
         )
         return dto
-    
+
     @staticmethod
-    def to_dto_with_skills_and_items(task_domain: TaskDomain, 
-                                     skill_domains: list[SkillDomain], 
-                                     item_domains: list[ItemDomain]):
+    def to_dto_with_skills_and_items(task_domain: Task, 
+                                     skill_domains: Sequence[Skill], 
+                                     item_domains: Sequence[Item]):
         dto = TaskWithSkillsAndItemsDTO(
                 id=task_domain.id,
                 user_id=task_domain.user_id,

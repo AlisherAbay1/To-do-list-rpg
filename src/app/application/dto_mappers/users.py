@@ -1,9 +1,9 @@
-from src.app.domain import UserDomain 
+from src.app.domain import User 
 from src.app.application.dto.users import UserDTO
 
 class UserMapper:
     @staticmethod
-    def to_dto(domain: UserDomain):
+    def to_dto(domain: User):
         dto = UserDTO(
             id=domain.id,
             username=domain.username,

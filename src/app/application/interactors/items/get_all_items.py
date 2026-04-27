@@ -1,4 +1,6 @@
-from src.app.application.interfaces.repositories_interfaces import ItemRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import \
+    ItemRepositoryProtocol
+
 
 class GetAllItemsInteractor:
     def __init__(self, repo: ItemRepositoryProtocol) -> None:

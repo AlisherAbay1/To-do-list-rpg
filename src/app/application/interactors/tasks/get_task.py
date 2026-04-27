@@ -1,10 +1,13 @@
-from src.app.application.interfaces.repositories_interfaces import TaskRepositoryProtocol, SkillRepositoryProtocol, ItemRepositoryProtocol
-from src.app.application.exceptions import TaskNotFoundError
-from src.app.application.dto.tasks import TaskWithSkillsAndItemsDTO
-from src.app.application.dto.skills import SkillDTO
-from src.app.application.dto.items import ItemDTO
-from src.app.application.dto_mappers import TaskDtoMapper
 from uuid import UUID
+
+from src.app.application.dto.items import ItemDTO
+from src.app.application.dto.skills import SkillDTO
+from src.app.application.dto.tasks import TaskWithSkillsAndItemsDTO
+from src.app.application.dto_mappers import TaskDtoMapper
+from src.app.application.exceptions import TaskNotFoundError
+from src.app.application.interfaces.repositories_interfaces import (
+    ItemRepositoryProtocol, SkillRepositoryProtocol, TaskRepositoryProtocol)
+
 
 class GetTaskInteractor:
     def __init__(self, 

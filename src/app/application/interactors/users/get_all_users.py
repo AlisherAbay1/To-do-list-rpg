@@ -1,4 +1,6 @@
-from src.app.application.interfaces.repositories_interfaces import UserRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import \
+    UserRepositoryProtocol
+
 
 class GetAllUsersInteractor:
     def __init__(self, repo: UserRepositoryProtocol) -> None:

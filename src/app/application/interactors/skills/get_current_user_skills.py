@@ -1,7 +1,11 @@
-from src.app.application.interfaces.repositories_interfaces import SkillRepositoryProtocol
-from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from src.app.application.exceptions import SessionNotFoundError
 from uuid import UUID
+
+from src.app.application.exceptions import SessionNotFoundError
+from src.app.application.interfaces.cash_interfaces import \
+    RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import \
+    SkillRepositoryProtocol
+
 
 class GetCurrentUserSkillsInteractor:
     def __init__(self, repo: SkillRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:

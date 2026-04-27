@@ -1,11 +1,18 @@
-from src.app.application.interfaces.repositories_interfaces import TaskRepositoryProtocol, TaskHistoryRepositoryProtocol, UserRepositoryProtocol, \
-                                                                    SkillRepositoryProtocol
-from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
-from src.app.application.dto_mappers import CompleteTaskDtoMapper
-from src.app.application.exceptions import TaskNotFoundError, SessionNotFoundError, TaskAccessDeniedError, \
-                                            UserNotFoundError
 from uuid import UUID
+
+from src.app.application.dto_mappers import CompleteTaskDtoMapper
+from src.app.application.exceptions import (SessionNotFoundError,
+                                            TaskAccessDeniedError,
+                                            TaskNotFoundError,
+                                            UserNotFoundError)
+from src.app.application.interfaces.cash_interfaces import \
+    RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    SkillRepositoryProtocol, TaskHistoryRepositoryProtocol,
+    TaskRepositoryProtocol, UserRepositoryProtocol)
+from src.app.application.interfaces.transaction_interfaces import \
+    TransactionProtocol
+
 
 class CompleteTaskInteractor:
     def __init__(self, 

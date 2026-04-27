@@ -1,6 +1,10 @@
-from src.app.application.interfaces.repositories_interfaces import ItemRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
 from uuid import UUID
+
+from src.app.application.interfaces.repositories_interfaces import \
+    ItemRepositoryProtocol
+from src.app.application.interfaces.transaction_interfaces import \
+    TransactionProtocol
+
 
 class DeleteItemInteractor:
     def __init__(self, repo: ItemRepositoryProtocol, transaction: TransactionProtocol) -> None:

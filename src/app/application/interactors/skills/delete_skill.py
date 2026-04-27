@@ -1,7 +1,11 @@
-from src.app.application.interfaces.repositories_interfaces import SkillRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
-from src.app.application.exceptions import SkillNotFoundError
 from datetime import datetime, timezone
+
+from src.app.application.exceptions import SkillNotFoundError
+from src.app.application.interfaces.repositories_interfaces import \
+    SkillRepositoryProtocol
+from src.app.application.interfaces.transaction_interfaces import \
+    TransactionProtocol
+
 
 class DeleteSkillInteractor:
     def __init__(self, repo: SkillRepositoryProtocol, transaction: TransactionProtocol) -> None:

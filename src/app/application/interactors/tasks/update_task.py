@@ -1,11 +1,17 @@
-from src.app.application.interfaces.repositories_interfaces import TaskRepositoryProtocol
-from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
-from src.app.application.exceptions import TaskNotFoundError, TaskAccessDeniedError
+from uuid import UUID
+
 from src.app.application.dto.tasks import TaskDTO, TaskUpdateDTO
+from src.app.application.exceptions import (TaskAccessDeniedError,
+                                            TaskNotFoundError)
+from src.app.application.interfaces.cash_interfaces import \
+    RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import \
+    TaskRepositoryProtocol
+from src.app.application.interfaces.transaction_interfaces import \
+    TransactionProtocol
 from src.app.domain import TaskRewardCalculatorDomain
 from src.app.presentation.schemas.sentinel_types import Unset
-from uuid import UUID
+
 
 class UpdateTaskInteractor:
     def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
@@ -14,7 +20,7 @@ class UpdateTaskInteractor:
         self.transaction = transaction
 
     async def __call__(self, task_id: UUID, dto: TaskUpdateDTO, session_token: str):
-        task = await self.repo.get_task_by_id(task_id, False, False)
+        task = await self.repo.get_task_by_id(task_id)
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if task is None:
             raise TaskNotFoundError()
@@ -66,6 +72,5 @@ class UpdateTaskInteractor:
                     repeat_frequency=task.repeat_frequency,
                     deadline=task.deadline,
                 )
-        await self.repo.update(task)
         await self.transaction.commit()
         return new_dto

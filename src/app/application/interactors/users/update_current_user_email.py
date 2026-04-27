@@ -1,10 +1,17 @@
-from src.app.application.interfaces.repositories_interfaces import UserRepositoryProtocol
-from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
-from src.app.application.dto.users import UserEmailDTO
-from src.app.application.exceptions import SessionNotFoundError, UserNotFoundError, IncorrectPasswordError, EmailAlreadyTakenError
-from src.app.core.security import password_verify
 from uuid import UUID
+
+from src.app.application.dto.users import UserEmailDTO
+from src.app.application.exceptions import (EmailAlreadyTakenError,
+                                            IncorrectPasswordError,
+                                            SessionNotFoundError,
+                                            UserNotFoundError)
+from src.app.application.interfaces.cash_interfaces import \
+    RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import \
+    UserRepositoryProtocol
+from src.app.application.interfaces.transaction_interfaces import \
+    TransactionProtocol
+from src.app.core.security import password_verify
 
 
 class UpdateCurrentUserEmailInteractor:
@@ -25,6 +32,5 @@ class UpdateCurrentUserEmailInteractor:
         if await self.repo.get_user_by_email(dto.new_email):
             raise EmailAlreadyTakenError()
         user.email = dto.new_email
-        await self.repo.update(user)
         await self.transaction.commit()
         return dto.new_email

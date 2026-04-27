@@ -29,7 +29,7 @@ class TaskUpdateDTO:
     repeat_limit: int | None | Unset = UNSET
     repeat_frequency: TaskRepeatFrequency | None | Unset = UNSET
     deadline: datetime | None | Unset = UNSET
-    type: TaskType | None | Unset = UNSET
+    type: TaskType | Unset = UNSET
     difficulty: TaskDifficulty | None | Unset = UNSET
     priority: TaskPriority | None | Unset = UNSET
     custom_xp_reward: int | None | Unset = UNSET

@@ -1,5 +1,8 @@
-from src.app.application.interfaces.repositories_interfaces import TaskRepositoryProtocol
-from src.app.application.dto.tasks import TaskFilterParamsDTO, TaskSortParamsDTO
+from src.app.application.dto.tasks import (TaskFilterParamsDTO,
+                                           TaskSortParamsDTO)
+from src.app.application.interfaces.repositories_interfaces import \
+    TaskRepositoryProtocol
+
 
 class GetAllTasksInteractor:
     def __init__(self, repo: TaskRepositoryProtocol) -> None:

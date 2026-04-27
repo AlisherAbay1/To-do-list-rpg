@@ -1,11 +1,17 @@
-from src.app.application.interfaces.repositories_interfaces import UserRepositoryProtocol
-from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
-from src.app.application.dto.users import CreateUserDTO, CreateUserResultDTO
-from src.app.core.security import hash_password
-from src.app.application.exceptions import UsernameAlreadyTakenError, EmailAlreadyTakenError
-from src.app.infrastructure.database.models import User
 from uuid6 import uuid7
+
+from src.app.application.dto.users import CreateUserDTO, CreateUserResultDTO
+from src.app.application.exceptions import (EmailAlreadyTakenError,
+                                            UsernameAlreadyTakenError)
+from src.app.application.interfaces.cash_interfaces import \
+    RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import \
+    UserRepositoryProtocol
+from src.app.application.interfaces.transaction_interfaces import \
+    TransactionProtocol
+from src.app.core.security import hash_password
+from src.app.domain import User
+
 
 class CreateUserInteractor:
     def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:

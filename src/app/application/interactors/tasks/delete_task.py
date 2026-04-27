@@ -1,8 +1,12 @@
-from src.app.application.interfaces.repositories_interfaces import TaskRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
-from src.app.application.exceptions import TaskNotFoundError
-from uuid import UUID
 from datetime import datetime, timezone
+from uuid import UUID
+
+from src.app.application.exceptions import TaskNotFoundError
+from src.app.application.interfaces.repositories_interfaces import \
+    TaskRepositoryProtocol
+from src.app.application.interfaces.transaction_interfaces import \
+    TransactionProtocol
+
 
 class DeleteTaskInteractor:
     def __init__(self, repo: TaskRepositoryProtocol, transaction: TransactionProtocol) -> None:

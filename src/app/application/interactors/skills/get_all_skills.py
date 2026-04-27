@@ -1,4 +1,6 @@
-from src.app.application.interfaces.repositories_interfaces import SkillRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import \
+    SkillRepositoryProtocol
+
 
 class GetAllSkillsInteractor:
     def __init__(self, repo: SkillRepositoryProtocol) -> None:

@@ -1,5 +1,7 @@
-from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from src.app.application.exceptions import SessionNotFoundError
+from src.app.application.interfaces.cash_interfaces import \
+    RedisRepositoryProtocol
+
 
 class GetSessionTimeInteractor:
     def __init__(self, cash_repo: RedisRepositoryProtocol) -> None:
