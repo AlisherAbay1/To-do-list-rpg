@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from src.app.application.dto.tasks import TaskDTO
 from src.app.application.exceptions import SessionNotFoundError
 from src.app.application.interfaces.cash_interfaces import \
@@ -18,7 +16,7 @@ class GetDailyTasksBySessionTokenInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        tasks = await self.repo.get_daily_tasks_by_user_id(UUID(user_id))
+        tasks = await self.repo.get_daily_tasks_by_user_id(user_id)
         tasks_list = []
         for task in tasks:
             rewards = TaskRewardCalculatorDomain(

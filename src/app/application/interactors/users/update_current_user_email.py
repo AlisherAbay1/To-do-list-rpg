@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from src.app.application.dto.users import UserEmailDTO
 from src.app.application.exceptions import (EmailAlreadyTakenError,
                                             IncorrectPasswordError,
@@ -24,7 +22,7 @@ class UpdateCurrentUserEmailInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        user = await self.repo.get_user(UUID(user_id))
+        user = await self.repo.get_user(user_id)
         if not user:
             raise UserNotFoundError()
         if not password_verify(dto.password, user.password):

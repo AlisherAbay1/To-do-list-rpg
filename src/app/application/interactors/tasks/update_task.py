@@ -2,7 +2,8 @@ from uuid import UUID
 
 from src.app.application.dto.tasks import TaskDTO, TaskUpdateDTO
 from src.app.application.exceptions import (TaskAccessDeniedError,
-                                            TaskNotFoundError)
+                                            TaskNotFoundError, 
+                                            SessionNotFoundError)
 from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
 from src.app.application.interfaces.repositories_interfaces import \
@@ -24,7 +25,9 @@ class UpdateTaskInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if task is None:
             raise TaskNotFoundError()
-        if task.user_id != UUID(user_id):
+        if user_id is None:
+            raise SessionNotFoundError()
+        if task.user_id != user_id:
             raise TaskAccessDeniedError()
         
         if not isinstance(dto.title, Unset):

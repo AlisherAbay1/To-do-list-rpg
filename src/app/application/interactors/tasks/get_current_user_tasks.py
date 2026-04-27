@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from src.app.application.dto.tasks import TaskDryDTO
 from src.app.application.exceptions import SessionNotFoundError
 from src.app.application.interfaces.cash_interfaces import \
@@ -17,7 +15,7 @@ class GetCurentUserTasksInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        tasks = await self.repo.get_tasks_by_user_id(UUID(user_id), limit, offset)
+        tasks = await self.repo.get_tasks_by_user_id(user_id, limit, offset)
         return [TaskDryDTO(
             id=task.id,
             user_id=task.user_id,

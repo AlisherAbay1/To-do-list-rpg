@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from src.app.application.dto_mappers import UserMapper
 from src.app.application.exceptions import (SessionNotFoundError,
                                             UserNotFoundError)
@@ -18,7 +16,7 @@ class GetCurrentUser:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        user = await self.repo.get_user(UUID(user_id))
+        user = await self.repo.get_user(user_id)
         if user is None:
             raise UserNotFoundError()
         return UserMapper.to_dto(user)

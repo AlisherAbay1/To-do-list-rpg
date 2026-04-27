@@ -10,7 +10,7 @@ from src.app.application.interfaces.repositories_interfaces import \
 from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
 from src.app.domain import Item
-
+from src.app.application.exceptions import SessionNotFoundError
 
 class CreateCurrentUserItemInteractor:
     def __init__(self, repo: ItemRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
@@ -20,6 +20,8 @@ class CreateCurrentUserItemInteractor:
 
     async def __call__(self, session_token: str, dto: ItemCreateDTO):
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        if user_id is None:
+            raise SessionNotFoundError()
         item_id = uuid7()
         user = Item(
             id=item_id,
@@ -31,7 +33,7 @@ class CreateCurrentUserItemInteractor:
         await self.transaction.commit()
         return ItemDTO(
             id=UUID(str(item_id)),
-            user_id=UUID(user_id), 
+            user_id=user_id, 
             title=dto.title, 
             description=dto.description
         )

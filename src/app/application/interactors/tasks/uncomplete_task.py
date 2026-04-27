@@ -39,12 +39,12 @@ class UncompleteTaskInteractor:
             raise TaskNotFoundError()
         if not tasks_history:
             raise TaskNotFoundError()
-        if task.user_id != UUID(user_id):
+        if task.user_id != user_id:
             raise TaskAccessDeniedError()
         if task.repeat_limit is not None:
             task.repeat_limit += 1
 
-        user = await self.user_repo.get_user(UUID(user_id))
+        user = await self.user_repo.get_user(user_id)
 
         if user is None:
             raise UserNotFoundError()

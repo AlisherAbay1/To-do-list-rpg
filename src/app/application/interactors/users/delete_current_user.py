@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from src.app.application.exceptions import UserNotFoundError
 from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
@@ -19,5 +17,5 @@ class DeleteCurrentUserInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise UserNotFoundError()
-        await self.repo.delete(UUID(user_id))
+        await self.repo.delete(user_id)
         await self.transaction.commit()

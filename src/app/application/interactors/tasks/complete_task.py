@@ -36,10 +36,10 @@ class CompleteTaskInteractor:
             raise SessionNotFoundError()
         if task is None:
             raise TaskNotFoundError()
-        if task.user_id != UUID(user_id):
+        if task.user_id != user_id:
             raise TaskAccessDeniedError()
         
-        user = await self.user_repo.get_user(UUID(user_id))
+        user = await self.user_repo.get_user(user_id)
         skills = await self.skill_repo.get_skills_by_task_id(task_id)
 
         if user is None:

@@ -10,7 +10,7 @@ from src.app.application.interfaces.repositories_interfaces import \
 from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
 from src.app.domain import Skill
-
+from src.app.application.exceptions import SessionNotFoundError
 
 class CreateCurrentUserSkillInteractor:
     def __init__(self, repo: SkillRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
@@ -20,6 +20,8 @@ class CreateCurrentUserSkillInteractor:
 
     async def __call__(self, session_token: str, dto: SkillCreateDTO):
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        if user_id is None:
+            raise SessionNotFoundError()
         skill_id = uuid7()
         user = Skill(
             id=skill_id,
@@ -34,7 +36,7 @@ class CreateCurrentUserSkillInteractor:
         await self.transaction.commit()
         return SkillDTO(
             id=UUID(str(skill_id)),
-            user_id=UUID(user_id), 
+            user_id=user_id, 
             title=dto.title, 
             description=dto.description, 
             ico=dto.ico, 

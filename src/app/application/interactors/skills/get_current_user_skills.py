@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from src.app.application.exceptions import SessionNotFoundError
 from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
@@ -16,5 +14,5 @@ class GetCurrentUserSkillsInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        skills = await self.repo.get_skills_by_user_id(UUID(user_id), limit, offset)
+        skills = await self.repo.get_skills_by_user_id(user_id, limit, offset)
         return skills

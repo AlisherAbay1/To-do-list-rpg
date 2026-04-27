@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from src.app.application.dto.users import UserPasswordDTO
 from src.app.application.exceptions import (IncorrectPasswordError,
                                             SessionNotFoundError,
@@ -23,7 +21,7 @@ class UpdateCurrentUserPasswordInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        user = await self.repo.get_user(UUID(user_id))
+        user = await self.repo.get_user(user_id)
         if not user:
             raise UserNotFoundError()
         if not password_verify(dto.old_password, user.password): 

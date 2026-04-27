@@ -1,4 +1,4 @@
-from uuid import uuid4
+from uuid import UUID
 from secrets import token_urlsafe
 from redis.asyncio import Redis
 from src.app.core.redis_config import MAX_AGE
@@ -20,11 +20,11 @@ class RedisRepository:
     async def delete_session(self, session_token: str) -> None:
         await self._session.delete(f"session:{session_token}")
 
-    async def get_user_id_by_session_token(self, session_token: str) -> Optional[str]:
+    async def get_user_id_by_session_token(self, session_token: str) -> Optional[UUID]:
         id = await self._session.get(f"session:{session_token}")
-        if id == "None":
-            id = None
-        return id
+        if id is None:
+            return
+        return UUID(id)
 
     async def get_session_time(self, session_token: str) -> int: 
         return await self._session.ttl(f"session:{session_token}")
