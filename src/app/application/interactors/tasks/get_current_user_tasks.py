@@ -31,5 +31,7 @@ class GetCurentUserTasksInteractor:
             difficulty=task.difficulty,
             priority=task.priority,
             custom_xp_reward=task.custom_xp_reward,
-            custom_gold_reward=task.custom_gold_reward
+            custom_gold_reward=task.custom_gold_reward, 
+            deleted=task.deleted,
+            deleted_at=task.deleted_at
             ) for task in tasks]

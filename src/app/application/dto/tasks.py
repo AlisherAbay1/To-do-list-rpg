@@ -53,6 +53,8 @@ class TaskDryDTO:
     priority: Optional[TaskPriority]
     custom_xp_reward: Optional[int]
     custom_gold_reward: Optional[int]
+    deleted: bool
+    deleted_at: Optional[datetime]
 
 
 @dataclass(slots=True)
