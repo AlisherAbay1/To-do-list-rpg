@@ -1,16 +1,14 @@
 from src.app.infrastructure.database.models.base import Base
 from uuid import UUID
-from sqlalchemy import ForeignKey, BigInteger, Table, Column, UUID
-from uuid6 import uuid7
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import ForeignKey, BigInteger
+from uuid_utils import uuid7
 
-def get_shop_table():
-    shop_table = Table(
-        "shop",
-        Base.metadata,
-        Column("id", UUID, primary_key=True, default=uuid7),
-        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False),
-        Column("item_id", UUID, ForeignKey("item.id", ondelete="CASCADE"), nullable=False),
-        Column("price", BigInteger, nullable=False),
-        Column("quantity", BigInteger, nullable=False)
-    )
-    return shop_table
+class Shop(Base):
+    __tablename__ = "shop"
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
+    item_id: Mapped[UUID] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
+    price: Mapped[int] = mapped_column(BigInteger)
+    quantity: Mapped[int] = mapped_column(BigInteger)

@@ -1,20 +1,20 @@
 from src.app.infrastructure.database.models.base import Base
 from uuid import UUID
-from sqlalchemy import String, ForeignKey, DateTime, Column, Table, UUID, Integer, Boolean
-from uuid6 import uuid7
+from sqlalchemy import String, ForeignKey, DateTime
+from sqlalchemy.orm import Mapped, mapped_column
+from uuid_utils import uuid7
+from typing import Optional
+from datetime import datetime
 
-def get_skill_table():
-    skill_table = Table(
-        "skill",
-        Base.metadata,
-        Column("id", UUID, primary_key=True, default=uuid7),
-        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False),
-        Column("title", String(255), nullable=False),
-        Column("description", String, nullable=True, default=None),
-        Column("ico", String, nullable=True, default=None),
-        Column("lvl", Integer, default=1, nullable=False),
-        Column("xp", Integer, default=0, nullable=False),
-        Column("deleted", Boolean, default=False, nullable=False),
-        Column("deleted_at", DateTime(timezone=True), nullable=True, default=None)
-    )
-    return skill_table
+class Skill(Base):
+    __tablename__ = "skill"
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
+    title: Mapped[str] = mapped_column(String(255))
+    description: Mapped[Optional[str]] = mapped_column(default=None)
+    ico: Mapped[Optional[str]] = mapped_column(default=None)
+    lvl: Mapped[int] = mapped_column(default=1)
+    xp: Mapped[int] = mapped_column(default=0)
+    deleted: Mapped[bool] = mapped_column(default=False)
+    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))

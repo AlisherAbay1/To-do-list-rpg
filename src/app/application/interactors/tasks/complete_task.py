@@ -51,6 +51,6 @@ class CompleteTaskInteractor:
         await self.task_history_repo.save_completion(task, skills, rewards)
 
         dto = CompleteTaskDtoMapper.to_dto(task, user, skills, rewards)
-        
+
         await self.transaction.commit()
         return dto

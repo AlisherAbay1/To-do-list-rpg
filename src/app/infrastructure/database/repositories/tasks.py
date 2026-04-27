@@ -65,11 +65,6 @@ class TaskRepository:
         result = await self._session.scalars(tasks)
         return result.all()
     
-    async def get_task_with_user(self, task_id: UUID) -> Optional[Task]:
-        task_and_user = select(Task).options(joinedload(Task.user)).where(Task.id == task_id)
-        result = await self._session.scalar(task_and_user)
-        return result
-    
     async def get_task_by_id(self, task_id: UUID) -> Optional[TaskDomain]:
         task = select(Task).where(Task.id == task_id)
         result = await self._session.scalar(task)

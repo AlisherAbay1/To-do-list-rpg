@@ -11,9 +11,6 @@ from src.app.presentation.exception_handlers import register_exeptions
 from src.app.core.taskiq import broker
 from contextlib import asynccontextmanager
 from src.app.infrastructure.di_providers import AppProvider, UserProvider, TaskProvider, SkillProvider, ItemProvider
-from src.app.core.database import map_imperativly_models
-
-map_imperativly_models()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

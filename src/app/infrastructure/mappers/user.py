@@ -1,11 +1,11 @@
-from src.app.infrastructure.database.models import User
+from src.app.infrastructure.database.models import User 
 from src.app.domain import UserDomain
 
 class UserMapper:
     @staticmethod
     def to_domain(orm: User) -> UserDomain:
         user = UserDomain(
-            id=orm.id,
+            id=orm.id, 
             username=orm.username,
             email=orm.email,
             password=orm.password,

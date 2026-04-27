@@ -1,56 +1,59 @@
 from src.app.infrastructure.database.models.base import Base
+from src.app.infrastructure.database.models.users import User
+from src.app.infrastructure.database.models.skills import Skill
+from src.app.infrastructure.database.models.items import Item
 from uuid import UUID
-from sqlalchemy import String, ForeignKey, BigInteger, DateTime, Table, Column, UUID, Integer, Boolean
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import String, ForeignKey, BigInteger, DateTime
 from sqlalchemy.dialects.postgresql import ENUM
 from src.app.domain.enums import TaskRepeatFrequency, TaskDifficulty, TaskPriority, TaskType
-from uuid6 import uuid7
+from uuid_utils import uuid7
+from typing import Optional
 from datetime import datetime, timezone
 
-def get_task_table():
-    task_table = Table(
-        "task",
-        Base.metadata,
-        Column("id", UUID, primary_key=True, default=uuid7),
-        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False),
-        Column("title", String(255), nullable=False),
-        Column("description", String, nullable=True, default=None),
-        Column("category_id", UUID, ForeignKey("task_category.id", ondelete="SET NULL"), nullable=True, default=None),
-        Column("repeat_limit", Integer, nullable=True, default=None),
-        Column("repeat_frequency", ENUM(TaskRepeatFrequency, name="repeat_frequency"), nullable=True, default=None),
-        Column("deadline", DateTime(timezone=True), nullable=True, default=None),
-        Column("last_completed_at", DateTime(timezone=True), nullable=True, default=None),
-        Column("created_at", DateTime(timezone=True), default=lambda: datetime.now(tz=timezone.utc), nullable=False),
-        Column("type", ENUM(TaskType, name="task_type"), default=TaskType.AUTO, nullable=False),
-        Column("difficulty", ENUM(TaskDifficulty, name="task_difficulty"), nullable=True),
-        Column("priority", ENUM(TaskPriority, name="task_priority"), nullable=True),
-        Column("custom_xp_reward", BigInteger, nullable=True),
-        Column("custom_gold_reward", BigInteger, nullable=True),
-        Column("deleted", Boolean, default=False, nullable=False),
-        Column("deleted_at", DateTime(timezone=True), nullable=True, default=None)
-    )
-    return task_table
+class Task(Base):
+    __tablename__ = "task"
 
-def get_task_category_table():
-    task_category_table = Table(
-        "task_category",
-        Base.metadata,
-        Column("id", UUID, primary_key=True, default=uuid7),
-        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False),
-        Column("title", String(255), nullable=False),
-        Column("color", String(255), nullable=False)
-    )
-    return task_category_table
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
+    title: Mapped[str] = mapped_column(String(255))
+    description: Mapped[Optional[str]] = mapped_column(default=None)
+    category_id: Mapped[Optional[UUID]] = mapped_column(ForeignKey("task_category.id", ondelete="SET NULL"), default=None)
+    repeat_limit: Mapped[Optional[int]] = mapped_column(default=None)
+    repeat_frequency: Mapped[Optional[TaskRepeatFrequency]] = mapped_column(ENUM(TaskRepeatFrequency, name="repeat_frequency"), default=None)
+    deadline: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=None)
+    last_completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=None)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(tz=timezone.utc))
+    type: Mapped[TaskType] = mapped_column(ENUM(TaskType, name="task_type"), default=TaskType.AUTO)
+    difficulty: Mapped[Optional[TaskDifficulty]] = mapped_column(ENUM(TaskDifficulty, name="task_difficulty"))
+    priority: Mapped[Optional[TaskPriority]] = mapped_column(ENUM(TaskPriority, name="task_priority"))
+    custom_xp_reward: Mapped[Optional[int]] = mapped_column(BigInteger)
+    custom_gold_reward: Mapped[Optional[int]] = mapped_column(BigInteger)
+    deleted: Mapped[bool] = mapped_column(default=False)
+    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
 
-def get_task_history_table():
-    task_history_table = Table(
-        "task_history",
-        Base.metadata,
-        Column("id", UUID, primary_key=True, default=uuid7),
-        Column("user_id", UUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False),
-        Column("task_id", UUID, ForeignKey("task.id", ondelete="CASCADE"), nullable=False),
-        Column("title", String(255), nullable=False),
-        Column("completed_at", DateTime(timezone=True), default=lambda: datetime.now(tz=timezone.utc), nullable=False),
-        Column("xp_earned", BigInteger, nullable=False),
-        Column("gold_earned", BigInteger, nullable=False)
-    )
-    return task_history_table
+    user: Mapped["User"] = relationship(passive_deletes=True, lazy="noload")
+    skills: Mapped[list["Skill"]] = relationship(secondary="tasks_to_skills", lazy="noload")
+    items: Mapped[list["Item"]] = relationship(secondary="tasks_to_items", lazy="noload")
+
+
+class TaskCategory(Base):
+    __tablename__ = "task_category"
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
+    title: Mapped[str] = mapped_column(String(255))
+    color: Mapped[str] = mapped_column(String(255))
+
+
+class TaskHistory(Base):
+    __tablename__ = "task_history"
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
+    task_id: Mapped[UUID] = mapped_column(ForeignKey("task.id", ondelete="CASCADE"))
+    title: Mapped[str] = mapped_column(String(255))
+    completed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(tz=timezone.utc))
+    xp_earned: Mapped[int] = mapped_column(BigInteger)
+    gold_earned: Mapped[int] = mapped_column(BigInteger)
+    skills: Mapped[list["Skill"]] = relationship(secondary="tasks_history_to_skills", lazy="noload")
