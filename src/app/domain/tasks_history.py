@@ -7,6 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid6 import uuid7
 
 from src.app.domain.skills import Skill
+from src.app.domain.items import Item
 from src.app.infrastructure.database.models.base import Base
 
 
@@ -21,3 +22,6 @@ class TaskHistory(Base):
     xp_earned: Mapped[int] = mapped_column(BigInteger)
     gold_earned: Mapped[int] = mapped_column(BigInteger)
     skills: Mapped[list["Skill"]] = relationship(secondary="tasks_history_to_skills", lazy="noload")
+
+    skills: Mapped[list["Skill"]] = relationship(secondary="tasks_history_to_skills", lazy="noload")
+    items: Mapped[list["Item"]] = relationship(secondary="tasks_history_to_items", lazy="noload")
