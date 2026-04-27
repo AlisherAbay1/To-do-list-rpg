@@ -12,7 +12,7 @@ from src.app.application.interfaces.repositories_interfaces import (
     TaskRepositoryProtocol, UserRepositoryProtocol)
 from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
-
+from src.app.application.dto_mappers import TaskMapper
 
 class UncompleteTaskInteractor:
     def __init__(self, 
@@ -44,30 +44,21 @@ class UncompleteTaskInteractor:
         if task.repeat_limit is not None:
             task.repeat_limit += 1
 
+        before_previous, previous = tasks_history
         user = await self.user_repo.get_user(user_id)
+        skills = await self.skill_repo.get_skills_by_task_id(task_id)
 
         if user is None:
             raise UserNotFoundError()
         
-        task.last_completed_at = tasks_history[-1].completed_at # previous completion
-        user.xp -= tasks_history[0].xp_earned
-        user.lvl = user.xp // 1000
-        user.gold -= tasks_history[0].gold_earned
-        for skill in tasks_history[0].skills: 
-            skill.xp -= tasks_history[0].xp_earned
+        task.last_completed_at = before_previous.completed_at
+        user.xp -= previous.xp_earned
+        user.lvl = 1 + user.xp // 1000
+        user.gold -= previous.gold_earned
+        for skill in previous.skills: 
+            skill.xp -= previous.xp_earned
 
-        dto = TaskDTO(
-            id=UUID(str(task_id)),
-            user_id=UUID(str(user_id)),
-            title=task.title,
-            description=task.description,
-            category_id=task.category_id,
-            xp=tasks_history[0].xp_earned,
-            gold=tasks_history[0].gold_earned,  
-            repeat_limit=task.repeat_limit,
-            repeat_frequency=task.repeat_frequency, 
-            deadline=task.deadline
-        )
+        dto = TaskMapper.to_dto_with_skills_and_user(task, user, skills)
         
         await self.transaction.delete(tasks_history[0])
 

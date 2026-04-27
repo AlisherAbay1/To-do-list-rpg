@@ -37,7 +37,7 @@ class TaskUpdateDTO:
     deleted: bool | Unset = UNSET
 
 @dataclass(slots=True)
-class TaskDryDTO:
+class TaskDetailDTO:
     id: UUID
     user_id: UUID
     title: str
@@ -63,7 +63,7 @@ class TaskReward:
     gold: int
 
 @dataclass(slots=True)
-class CompleteTaskDTO:
+class TaskWithUserAndSkillsDTO:
     id: UUID
     title: str
     description: Optional[str]

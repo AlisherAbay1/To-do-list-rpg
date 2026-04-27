@@ -1,4 +1,5 @@
-from src.app.application.dto.tasks import TaskDryDTO
+from src.app.application.dto_mappers import TaskMapper
+from src.app.application.dto.tasks import TaskDetailDTO
 from src.app.application.exceptions import SessionNotFoundError
 from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
@@ -11,27 +12,9 @@ class GetCurentUserTasksInteractor:
         self.repo = repo
         self.cash_repo = cash_repo
 
-    async def __call__(self, session_token, limit: int, offset: int):
+    async def __call__(self, session_token, limit: int, offset: int) -> list[TaskDetailDTO]:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         tasks = await self.repo.get_tasks_by_user_id(user_id, limit, offset)
-        return [TaskDryDTO(
-            id=task.id,
-            user_id=task.user_id,
-            title=task.title, 
-            description=task.description, 
-            category_id=task.category_id,
-            repeat_limit=task.repeat_limit,
-            repeat_frequency=task.repeat_frequency,
-            deadline=task.deadline,
-            last_completed_at=task.last_completed_at,
-            created_at=task.created_at,
-            type=task.type,
-            difficulty=task.difficulty,
-            priority=task.priority,
-            custom_xp_reward=task.custom_xp_reward,
-            custom_gold_reward=task.custom_gold_reward, 
-            deleted=task.deleted,
-            deleted_at=task.deleted_at
-            ) for task in tasks]
+        return TaskMapper.to_list_detail_dto(tasks)

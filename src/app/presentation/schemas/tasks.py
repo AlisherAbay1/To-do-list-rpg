@@ -38,7 +38,7 @@ class TaskSchemaReadable(BaseModel):
     repeat_frequency: Optional[TaskRepeatFrequency]
     deadline: Optional[datetime]
 
-class CompleteTaskSchema(BaseModel):
+class TaskWithUserAndSkillsSchema(BaseModel):
     id: UUID
     title: str
     description: Optional[str]

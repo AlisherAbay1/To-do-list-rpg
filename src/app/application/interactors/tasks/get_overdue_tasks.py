@@ -1,7 +1,7 @@
 from src.app.application.interfaces.repositories_interfaces import TaskRepositoryProtocol
 from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from src.app.application.exceptions import SessionNotFoundError
-from src.app.application.dto_mappers import TaskDtoMapper
+from src.app.application.dto_mappers import TaskMapper
 
 class GetOverdueTasksInteractor:
     def __init__(self, 
@@ -15,4 +15,4 @@ class GetOverdueTasksInteractor:
         if user_id is None:
             raise SessionNotFoundError()
         tasks = await self.repo.get_overdue_tasks_by_user_id(user_id)
-        return TaskDtoMapper.to_list_dto(tasks)
+        return TaskMapper.to_list_dto(tasks)

@@ -2,7 +2,7 @@ from uuid import UUID
 
 from uuid6 import uuid7
 
-from src.app.application.dto.tasks import TaskCreateDTO, TaskDTO
+from src.app.application.dto.tasks import TaskCreateDTO
 from src.app.application.exceptions import SessionNotFoundError
 from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
@@ -10,10 +10,10 @@ from src.app.application.interfaces.repositories_interfaces import \
     TaskRepositoryProtocol
 from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
-from src.app.domain import Task, TaskRewardCalculatorDomain
+from src.app.domain import Task
 from src.app.infrastructure.database.models import (Tasks_to_items,
                                                     Tasks_to_skills)
-
+from src.app.application.dto_mappers import TaskMapper
 
 class CreateCurrentUserTaskInteractor:
     def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
@@ -59,25 +59,8 @@ class CreateCurrentUserTaskInteractor:
             )
             await self.transaction.save(relationship)
 
+        output_dto = TaskMapper.to_dto(task)
+
         await self.transaction.commit()
 
-        rewards = TaskRewardCalculatorDomain(
-            task_type=dto.type, 
-            task_difficulty=dto.difficulty, 
-            task_priority=dto.priority, 
-            custom_xp_reward=dto.custom_xp_reward, 
-            custom_gold_reward=dto.custom_gold_reward
-        ).calculate_task_rewards()
-
-        return TaskDTO(
-            id=UUID(str(task_id)),
-            user_id=UUID(str(user_id)),
-            title=dto.title,
-            description=dto.description,
-            category_id=dto.category_id,
-            xp=rewards.xp,
-            gold=rewards.gold,  
-            repeat_limit=dto.repeat_limit,
-            repeat_frequency=dto.repeat_frequency, 
-            deadline=dto.deadline
-        )
+        return output_dto

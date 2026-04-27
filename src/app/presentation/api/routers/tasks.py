@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Cookie, HTTPException
 from pydantic import UUID7
 from src.app.presentation.schemas import (TaskSchemaCreate, TaskSchemaRead, TaskFilterParams, 
                         TaskSortParams, TaskSchemaReadable, TaskWithSkillsAndItemsSchemaRead, 
-                        TaskSchemaUpdate, CompleteTaskSchema)
+                        TaskSchemaUpdate, TaskWithUserAndSkillsSchema)
 from src.app.application.dto.tasks import (TaskCreateDTO, TaskFilterParamsDTO, TaskSortParamsDTO, 
                                         TaskUpdateDTO)
 from src.app.application.interactors import (GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, 
@@ -90,7 +90,7 @@ async def delete_task(task_id: UUID7,
                       interactor: FromDishka[DeleteTaskInteractor]):
     await interactor(task_id)
 
-@router.patch("/{task_id}/complete", response_model=CompleteTaskSchema) 
+@router.patch("/{task_id}/complete", response_model=TaskWithUserAndSkillsSchema) 
 async def complete_task(interactor: FromDishka[CompleteTaskInteractor], 
                         task_id: UUID7, 
                         session_token = Cookie(None)): 
@@ -98,7 +98,7 @@ async def complete_task(interactor: FromDishka[CompleteTaskInteractor],
         raise HTTPException(401, "Not authenticated")
     return await interactor(task_id, session_token)
 
-@router.patch("/{task_id}/uncomplete", response_model=TaskSchemaReadable) 
+@router.patch("/{task_id}/uncomplete", response_model=TaskWithUserAndSkillsSchema) 
 async def uncomplete_task(interactor: FromDishka[UncompleteTaskInteractor], 
                           task_id: UUID7, 
                           session_token = Cookie(None)): 

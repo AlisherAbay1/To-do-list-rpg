@@ -4,13 +4,13 @@ from .items import Item
 from .shop import Shop
 from .skills import Skill
 from .task_categories import TaskCategory
-from .tasks import Task, TaskRewardCalculatorDomain
+from .tasks import Task
 from .tasks_history import TaskHistory
 from .user_rank import UserRank
 from .users import User
 
 __all__ = ("Task", "Skill", "User", 
-           "TaskRewardCalculatorDomain", "Item", 
+           "Item", "Shop", "ItemHistory", 
            "TaskCategory", "Inventory", "TaskHistory",
-           "UserRank", "ItemHistory", "Shop",
+           "UserRank", 
            )

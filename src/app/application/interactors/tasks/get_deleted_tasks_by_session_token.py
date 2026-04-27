@@ -1,11 +1,9 @@
-from src.app.application.dto.tasks import TaskDTO
 from src.app.application.exceptions import SessionNotFoundError
 from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
 from src.app.application.interfaces.repositories_interfaces import \
     TaskRepositoryProtocol
-from src.app.domain.tasks import TaskRewardCalculatorDomain
-
+from src.app.application.dto_mappers import TaskMapper
 
 class GetDeletedTasksBySessionTokenInteractor:
     def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
@@ -17,26 +15,4 @@ class GetDeletedTasksBySessionTokenInteractor:
         if user_id is None:
             raise SessionNotFoundError()
         tasks = await self.repo.get_deleted_tasks_by_user_id(user_id)
-        tasks_list = []
-        for task in tasks:
-            rewards = TaskRewardCalculatorDomain(
-                task_type=task.type, 
-                task_difficulty=task.difficulty, 
-                task_priority=task.priority, 
-                custom_xp_reward=task.custom_xp_reward, 
-                custom_gold_reward=task.custom_gold_reward
-            ).calculate_task_rewards()
-            dto = TaskDTO(
-                id=task.id,
-                user_id=task.user_id,
-                title=task.title,
-                description=task.description,
-                category_id=task.category_id,
-                xp=rewards.xp,
-                gold=rewards.gold,  
-                repeat_limit=task.repeat_limit,
-                repeat_frequency=task.repeat_frequency, 
-                deadline=task.deadline
-            )
-            tasks_list.append(dto)
-        return tasks_list
+        return TaskMapper.to_list_dto(tasks)

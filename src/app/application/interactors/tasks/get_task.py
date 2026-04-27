@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.app.application.dto_mappers import TaskDtoMapper
+from src.app.application.dto_mappers import TaskMapper
 from src.app.application.exceptions import TaskNotFoundError
 from src.app.application.interfaces.repositories_interfaces import (
     ItemRepositoryProtocol, SkillRepositoryProtocol, TaskRepositoryProtocol)
@@ -28,5 +28,5 @@ class GetTaskInteractor:
         else:
             items = []
 
-        return TaskDtoMapper.to_dto_with_skills_and_items(task, skills, items)
+        return TaskMapper.to_dto_with_skills_and_items(task, skills, items)
         

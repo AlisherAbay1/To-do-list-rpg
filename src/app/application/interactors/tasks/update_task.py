@@ -10,9 +10,8 @@ from src.app.application.interfaces.repositories_interfaces import \
     TaskRepositoryProtocol
 from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
-from src.app.domain import TaskRewardCalculatorDomain
 from src.app.presentation.schemas.sentinel_types import Unset
-
+from src.app.application.dto_mappers import TaskMapper
 
 class UpdateTaskInteractor:
     def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
@@ -54,26 +53,7 @@ class UpdateTaskInteractor:
             task.custom_gold_reward = dto.custom_gold_reward
         if not isinstance(dto.deleted, Unset):
             task.deleted = dto.deleted
-
-        rewards = TaskRewardCalculatorDomain(
-            task_type=task.type, 
-            task_difficulty=task.difficulty, 
-            task_priority=task.priority, 
-            custom_xp_reward=task.custom_xp_reward, 
-            custom_gold_reward=task.custom_gold_reward
-        ).calculate_task_rewards()
         
-        new_dto = TaskDTO(
-                    id=task.id,
-                    user_id=task.user_id,
-                    title=task.title,
-                    description=task.description,
-                    category_id=task.category_id,
-                    xp=rewards.xp,
-                    gold=rewards.gold,
-                    repeat_limit=task.repeat_limit,
-                    repeat_frequency=task.repeat_frequency,
-                    deadline=task.deadline,
-                )
+        new_dto = TaskMapper.to_dto(task)
         await self.transaction.commit()
         return new_dto

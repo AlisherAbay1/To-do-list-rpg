@@ -1,5 +1,7 @@
-from .tasks import TaskDtoMapper
-from .complete_task import CompleteTaskDtoMapper
+from .tasks import TaskMapper
 from .users import UserMapper
+from .skills import SkillMapper
+from .items import ItemMapper
 
-__all__ = ("TaskDtoMapper", "CompleteTaskDtoMapper", "UserMapper")
+__all__ = ("TaskMapper", "UserMapper", "SkillMapper",
+           "ItemMapper")
