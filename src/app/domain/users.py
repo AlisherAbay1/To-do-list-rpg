@@ -1,23 +1,29 @@
-from uuid import UUID
 from typing import Optional
-from src.app.application.dto.tasks import TaskReward
-from dataclasses import dataclass, field
+from uuid import UUID
+
+from sqlalchemy import BigInteger, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column
 from uuid6 import uuid7
 
-@dataclass(kw_only=True)
-class UserDomain:
-    id: UUID = field(default_factory=uuid7)
-    username: str
-    email: str
-    password: str
-    lvl: int = 1
-    xp: int = 0
-    is_admin: bool = False
-    current_rank_id: Optional[UUID] = None
-    profile_picture: Optional[str] = None
-    gold: int = 0
-    language: str = "eng"
-    timezone: str = "UTC"
+from src.app.application.dto.tasks import TaskReward
+from src.app.infrastructure.database.models.base import Base
+
+
+class User(Base):
+    __tablename__ = "user"
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+    username: Mapped[str] = mapped_column(String(25), unique=True)
+    email: Mapped[str] = mapped_column(unique=True)
+    password: Mapped[str]
+    lvl: Mapped[int] = mapped_column(BigInteger, default=1)
+    xp: Mapped[int] = mapped_column(BigInteger, default=0)
+    is_admin: Mapped[bool] = mapped_column(default=False)
+    current_rank_id: Mapped[Optional[UUID]] = mapped_column(ForeignKey("rank.id", use_alter=True), default=None)
+    profile_picture: Mapped[Optional[str]] = mapped_column(default=None)
+    gold: Mapped[int] = mapped_column(BigInteger, default=0)
+    language: Mapped[str] = mapped_column(String(255), default="eng")
+    timezone: Mapped[str] = mapped_column(String(255), default="UTC")
 
     def apply_rewards(self, rewards: TaskReward):
         self.xp += rewards.xp

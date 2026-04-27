@@ -1,42 +1,47 @@
-from src.app.domain.enums import TaskType, TaskDifficulty, TaskPriority
-from src.app.application.dto.tasks import TaskReward
-from src.app.domain.enums import TaskRepeatFrequency
-from src.app.application.exceptions import TaskAlreadyDoneError, TaskExecutedTooEarlyError
-from uuid import UUID
-from datetime import datetime, timezone, timedelta
-from typing import Optional
 from dataclasses import dataclass, field
+from datetime import datetime, timedelta, timezone
+from typing import Optional
+from uuid import UUID
+
+from sqlalchemy import BigInteger, DateTime, ForeignKey, String
+from sqlalchemy.dialects.postgresql import ENUM
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid6 import uuid7
-from src.app.domain.users import UserDomain
-from src.app.domain.skills import SkillDomain
-from src.app.domain.items import ItemDomain
 
-@dataclass(kw_only=True)
-class TaskDomain:
-    id: UUID = field(default_factory=uuid7)
-    user_id: UUID
-    title: str
-    description: Optional[str] = None
-    category_id: Optional[UUID] = None
-    repeat_limit: Optional[int] = None
-    repeat_frequency: Optional[TaskRepeatFrequency] = None
-    deadline: Optional[datetime] = None
-    last_completed_at: Optional[datetime] = None
-    created_at: datetime = field(default_factory=lambda: datetime.now(tz=timezone.utc))
-    type: Optional[TaskType] = TaskType.AUTO
-    difficulty: Optional[TaskDifficulty]
-    priority: Optional[TaskPriority]
-    custom_xp_reward: Optional[int]
-    custom_gold_reward: Optional[int]
-    deleted: bool = False
-    deleted_at: Optional[datetime] = None
+from src.app.application.dto.tasks import TaskReward
+from src.app.application.exceptions import (TaskAlreadyDoneError,
+                                            TaskExecutedTooEarlyError)
+from src.app.domain.enums import (TaskDifficulty, TaskPriority,
+                                  TaskRepeatFrequency, TaskType)
+from src.app.domain.items import Item
+from src.app.domain.skills import Skill
+from src.app.domain.users import User
+from src.app.infrastructure.database.models.base import Base
 
-    user: Optional[UserDomain] = field(init=False, default=None)
-    skills: list[SkillDomain] = field(init=False, default_factory=list)
-    items: list[ItemDomain] = field(init=False, default_factory=list)
 
-    difficulty_multiplier: int = field(init=False, default=0)
-    priority_multiplier: int = field(init=False, default=0)
+class Task(Base):
+    __tablename__ = "task"
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
+    title: Mapped[str] = mapped_column(String(255))
+    description: Mapped[Optional[str]] = mapped_column(default=None)
+    category_id: Mapped[Optional[UUID]] = mapped_column(ForeignKey("task_category.id", ondelete="SET NULL"), default=None)
+    repeat_limit: Mapped[Optional[int]] = mapped_column(default=None)
+    repeat_frequency: Mapped[Optional[TaskRepeatFrequency]] = mapped_column(ENUM(TaskRepeatFrequency, name="repeat_frequency"), default=None)
+    deadline: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=None)
+    last_completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=None)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(tz=timezone.utc))
+    type: Mapped[TaskType] = mapped_column(ENUM(TaskType, name="task_type"), default=TaskType.AUTO)
+    difficulty: Mapped[Optional[TaskDifficulty]] = mapped_column(ENUM(TaskDifficulty, name="task_difficulty"))
+    priority: Mapped[Optional[TaskPriority]] = mapped_column(ENUM(TaskPriority, name="task_priority"))
+    custom_xp_reward: Mapped[Optional[int]] = mapped_column(BigInteger)
+    custom_gold_reward: Mapped[Optional[int]] = mapped_column(BigInteger)
+    deleted: Mapped[bool] = mapped_column(default=False)
+    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+
+    skills: Mapped[list["Skill"]] = relationship(secondary="tasks_to_skills", lazy="noload")
+    items: Mapped[list["Item"]] = relationship(secondary="tasks_to_items", lazy="noload")
 
     def complete(self):
         current_time = datetime.now(timezone.utc)
@@ -62,9 +67,9 @@ class TaskDomain:
         xp = 0
         gold = 0
         if self.type == TaskType.AUTO:
-            self._calculate_multipliers()
-            xp = self.difficulty_multiplier * 60 + self.priority_multiplier * 40
-            gold = self.difficulty_multiplier * 30 + self.priority_multiplier * 20
+            difficulty_multiplier, priority_multiplier = self._calculate_multipliers()
+            xp = difficulty_multiplier * 60 + priority_multiplier * 40
+            gold = difficulty_multiplier * 30 + priority_multiplier * 20
         elif self.type == TaskType.CUSTOM:
             if self.custom_xp_reward is not None:
                 xp = self.custom_xp_reward
@@ -78,24 +83,27 @@ class TaskDomain:
     def _calculate_multipliers(self): 
         match self.difficulty:
             case TaskDifficulty.EASY:
-                self.difficulty_multiplier = 1
+                difficulty_multiplier = 1
             case TaskDifficulty.MEDIUM:
-                self.difficulty_multiplier = 2
+                difficulty_multiplier = 2
             case TaskDifficulty.HARD:
-                self.difficulty_multiplier = 3
+                difficulty_multiplier = 3
             case TaskDifficulty.EPIC:
-                self.difficulty_multiplier = 4
+                difficulty_multiplier = 4
+            case _: 
+                difficulty_multiplier = 0
         match self.priority:
             case TaskPriority.LOW:
-                self.priority_multiplier = 1
+                priority_multiplier = 1
             case TaskPriority.MEDIUM:
-                self.priority_multiplier = 2
+                priority_multiplier = 2
             case TaskPriority.HIGH:
-                self.priority_multiplier = 3
+                priority_multiplier = 3
             case TaskPriority.CRITICAL:
-                self.priority_multiplier = 4
-
-
+                priority_multiplier = 4
+            case _: 
+                priority_multiplier = 0
+        return difficulty_multiplier, priority_multiplier
 
 
 

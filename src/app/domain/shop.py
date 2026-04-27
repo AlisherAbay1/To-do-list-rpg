@@ -1,12 +1,17 @@
-from dataclasses import dataclass, field
 from uuid import UUID
-from uuid6 import uuid7
 
-@dataclass(kw_only=True)
-class ShopDomain:
-    id: UUID = field(default_factory=uuid7)
-    user_id: UUID
-    item_id: UUID
-    price: int
-    quantity: int
+from sqlalchemy import BigInteger, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
+from uuid_utils import uuid7
 
+from src.app.infrastructure.database.models.base import Base
+
+
+class Shop(Base):
+    __tablename__ = "shop"
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
+    item_id: Mapped[UUID] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
+    price: Mapped[int] = mapped_column(BigInteger)
+    quantity: Mapped[int] = mapped_column(BigInteger)

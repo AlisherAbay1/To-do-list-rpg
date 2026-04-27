@@ -1,16 +1,16 @@
-from .tasks import TaskDomain, TaskRewardCalculatorDomain
-from .skills import SkillDomain
-from .users import UserDomain
-from .items import ItemDomain
-from .inventory import InventoryDomain
-from .task_categories import TaskCategoryDomain
-from .tasks_history import TaskHistoryDomain
-from .user_rank import UserRankDomain
-from .item_history import ItemHistoryDomain
-from .shop import ShopDomain
+from .inventory import Inventory
+from .item_history import ItemHistory
+from .items import Item
+from .shop import Shop
+from .skills import Skill
+from .task_categories import TaskCategory
+from .tasks import Task, TaskRewardCalculatorDomain
+from .tasks_history import TaskHistory
+from .user_rank import UserRank
+from .users import User
 
-__all__ = ("TaskDomain", "SkillDomain", "UserDomain", 
-           "TaskRewardCalculatorDomain", "ItemDomain", 
-           "TaskCategoryDomain", "InventoryDomain", "TaskHistoryDomain",
-           "UserRankDomain", "ItemHistoryDomain", "ShopDomain",
+__all__ = ("Task", "Skill", "User", 
+           "TaskRewardCalculatorDomain", "Item", 
+           "TaskCategory", "Inventory", "TaskHistory",
+           "UserRank", "ItemHistory", "Shop",
            )

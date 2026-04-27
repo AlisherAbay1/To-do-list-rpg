@@ -1,19 +1,23 @@
 from dataclasses import dataclass, field
-from uuid import UUID
-from uuid6 import uuid7
 from datetime import datetime, timezone
-from src.app.domain.skills import SkillDomain
-from src.app.domain.items import ItemDomain
+from uuid import UUID
 
-@dataclass(kw_only=True)
-class TaskHistoryDomain:
-    id: UUID = field(default_factory=uuid7)
-    user_id: UUID
-    task_id: UUID
-    title: str
-    completed_at: datetime = field(default_factory=lambda: datetime.now(tz=timezone.utc))
-    xp_earned: int
-    gold_earned: int
+from sqlalchemy import BigInteger, DateTime, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from uuid6 import uuid7
 
-    skills: list[SkillDomain] = field(init=False, default_factory=list)
-    items: list[ItemDomain] = field(init=False, default_factory=list)
+from src.app.domain.skills import Skill
+from src.app.infrastructure.database.models.base import Base
+
+
+class TaskHistory(Base):
+    __tablename__ = "task_history"
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
+    task_id: Mapped[UUID] = mapped_column(ForeignKey("task.id", ondelete="CASCADE"))
+    title: Mapped[str] = mapped_column(String(255))
+    completed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(tz=timezone.utc))
+    xp_earned: Mapped[int] = mapped_column(BigInteger)
+    gold_earned: Mapped[int] = mapped_column(BigInteger)
+    skills: Mapped[list["Skill"]] = relationship(secondary="tasks_history_to_skills", lazy="noload")
