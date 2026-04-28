@@ -5,6 +5,7 @@ from src.app.application.dto.items import ItemCreateDTO
 from src.app.application.interactors import GetAllItemsInteractor, GetCurrentUserItemsInteractor, CreateCurrentUserItemInteractor, \
                                     GetItemInteractor, DeleteItemInteractor
 from dishka.integrations.fastapi import FromDishka, DishkaRoute
+from src.app.presentation.mappers import ItemSchemaMapper
 
 router = APIRouter(prefix="/item", route_class=DishkaRoute)
 
@@ -31,10 +32,7 @@ async def create_current_user_item(data: ItemSchemaCreate,
     session_id = request.cookies.get("session_id")
     if session_id is None:
         raise HTTPException(401, "Not authenticated")
-    dto = ItemCreateDTO(
-        title=data.title, 
-        description=data.description
-    )
+    dto = ItemSchemaMapper.to_create_dto(data)
     return await interactor(session_id, dto)
 
 @router.get("/{item_id}", response_model=ItemSchemaRead)

@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Cookie, HTTPException
 from src.app.presentation.schemas import SkillSchemaCreate, SkillSchemaRead
-from src.app.application.dto.skills import SkillCreateDTO
 from pydantic import UUID7
 from src.app.application.interactors import GetAllSkillsInteractor, GetCurrentUserSkillsInteractor, CreateCurrentUserSkillInteractor, \
                                     GetSkillInteractor, DeleteSkillInteractor
