@@ -7,10 +7,10 @@ from uuid_utils import uuid7
 from src.app.infrastructure.database.models.base import Base
 
 
-class Shop(Base):
+class Shop(Base, kw_only=True):
     __tablename__ = "shop"
 
-    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+    id: Mapped[UUID] = mapped_column(primary_key=True, default_factory=uuid7)
     user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
     item_id: Mapped[UUID] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
     price: Mapped[int] = mapped_column(BigInteger)

@@ -3,7 +3,7 @@ from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
 from src.app.application.interfaces.repositories_interfaces import \
     SkillRepositoryProtocol
-
+from src.app.application.mappers import SkillMapper
 
 class GetCurrentUserSkillsInteractor:
     def __init__(self, repo: SkillRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
@@ -15,4 +15,5 @@ class GetCurrentUserSkillsInteractor:
         if user_id is None:
             raise SessionNotFoundError()
         skills = await self.repo.get_skills_by_user_id(user_id, limit, offset)
-        return skills
+        dtos = SkillMapper.to_list_dto(skills)
+        return dtos

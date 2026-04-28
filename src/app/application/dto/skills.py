@@ -12,8 +12,8 @@ class SkillDTO:
     ico: Optional[str]
     lvl: int
     xp: int
-    deleted: bool = False
-    deleted_at: Optional[datetime] = None
+    deleted: bool
+    deleted_at: Optional[datetime]
 
 @dataclass(slots=True)
 class SkillCreateDTO:

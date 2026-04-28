@@ -7,7 +7,7 @@ from src.app.application.interfaces.cash_interfaces import \
 from src.app.application.interfaces.repositories_interfaces import \
     UserRepositoryProtocol
 from src.app.core.security import password_verify
-
+from src.app.application.mappers import UserMapper
 
 class AuthenticateUserInteractor:
     def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
@@ -24,8 +24,7 @@ class AuthenticateUserInteractor:
         if not password_verify(dto.password, user.password):
             raise IncorrectPasswordError()
         session_token = await self.cash_repo.create_session(str(user.id))
-        return UserAuthDTO(
-            username=user.username, 
-            email=user.email, 
+        return UserMapper.to_auth_dto(
+            domain=user, 
             session_token=session_token
         )

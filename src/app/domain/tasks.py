@@ -18,10 +18,10 @@ from src.app.domain.skills import Skill
 from src.app.infrastructure.database.models.base import Base
 
 
-class Task(Base):
+class Task(Base, kw_only=True):
     __tablename__ = "task"
 
-    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+    id: Mapped[UUID] = mapped_column(primary_key=True, default_factory=uuid7)
     user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
     title: Mapped[str] = mapped_column(String(255))
     description: Mapped[Optional[str]] = mapped_column(default=None)
@@ -30,17 +30,17 @@ class Task(Base):
     repeat_frequency: Mapped[Optional[TaskRepeatFrequency]] = mapped_column(ENUM(TaskRepeatFrequency, name="repeat_frequency"), default=None)
     deadline: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=None)
     last_completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=None)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(tz=timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default_factory=lambda: datetime.now(tz=timezone.utc))
     type: Mapped[TaskType] = mapped_column(ENUM(TaskType, name="task_type"), default=TaskType.AUTO)
     difficulty: Mapped[Optional[TaskDifficulty]] = mapped_column(ENUM(TaskDifficulty, name="task_difficulty"))
     priority: Mapped[Optional[TaskPriority]] = mapped_column(ENUM(TaskPriority, name="task_priority"))
     custom_xp_reward: Mapped[Optional[int]] = mapped_column(BigInteger)
     custom_gold_reward: Mapped[Optional[int]] = mapped_column(BigInteger)
     deleted: Mapped[bool] = mapped_column(default=False)
-    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=None)
 
-    skills: Mapped[list["Skill"]] = relationship(secondary="tasks_to_skills", lazy="noload")
-    items: Mapped[list["Item"]] = relationship(secondary="tasks_to_items", lazy="noload")
+    skills: Mapped[list["Skill"]] = relationship(secondary="tasks_to_skills", lazy="noload", init=False, default_factory=list)
+    items: Mapped[list["Item"]] = relationship(secondary="tasks_to_items", lazy="noload", init=False, default_factory=list)
 
     def complete(self):
         current_time = datetime.now(timezone.utc)

@@ -11,6 +11,7 @@ from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
 from src.app.domain import Item
 from src.app.application.exceptions import SessionNotFoundError
+from src.app.application.mappers import ItemMapper
 
 class CreateCurrentUserItemInteractor:
     def __init__(self, repo: ItemRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
@@ -22,18 +23,12 @@ class CreateCurrentUserItemInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        item_id = uuid7()
-        user = Item(
-            id=item_id,
+        item = Item(
             user_id=user_id, 
             title=dto.title, 
             description=dto.description
         )
-        await self.transaction.save(user)
+        output_dto = ItemMapper.to_dto(item)
+        await self.transaction.save(item)
         await self.transaction.commit()
-        return ItemDTO(
-            id=UUID(str(item_id)),
-            user_id=user_id, 
-            title=dto.title, 
-            description=dto.description
-        )
+        return output_dto

@@ -1,7 +1,7 @@
 from src.app.application.exceptions import SkillNotFoundError
 from src.app.application.interfaces.repositories_interfaces import \
     SkillRepositoryProtocol
-
+from src.app.application.mappers import SkillMapper
 
 class GetSkillInteractor:
     def __init__(self, repo: SkillRepositoryProtocol) -> None:
@@ -11,4 +11,5 @@ class GetSkillInteractor:
         skill = await self.repo.get_skill_by_id(skill_id)
         if skill is None:
             raise SkillNotFoundError()
-        return skill
+        dto = SkillMapper.to_dto(skill)
+        return dto

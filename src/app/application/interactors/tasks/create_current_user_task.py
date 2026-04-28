@@ -27,7 +27,6 @@ class CreateCurrentUserTaskInteractor:
             raise SessionNotFoundError()
         task_id=uuid7()
         task = Task(
-            id=task_id,
             user_id=user_id,
             title=dto.title, 
             description=dto.description, 

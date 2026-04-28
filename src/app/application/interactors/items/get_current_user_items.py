@@ -3,7 +3,7 @@ from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
 from src.app.application.interfaces.repositories_interfaces import \
     ItemRepositoryProtocol
-
+from src.app.application.mappers import ItemMapper
 
 class GetCurrentUserItemsInteractor:
     def __init__(self, repo: ItemRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
@@ -15,4 +15,5 @@ class GetCurrentUserItemsInteractor:
         if user_id is None:
             raise SessionNotFoundError()
         items = await self.repo.get_items_by_user_id(user_id, limit, offset)
-        return items
+        dtos = ItemMapper.to_list_dto(items)
+        return dtos

@@ -9,10 +9,10 @@ from src.app.application.dto.tasks import TaskReward
 from src.app.infrastructure.database.models.base import Base
 
 
-class User(Base):
+class User(Base, kw_only=True):
     __tablename__ = "user"
 
-    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+    id: Mapped[UUID] = mapped_column(primary_key=True, default_factory=uuid7)
     username: Mapped[str] = mapped_column(String(25), unique=True)
     email: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str]

@@ -1,7 +1,7 @@
 from src.app.application.exceptions import ItemNotFoundError
 from src.app.application.interfaces.repositories_interfaces import \
     ItemRepositoryProtocol
-
+from src.app.application.mappers import ItemMapper
 
 class GetItemInteractor:
     def __init__(self, repo: ItemRepositoryProtocol) -> None:
@@ -11,4 +11,5 @@ class GetItemInteractor:
         item = await self.repo.get_item_by_id(item_id)
         if item is None:
             raise ItemNotFoundError()
-        return item
+        dto = ItemMapper.to_dto(item)
+        return dto

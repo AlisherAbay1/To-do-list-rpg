@@ -11,7 +11,7 @@ from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
 from src.app.core.security import hash_password
 from src.app.domain import User
-
+from src.app.application.mappers import UserMapper
 
 class CreateUserInteractor:
     def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
@@ -26,7 +26,6 @@ class CreateUserInteractor:
             raise EmailAlreadyTakenError()
         hashed_password = hash_password(dto.password)
         user = User(
-            id=uuid7(),
             username=dto.username, 
             email=dto.email,
             password=hashed_password, 
@@ -34,9 +33,8 @@ class CreateUserInteractor:
         self.repo.save(user)
         
         session_token = await self.cash_repo.create_session(str(user.id))
-        user_result = UserAuthDTO(
-            username=user.username, 
-            email=user.email, 
+        user_result = UserMapper.to_auth_dto(
+            domain=user, 
             session_token=session_token
         )
 

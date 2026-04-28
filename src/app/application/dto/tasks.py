@@ -118,7 +118,7 @@ class TaskCreateDTO:
     repeat_limit: Optional[int]
     repeat_frequency: Optional[TaskRepeatFrequency]
     deadline: Optional[datetime]
-    type: Optional[TaskType] = None
+    type: TaskType = TaskType.AUTO
     difficulty: Optional[TaskDifficulty] = None
     priority: Optional[TaskPriority] = None
     custom_xp_reward: Optional[int] = None
