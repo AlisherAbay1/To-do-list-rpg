@@ -1,14 +1,19 @@
-from fastapi import APIRouter, Depends, Cookie, HTTPException
+from dishka.integrations.fastapi import DishkaRoute, FromDishka
+from fastapi import APIRouter, Cookie, Depends, HTTPException
 from pydantic import UUID7
-from src.app.presentation.schemas import (TaskSchemaCreate, TaskSchemaRead, TaskFilterParams, 
-                        TaskSortParams, TaskSchemaReadable, TaskWithSkillsAndItemsSchemaRead, 
-                        TaskSchemaUpdate, TaskWithUserAndSkillsSchema)
-from src.app.application.interactors import (GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, 
-                                     GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor, 
-                                     UpdateTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksBySessionTokenInteractor, 
-                                     GetDailyTasksBySessionTokenInteractor, GetOverdueTasksInteractor)
-from dishka.integrations.fastapi import FromDishka, DishkaRoute
+
+from src.app.application.interactors import (
+    CompleteTaskInteractor, CreateCurrentUserTaskInteractor,
+    DeleteTaskInteractor, GetAllTasksInteractor, GetCurentUserTasksInteractor,
+    GetDailyTasksBySessionTokenInteractor,
+    GetDeletedTasksBySessionTokenInteractor, GetOverdueTasksInteractor,
+    GetTaskInteractor, UncompleteTaskInteractor, UpdateTaskInteractor)
 from src.app.presentation.mappers import TaskSchemaMapper
+from src.app.presentation.schemas import (TaskFilterParams, TaskSchemaCreate,
+                                          TaskSchemaRead, TaskSchemaReadable,
+                                          TaskSchemaUpdate, TaskSortParams,
+                                          TaskWithSkillsAndItemsSchemaRead,
+                                          TaskWithUserAndSkillsSchema)
 
 router = APIRouter(prefix="/tasks", route_class=DishkaRoute)
 

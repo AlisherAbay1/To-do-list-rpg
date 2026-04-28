@@ -1,10 +1,14 @@
+from dishka.integrations.fastapi import DishkaRoute, FromDishka
 from fastapi import APIRouter, Cookie, HTTPException
-from src.app.presentation.schemas import SkillSchemaCreate, SkillSchemaRead
 from pydantic import UUID7
-from src.app.application.interactors import GetAllSkillsInteractor, GetCurrentUserSkillsInteractor, CreateCurrentUserSkillInteractor, \
-                                    GetSkillInteractor, DeleteSkillInteractor
-from dishka.integrations.fastapi import FromDishka, DishkaRoute
+
+from src.app.application.interactors import (CreateCurrentUserSkillInteractor,
+                                             DeleteSkillInteractor,
+                                             GetAllSkillsInteractor,
+                                             GetCurrentUserSkillsInteractor,
+                                             GetSkillInteractor)
 from src.app.presentation.mappers import SkillSchemaMapper
+from src.app.presentation.schemas import SkillSchemaCreate, SkillSchemaRead
 
 router = APIRouter(prefix="/skill", route_class=DishkaRoute)
 

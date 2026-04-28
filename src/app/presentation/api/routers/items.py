@@ -1,11 +1,14 @@
-from fastapi import APIRouter, Request, HTTPException
+from dishka.integrations.fastapi import DishkaRoute, FromDishka
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import UUID7
-from src.app.presentation.schemas import ItemSchemaCreate, ItemSchemaRead
-from src.app.application.dto.items import ItemCreateDTO
-from src.app.application.interactors import GetAllItemsInteractor, GetCurrentUserItemsInteractor, CreateCurrentUserItemInteractor, \
-                                    GetItemInteractor, DeleteItemInteractor
-from dishka.integrations.fastapi import FromDishka, DishkaRoute
+
+from src.app.application.interactors import (CreateCurrentUserItemInteractor,
+                                             DeleteItemInteractor,
+                                             GetAllItemsInteractor,
+                                             GetCurrentUserItemsInteractor,
+                                             GetItemInteractor)
 from src.app.presentation.mappers import ItemSchemaMapper
+from src.app.presentation.schemas import ItemSchemaCreate, ItemSchemaRead
 
 router = APIRouter(prefix="/item", route_class=DishkaRoute)
 

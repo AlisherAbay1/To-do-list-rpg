@@ -1,18 +1,23 @@
-from fastapi import APIRouter, Response, Cookie
+from dishka.integrations.fastapi import DishkaRoute, FromDishka
+from fastapi import APIRouter, Cookie, HTTPException, Response
 from pydantic import UUID7
-from src.app.presentation.schemas import UserSchemaPatchEmail, UserSchemaRead, UserSchemaPatchPassword, \
-                                         UserSchemaCreateAuth, UserSignInSchema, UserSuccessAuthSchema, \
-                                         MessageSchema, UserNewEmailSchema
-from src.app.application.dto.users import UserEmailDTO, UserPasswordDTO
-from fastapi import HTTPException
-from src.app.application.interactors import GetAllUsersInteractor, UpdateCurrentUserEmailInteractor, DeleteCurrentUserInteractor, \
-                                        GetUserInteractor, GetSessionTimeInteractor, UpdateCurrentUserPasswordInteractor, \
-                                        CreateUserInteractor, GetCurrentUser, AuthenticateUserInteractor, \
-                                        DeleteSessionInteractor, RefreshSessionTokenInteractor
+
+from src.app.application.dto.users import UserPasswordDTO
+from src.app.application.interactors import (
+    AuthenticateUserInteractor, CreateUserInteractor,
+    DeleteCurrentUserInteractor, DeleteSessionInteractor,
+    GetAllUsersInteractor, GetCurrentUser, GetSessionTimeInteractor,
+    GetUserInteractor, RefreshSessionTokenInteractor,
+    UpdateCurrentUserEmailInteractor, UpdateCurrentUserPasswordInteractor)
 from src.app.core.redis_config import MAX_AGE
 from src.app.core.security import IS_PRODUCTION
-from dishka.integrations.fastapi import FromDishka, DishkaRoute
 from src.app.presentation.mappers import UserSchemaMapper
+from src.app.presentation.schemas import (MessageSchema, UserNewEmailSchema,
+                                          UserSchemaCreateAuth,
+                                          UserSchemaPatchEmail,
+                                          UserSchemaPatchPassword,
+                                          UserSchemaRead, UserSignInSchema,
+                                          UserSuccessAuthSchema)
 
 router = APIRouter(prefix="/users", route_class=DishkaRoute)
 
