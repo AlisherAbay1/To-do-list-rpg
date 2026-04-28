@@ -5,6 +5,7 @@ from pydantic import UUID7
 from src.app.application.interactors import GetAllSkillsInteractor, GetCurrentUserSkillsInteractor, CreateCurrentUserSkillInteractor, \
                                     GetSkillInteractor, DeleteSkillInteractor
 from dishka.integrations.fastapi import FromDishka, DishkaRoute
+from src.app.presentation.mappers import SkillSchemaMapper
 
 router = APIRouter(prefix="/skill", route_class=DishkaRoute)
 
@@ -29,13 +30,7 @@ async def create_current_user_skill(interactor: FromDishka[CreateCurrentUserSkil
                                     session_token = Cookie(None)):
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
-    dto = SkillCreateDTO(
-        title=data.title,
-        description=data.description, 
-        ico=data.ico, 
-        lvl=data.lvl, 
-        xp=data.xp
-    )
+    dto = SkillSchemaMapper.to_create_dto(data)
     return await interactor(session_token, dto)
 
 @router.get("/{skill_id}", response_model=SkillSchemaRead)
