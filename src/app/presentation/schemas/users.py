@@ -58,11 +58,20 @@ class UserSchemaPatchPassword(BaseModel):
             return password
         raise HTTPException(500, "Password should be at least 8 chars and less than 50.")
 
-class UserSchemaAuth(BaseModel):
+class UserSignInSchema(BaseModel):
     username_or_email: str
     password: str
 
     model_config = ConfigDict(from_attributes=True)
+
+class UserSuccessAuthSchema(BaseModel):
+    username: str
+    email: str
+    message: str
+
+class UserNewEmailSchema(BaseModel):
+    new_email: str
+    message: str
 
 class UserSchemaCreateAuth(BaseModel):
     username: str

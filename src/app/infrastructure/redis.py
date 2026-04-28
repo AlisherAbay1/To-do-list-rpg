@@ -15,7 +15,7 @@ class RedisRepository:
         return session_token
 
     async def extend_token_time(self, session_token: str) -> None:
-        self._session.expire(session_token, MAX_AGE)
+        await self._session.expire(f"session:{session_token}", MAX_AGE)
 
     async def delete_session(self, session_token: str) -> None:
         await self._session.delete(f"session:{session_token}")

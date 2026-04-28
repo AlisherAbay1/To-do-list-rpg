@@ -4,12 +4,15 @@ from .tasks import TaskSchemaRead, TaskSchemaCreate, TaskSortParams, \
                     TaskFilterParams, TaskSchemaReadable, TaskWithSkillsAndItemsSchemaRead, \
                     TaskSchemaUpdate, TaskWithUserAndSkillsSchema
 from .users import UserSchemaRead, UserSchemaCreate, UserSchemaCreateAuth, \
-                    UserSchemaPatchEmail, UserSchemaAuth, UserSchemaPatchPassword
+                    UserSchemaPatchEmail, UserSignInSchema, UserSchemaPatchPassword, \
+                    UserSuccessAuthSchema, UserNewEmailSchema
+from .shared import MessageSchema
 
 __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead", 
            "SkillSchemaCreate", "TaskSchemaRead", "TaskSchemaCreate", 
            "UserSchemaRead", "UserSchemaCreate", "UserSchemaCreateAuth",
-           "UserSchemaPatchEmail","UserSchemaAuth", "UserSchemaPatchPassword", 
+           "UserSchemaPatchEmail","UserSignInSchema", "UserSchemaPatchPassword", 
            "TaskSortParams", "TaskFilterParams", "TaskSchemaReadable", 
            "TaskWithSkillsAndItemsSchemaRead", "TaskSchemaUpdate", 
-           "TaskWithUserAndSkillsSchema")
+           "TaskWithUserAndSkillsSchema", "UserSuccessAuthSchema", "MessageSchema", 
+           "UserNewEmailSchema")

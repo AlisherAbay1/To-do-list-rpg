@@ -1,4 +1,4 @@
-from src.app.application.dto_mappers import UserMapper
+from src.app.application.mappers import UserMapper
 from src.app.application.exceptions import (SessionNotFoundError,
                                             UserNotFoundError)
 from src.app.application.interfaces.cash_interfaces import \

@@ -3,9 +3,9 @@ from typing import Sequence
 from src.app.domain import Task, Skill, Item, User
 from src.app.application.dto.tasks import (TaskDTO, TaskWithSkillsAndItemsDTO, TaskWithUserAndSkillsDTO, 
                                            TaskDetailDTO)
-from src.app.application.dto_mappers.skills import SkillMapper 
-from src.app.application.dto_mappers.items import ItemMapper
-from src.app.application.dto_mappers.users import UserMapper
+from src.app.application.mappers.skills import SkillMapper 
+from src.app.application.mappers.items import ItemMapper
+from src.app.application.mappers.users import UserMapper
 
 class TaskMapper:
     @staticmethod

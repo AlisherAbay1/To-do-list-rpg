@@ -13,7 +13,7 @@ from src.app.application.interfaces.transaction_interfaces import \
 from src.app.domain import Task
 from src.app.infrastructure.database.models import (Tasks_to_items,
                                                     Tasks_to_skills)
-from src.app.application.dto_mappers import TaskMapper
+from src.app.application.mappers import TaskMapper
 
 class CreateCurrentUserTaskInteractor:
     def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:

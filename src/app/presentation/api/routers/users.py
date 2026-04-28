@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Response, Cookie
 from pydantic import UUID7
 from src.app.presentation.schemas import UserSchemaPatchEmail, UserSchemaRead, UserSchemaPatchPassword, \
-                                     UserSchemaCreateAuth, UserSchemaAuth
-from src.app.application.dto.users import UserEmailDTO, CreateUserDTO, UserPasswordDTO, \
-                                      LoginIdentifierDTO
+                                         UserSchemaCreateAuth, UserSignInSchema, UserSuccessAuthSchema, \
+                                         MessageSchema, UserNewEmailSchema
+from src.app.application.dto.users import UserEmailDTO, UserPasswordDTO
 from fastapi import HTTPException
 from src.app.application.interactors import GetAllUsersInteractor, UpdateCurrentUserEmailInteractor, DeleteCurrentUserInteractor, \
                                         GetUserInteractor, GetSessionTimeInteractor, UpdateCurrentUserPasswordInteractor, \
@@ -12,6 +12,7 @@ from src.app.application.interactors import GetAllUsersInteractor, UpdateCurrent
 from src.app.core.redis_config import MAX_AGE
 from src.app.core.security import IS_PRODUCTION
 from dishka.integrations.fastapi import FromDishka, DishkaRoute
+from src.app.presentation.mappers import UserSchemaMapper
 
 router = APIRouter(prefix="/users", route_class=DishkaRoute)
 
@@ -29,15 +30,11 @@ async def get_current_user(interactor: FromDishka[GetCurrentUser],
     return await interactor(session_token)
 
 
-@router.post("/auth/registration")
+@router.post("/auth/registration", response_model=UserSuccessAuthSchema)
 async def create_user(response: Response, 
                       credentials: UserSchemaCreateAuth, 
                       interactor: FromDishka[CreateUserInteractor]):
-    dto = CreateUserDTO(
-        username=credentials.username, 
-        email=credentials.email, 
-        password=credentials.password
-    )
+    dto = UserSchemaMapper.to_create_dto(credentials)
     user_result = await interactor(dto)
 
     response.set_cookie(key="session_token", 
@@ -47,18 +44,17 @@ async def create_user(response: Response,
                         samesite="lax",
                         secure=IS_PRODUCTION)
     
-    return {"username": user_result.username, 
-            "email": user_result.email, 
-            "message": "User successfully created"}
+    return UserSuccessAuthSchema(
+            username=user_result.username, 
+            email=user_result.email, 
+            message="User successfully created"
+        )
 
-@router.post("/auth/login") 
+@router.post("/auth/login", response_model=UserSuccessAuthSchema) 
 async def sign_in_account(response: Response, 
-                          credentials: UserSchemaAuth, 
+                          credentials: UserSignInSchema, 
                           interactor: FromDishka[AuthenticateUserInteractor]): 
-    dto = LoginIdentifierDTO(
-        username_or_email=credentials.username_or_email, 
-        password=credentials.password
-    )
+    dto = UserSchemaMapper.to_sign_in_dto(credentials)
     user_result = await interactor(dto)
 
     response.set_cookie(key="session_token", 
@@ -68,16 +64,18 @@ async def sign_in_account(response: Response,
                         samesite="lax",
                         secure=IS_PRODUCTION)
     
-    return {"username": user_result.username, 
-            "email": user_result.email, 
-            "message": "Successfully sign-in"}
+    return UserSuccessAuthSchema(
+            username=user_result.username, 
+            email=user_result.email, 
+            message="Successfully sign-in"
+        )
 
-@router.patch("/auth/get_session_time")
+@router.patch("/auth/get_session_time", response_model=MessageSchema)
 async def get_session_time(interactor: FromDishka[GetSessionTimeInteractor], 
                            session_token: str = Cookie(None)):
     return await interactor(session_token)
 
-@router.patch("/auth/refresh")
+@router.patch("/auth/refresh", response_model=MessageSchema)
 async def refresh(interactor: FromDishka[RefreshSessionTokenInteractor], 
                   session_token: str = Cookie(None)):
     return await interactor(session_token)
@@ -90,7 +88,7 @@ async def logout(interactor: FromDishka[DeleteSessionInteractor],
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
     await interactor(session_token)
-    return {"message": "Session is deleted"}
+    return MessageSchema(message="Session is deleted")
 
 @router.patch("/me/email-change")
 async def update_current_user_email(interactor: FromDishka[UpdateCurrentUserEmailInteractor], 
@@ -98,12 +96,12 @@ async def update_current_user_email(interactor: FromDishka[UpdateCurrentUserEmai
                                     session_token = Cookie(None)):
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
-    dto = UserEmailDTO(new_email=data.new_email, password=data.password)
+    dto = UserSchemaMapper.to_email_dto(data)
     new_email = await interactor(dto, session_token)
-    return {
-        "message": "Email updated successfully", 
-        "new_email": new_email
-    }
+    return UserNewEmailSchema(
+        new_email=new_email, 
+        message="Email updated successfully"
+    )
 
 @router.patch("/me/password-change")
 async def update_current_user_password(interactor: FromDishka[UpdateCurrentUserPasswordInteractor], 
@@ -114,9 +112,7 @@ async def update_current_user_password(interactor: FromDishka[UpdateCurrentUserP
     dto = UserPasswordDTO(old_password=data.old_password, new_password=data.new_password)
     await interactor(dto, session_token)
 
-    return {
-        "message": "Password updated successfully"
-    }
+    return MessageSchema(message="Password updated successfully")
 
 @router.delete("/me", status_code=204)
 async def delete_current_user(interactor: FromDishka[DeleteCurrentUserInteractor], 

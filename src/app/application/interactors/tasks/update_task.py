@@ -11,7 +11,7 @@ from src.app.application.interfaces.repositories_interfaces import \
 from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
 from src.app.presentation.schemas.sentinel_types import Unset
-from src.app.application.dto_mappers import TaskMapper
+from src.app.application.mappers import TaskMapper
 
 class UpdateTaskInteractor:
     def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:

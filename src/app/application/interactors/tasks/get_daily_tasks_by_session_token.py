@@ -3,7 +3,7 @@ from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
 from src.app.application.interfaces.repositories_interfaces import \
     TaskRepositoryProtocol
-from src.app.application.dto_mappers import TaskMapper
+from src.app.application.mappers import TaskMapper
 
 class GetDailyTasksBySessionTokenInteractor:
     def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:

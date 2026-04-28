@@ -1,13 +1,13 @@
 from src.app.application.exceptions import SessionNotFoundError
 from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
-
+from src.app.application.dto.shared import MessageDTO
 
 class GetSessionTimeInteractor:
     def __init__(self, cash_repo: RedisRepositoryProtocol) -> None:
         self.cash_repo = cash_repo
 
-    async def __call__(self, session_token: str | None):
+    async def __call__(self, session_token: str | None) -> MessageDTO:
         if session_token is None:
             raise SessionNotFoundError()
         session_time = await self.cash_repo.get_session_time(session_token)
@@ -15,4 +15,6 @@ class GetSessionTimeInteractor:
         minutes = (session_time % 3600) // 60
         seconds = session_time % 60
         formated_time = f"hours: {hours}, minutes: {minutes}, seconds: {seconds}"
-        return {"message": formated_time}
+        return MessageDTO(
+            message=formated_time
+        )

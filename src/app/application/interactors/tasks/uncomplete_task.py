@@ -12,7 +12,7 @@ from src.app.application.interfaces.repositories_interfaces import (
     TaskRepositoryProtocol, UserRepositoryProtocol)
 from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
-from src.app.application.dto_mappers import TaskMapper
+from src.app.application.mappers import TaskMapper
 
 class UncompleteTaskInteractor:
     def __init__(self, 

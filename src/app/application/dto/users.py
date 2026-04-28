@@ -24,12 +24,12 @@ class CreateUserDTO:
     password: str
 
 @dataclass(slots=True)
-class LoginIdentifierDTO:
+class SignInDTO:
     username_or_email: str
     password: str
 
 @dataclass(slots=True)
-class CreateUserResultDTO:
+class UserAuthDTO:
     username: str
     email: str
     session_token: str

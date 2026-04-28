@@ -1,6 +1,6 @@
 from uuid6 import uuid7
 
-from src.app.application.dto.users import CreateUserDTO, CreateUserResultDTO
+from src.app.application.dto.users import CreateUserDTO, UserAuthDTO
 from src.app.application.exceptions import (EmailAlreadyTakenError,
                                             UsernameAlreadyTakenError)
 from src.app.application.interfaces.cash_interfaces import \
@@ -19,7 +19,7 @@ class CreateUserInteractor:
         self.cash_repo = cash_repo
         self.transaction = transaction
 
-    async def __call__(self, dto: CreateUserDTO) -> CreateUserResultDTO:
+    async def __call__(self, dto: CreateUserDTO) -> UserAuthDTO:
         if await self.repo.does_username_exists(dto.username):
             raise UsernameAlreadyTakenError()
         if await self.repo.does_email_exists(dto.email):
@@ -34,7 +34,7 @@ class CreateUserInteractor:
         self.repo.save(user)
         
         session_token = await self.cash_repo.create_session(str(user.id))
-        user_result = CreateUserResultDTO(
+        user_result = UserAuthDTO(
             username=user.username, 
             email=user.email, 
             session_token=session_token

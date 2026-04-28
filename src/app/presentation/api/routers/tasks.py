@@ -3,13 +3,10 @@ from pydantic import UUID7
 from src.app.presentation.schemas import (TaskSchemaCreate, TaskSchemaRead, TaskFilterParams, 
                         TaskSortParams, TaskSchemaReadable, TaskWithSkillsAndItemsSchemaRead, 
                         TaskSchemaUpdate, TaskWithUserAndSkillsSchema)
-from src.app.application.dto.tasks import (TaskCreateDTO, TaskFilterParamsDTO, TaskSortParamsDTO, 
-                                        TaskUpdateDTO)
 from src.app.application.interactors import (GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, 
                                      GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor, 
                                      UpdateTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksBySessionTokenInteractor, 
                                      GetDailyTasksBySessionTokenInteractor, GetOverdueTasksInteractor)
-from src.app.presentation.schemas.sentinel_types import UNSET
 from dishka.integrations.fastapi import FromDishka, DishkaRoute
 from src.app.presentation.mappers import TaskSchemaMapper
 
