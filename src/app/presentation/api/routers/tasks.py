@@ -11,6 +11,7 @@ from src.app.application.interactors import (GetAllTasksInteractor, CreateCurren
                                      GetDailyTasksBySessionTokenInteractor, GetOverdueTasksInteractor)
 from src.app.presentation.schemas.sentinel_types import UNSET
 from dishka.integrations.fastapi import FromDishka, DishkaRoute
+from src.app.presentation.mappers import TaskSchemaMapper
 
 router = APIRouter(prefix="/tasks", route_class=DishkaRoute)
 
@@ -21,13 +22,8 @@ async def get_all_tasks(interactor: FromDishka[GetAllTasksInteractor],
                         sorting: TaskSortParams = Depends(),
                         limit: int = 20, 
                         offset: int = 0):
-    filters_dto = TaskFilterParamsDTO(difficulty=filters.difficulty,
-                                      priority=filters.priority, 
-                                      type=filters.type, 
-                                      repeat_frequency=filters.repeat_frequency, 
-                                      deleted=filters.deleted)
-    sorting_dto = TaskSortParamsDTO(sort_by=sorting.sort_by, 
-                                    sort_order=sorting.sort_order)
+    filters_dto = TaskSchemaMapper.to_filter_params_dto(filters)
+    sorting_dto = TaskSchemaMapper.to_sorting_params_dto(sorting)
     return await interactor(filters_dto, sorting_dto, limit, offset)
 
 @router.post("/me", response_model=TaskSchemaReadable)
@@ -36,21 +32,7 @@ async def create_current_user_task(interactor: FromDishka[CreateCurrentUserTaskI
                                    session_token = Cookie(None)):
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
-    dto = TaskCreateDTO(
-        title=data.title, 
-        description=data.description, 
-        category_id=data.category_id,
-        repeat_limit=data.repeat_limit,
-        repeat_frequency=data.repeat_frequency,
-        deadline=data.deadline,
-        type=data.type, 
-        difficulty=data.difficulty,
-        priority=data.priority,
-        custom_xp_reward=data.custom_xp_reward, 
-        custom_gold_reward=data.custom_gold_reward, 
-        related_skills=data.related_skills, 
-        related_items=data.related_items
-    )
+    dto = TaskSchemaMapper.to_create_dto(data)
     task = await interactor(session_token, dto)
     return task
 
@@ -113,19 +95,5 @@ async def patch_task(interactor: FromDishka[UpdateTaskInteractor],
                      session_token = Cookie(None)):
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
-    clean_data = data.model_dump(exclude_unset=True)
-    dto = TaskUpdateDTO(
-        title=clean_data.get("title") or UNSET,
-        description=clean_data.get("description", UNSET),
-        category_id=clean_data.get("category_id", UNSET),
-        repeat_limit=clean_data.get("repeat_limit", UNSET),
-        repeat_frequency=clean_data.get("repeat_frequency", UNSET),
-        deadline=clean_data.get("deadline", UNSET),
-        type=clean_data.get("type", UNSET),
-        difficulty=clean_data.get("difficulty", UNSET),
-        priority=clean_data.get("priority", UNSET),
-        custom_xp_reward=clean_data.get("custom_xp_reward", UNSET),
-        custom_gold_reward=clean_data.get("custom_gold_reward", UNSET),
-        deleted=clean_data.get("deleted") or UNSET,
-    )
+    dto = TaskSchemaMapper.to_update_dto(data)
     return await interactor(task_id, dto, session_token)
