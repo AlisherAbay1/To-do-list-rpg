@@ -1,5 +1,5 @@
 from typing import Protocol, Optional, Sequence
-from src.app.domain import Item, User, Task, Skill, Inventory, TaskHistory
+from src.app.domain import Item, User, Task, Skill, Inventory, TaskHistory, TaskCategory
 from uuid import UUID 
 from src.app.application.dto.tasks import TaskFilterParamsDTO, TaskSortParamsDTO, TaskReward
 
@@ -23,6 +23,9 @@ class TaskRepositoryProtocol(Protocol):
     async def get_overdue_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]: ...
     async def save_completion(self, domain_task: Task) -> None: ...
     async def delete(self, task_id: UUID) -> None: ...
+
+class TaskCategoriesRepositoryProtocol(Protocol):
+    async def get_all_task_categories(self) -> Sequence[TaskCategory]: ...
 
 class TaskHistoryRepositoryProtocol(Protocol):
     async def get_recent_history_with_skills(self, task_id: UUID, limit: int) -> Sequence[TaskHistory]: ...

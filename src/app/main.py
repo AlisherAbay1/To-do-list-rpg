@@ -7,10 +7,12 @@ from src.app.presentation.api.routers.skills import router as skills_router
 from src.app.presentation.api.routers.items import router as items_router
 from src.app.presentation.api.routers.inventory import router as inventory_router
 from src.app.presentation.api.routers.shop import router as shop_router
+from src.app.presentation.api.routers.task_categories import router as task_categories_router
 from src.app.presentation.exception_handlers import register_exeptions
 from src.app.core.taskiq import broker
 from contextlib import asynccontextmanager
-from src.app.infrastructure.di_providers import AppProvider, UserProvider, TaskProvider, SkillProvider, ItemProvider
+from src.app.infrastructure.di_providers import AppProvider, UserProvider, TaskProvider, \
+                                                SkillProvider, ItemProvider, TaskCategoriesProvider
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -28,8 +30,9 @@ app.include_router(router=skills_router, tags=["skills"])
 app.include_router(router=items_router, tags=["items"])
 app.include_router(router=inventory_router, tags=["inventory"])
 app.include_router(router=shop_router, tags=["shop"])
+app.include_router(router=task_categories_router, tags=["task_categories"])
 
 register_exeptions(app)
 
-container = make_async_container(AppProvider(), UserProvider(), TaskProvider(), SkillProvider(), ItemProvider())
+container = make_async_container(AppProvider(), UserProvider(), TaskProvider(), SkillProvider(), ItemProvider(), TaskCategoriesProvider())
 setup_dishka(container, app)

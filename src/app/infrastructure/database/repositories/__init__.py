@@ -5,7 +5,8 @@ from .skills import SkillRepository
 from .tasks import TaskRepository
 from .tasks_history import TaskHistoryRepository
 from .users import UserRepository
+from .task_categories import TaskCategoriesRepository
 
 __all__ = ("UserRepository", "SkillRepository", "TaskRepository", 
            "ItemRepository", "RedisRepository", "TransactionAlchemyManager", 
-           "TaskHistoryRepository")
+           "TaskHistoryRepository", "TaskCategoriesRepository")
