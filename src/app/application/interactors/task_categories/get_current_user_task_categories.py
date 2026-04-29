@@ -1,7 +1,7 @@
 from src.app.application.interfaces.repositories_interfaces import TaskCategoriesRepositoryProtocol
 from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from src.app.application.mappers import TaskCategoriesMapper
-from src.app.application.dto.task_categories import TaskCategoriesDTO
+from src.app.application.dto.task_categories import TaskCategoryDTO
 from src.app.application.exceptions import SessionNotFoundError
 
 class GetCurrentUserTaskCategories:
@@ -11,7 +11,7 @@ class GetCurrentUserTaskCategories:
         self.repo = repo
         self.cash_repo = cash_repo
 
-    async def __call__(self, session_token: str) -> list[TaskCategoriesDTO]:
+    async def __call__(self, session_token: str) -> list[TaskCategoryDTO]:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

@@ -6,3 +6,7 @@ class TaskCategoriesSchema(BaseModel):
     user_id: UUID
     title: str
     color: str
+
+class CreateTaskCategoriesSchema(BaseModel):
+    title: str
+    color: str

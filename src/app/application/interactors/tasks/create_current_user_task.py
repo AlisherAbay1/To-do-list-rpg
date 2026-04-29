@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from uuid6 import uuid7
 
 from src.app.application.dto.tasks import TaskCreateDTO
