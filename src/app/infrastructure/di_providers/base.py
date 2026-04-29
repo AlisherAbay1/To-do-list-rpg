@@ -25,8 +25,7 @@ class AppProvider(Provider):
 
     @provide(scope=Scope.REQUEST)
     async def get_redis_session(self) -> AsyncGenerator[Redis]:
-        async with redis_client() as session:
-            yield session
+        yield redis_client()
 
     redis_session = provide(RedisRepository, scope=Scope.REQUEST, provides=RedisRepositoryProtocol)
     transaction = provide(TransactionAlchemyManager, scope=Scope.REQUEST, provides=TransactionProtocol)
