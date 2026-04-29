@@ -94,7 +94,7 @@ class TaskSchemaCreate(BaseModel):
     repeat_limit: Optional[int] = None
     repeat_frequency: Optional[TaskRepeatFrequency] = None
     deadline: Optional[datetime] = None
-    type: Optional[TaskType] = None
+    type: TaskType = TaskType.AUTO
     difficulty: Optional[TaskDifficulty] = None
     priority: Optional[TaskPriority] = None
     custom_xp_reward: Optional[int] = None

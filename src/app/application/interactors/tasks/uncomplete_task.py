@@ -2,7 +2,7 @@ from uuid import UUID
 
 from src.app.application.dto.tasks import TaskDTO
 from src.app.application.exceptions import (SessionNotFoundError,
-                                            TaskAccessDeniedError,
+                                            AccessDeniedError,
                                             TaskNotFoundError,
                                             UserNotFoundError)
 from src.app.application.interfaces.cash_interfaces import \
@@ -40,7 +40,7 @@ class UncompleteTaskInteractor:
         if not tasks_history:
             raise TaskNotFoundError()
         if task.user_id != user_id:
-            raise TaskAccessDeniedError()
+            raise AccessDeniedError()
         if task.repeat_limit is not None:
             task.repeat_limit += 1
 

@@ -24,3 +24,8 @@ class TaskCategoriesRepository:
         )
         result = await self._session.scalars(task_categories)
         return result.all()
+    
+    async def get_task_category_by_category_id(self, task_category_id: UUID) -> Optional[TaskCategory]:
+        task_category = select(TaskCategory).where(TaskCategory.id == task_category_id)
+        result = await self._session.scalar(task_category)
+        return result

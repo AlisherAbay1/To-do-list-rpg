@@ -7,6 +7,10 @@ class TaskCategoriesSchema(BaseModel):
     title: str
     color: str
 
-class CreateTaskCategoriesSchema(BaseModel):
+class CreateTaskCategorySchema(BaseModel):
     title: str
     color: str
+
+class UpdateTaskCategorySchema(BaseModel):
+    title: str | None = None
+    color: str | None = None

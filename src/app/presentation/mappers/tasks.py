@@ -2,7 +2,7 @@ from src.app.presentation.schemas.tasks import (TaskFilterParams, TaskSortParams
                                                 TaskSchemaUpdate)
 from src.app.application.dto.tasks import (TaskFilterParamsDTO, TaskSortParamsDTO, TaskCreateDTO, 
                                            TaskUpdateDTO)
-from src.app.presentation.schemas.sentinel_types import UNSET
+from src.app.application.dto.sentinel_types import UNSET
 
 class TaskSchemaMapper:
     @staticmethod

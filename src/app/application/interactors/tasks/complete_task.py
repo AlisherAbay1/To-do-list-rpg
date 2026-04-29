@@ -2,7 +2,7 @@ from uuid import UUID
 
 from src.app.application.mappers import TaskMapper
 from src.app.application.exceptions import (SessionNotFoundError,
-                                            TaskAccessDeniedError,
+                                            AccessDeniedError,
                                             TaskNotFoundError,
                                             UserNotFoundError)
 from src.app.application.interfaces.cash_interfaces import \
@@ -37,7 +37,7 @@ class CompleteTaskInteractor:
         if task is None:
             raise TaskNotFoundError()
         if task.user_id != user_id:
-            raise TaskAccessDeniedError()
+            raise AccessDeniedError()
         
         user = await self.user_repo.get_user(user_id)
         skills = await self.skill_repo.get_skills_by_task_id(task_id)

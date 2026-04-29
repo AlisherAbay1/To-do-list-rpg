@@ -31,5 +31,8 @@ class UsernameAlreadyTakenError(Exception):
 class SessionNotFoundError(Exception):
     pass
 
-class TaskAccessDeniedError(Exception):
+class AccessDeniedError(Exception):
+    pass
+
+class TaskCategoryNotFoundError(Exception):
     pass

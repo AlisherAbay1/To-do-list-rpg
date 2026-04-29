@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from uuid import UUID
+from src.app.application.dto.sentinel_types import Unset
 
 @dataclass
 class TaskCategoryDTO:
@@ -12,3 +13,8 @@ class TaskCategoryDTO:
 class CreateTaskCategoryDTO:
     title: str
     color: str
+
+@dataclass
+class UpdateTaskCategoryDTO:
+    title: str | Unset
+    color: str | Unset

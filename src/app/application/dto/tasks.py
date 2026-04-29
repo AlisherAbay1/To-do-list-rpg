@@ -3,7 +3,7 @@ from typing import Optional, Literal
 from uuid import UUID
 from src.app.domain.enums import TaskRepeatFrequency, TaskType, TaskDifficulty, TaskPriority
 from datetime import datetime
-from src.app.presentation.schemas.sentinel_types import Unset, UNSET
+from src.app.application.dto.sentinel_types import Unset, UNSET
 from src.app.application.dto.users import UserDTO
 from src.app.application.dto.items import ItemDTO
 from src.app.application.dto.skills import SkillDTO

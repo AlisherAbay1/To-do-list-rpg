@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from src.app.application.dto.tasks import TaskDTO, TaskUpdateDTO
-from src.app.application.exceptions import (TaskAccessDeniedError,
+from src.app.application.exceptions import (AccessDeniedError,
                                             TaskNotFoundError, 
                                             SessionNotFoundError)
 from src.app.application.interfaces.cash_interfaces import \
@@ -10,7 +10,7 @@ from src.app.application.interfaces.repositories_interfaces import \
     TaskRepositoryProtocol
 from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
-from src.app.presentation.schemas.sentinel_types import Unset
+from src.app.application.dto.sentinel_types import Unset
 from src.app.application.mappers import TaskMapper
 
 class UpdateTaskInteractor:
@@ -27,7 +27,7 @@ class UpdateTaskInteractor:
         if user_id is None:
             raise SessionNotFoundError()
         if task.user_id != user_id:
-            raise TaskAccessDeniedError()
+            raise AccessDeniedError()
         
         if not isinstance(dto.title, Unset):
             task.title = dto.title
