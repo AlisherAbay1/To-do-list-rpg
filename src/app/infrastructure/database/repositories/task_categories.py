@@ -15,3 +15,12 @@ class TaskCategoriesRepository:
         )
         result = await self._session.scalars(task_categories)
         return result.all()
+    
+    async def get_current_user_task_categories(self, user_id: UUID) -> Sequence[TaskCategory]:
+        task_categories = select(
+            TaskCategory
+        ).where(
+            TaskCategory.user_id == user_id
+        )
+        result = await self._session.scalars(task_categories)
+        return result.all()

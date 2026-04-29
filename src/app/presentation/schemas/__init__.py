@@ -7,6 +7,7 @@ from .users import UserSchemaRead, UserSchemaCreate, UserSchemaCreateAuth, \
                     UserSchemaPatchEmail, UserSignInSchema, UserSchemaPatchPassword, \
                     UserSuccessAuthSchema, UserNewEmailSchema
 from .shared import MessageSchema
+from .task_categories import TaskCategoriesSchema
 
 __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead", 
            "SkillSchemaCreate", "TaskSchemaRead", "TaskSchemaCreate", 
@@ -15,4 +16,4 @@ __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead",
            "TaskSortParams", "TaskFilterParams", "TaskSchemaReadable", 
            "TaskWithSkillsAndItemsSchemaRead", "TaskSchemaUpdate", 
            "TaskWithUserAndSkillsSchema", "UserSuccessAuthSchema", "MessageSchema", 
-           "UserNewEmailSchema")
+           "UserNewEmailSchema", "TaskCategoriesSchema")
