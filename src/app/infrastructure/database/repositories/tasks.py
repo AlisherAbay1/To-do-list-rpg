@@ -1,6 +1,6 @@
 from typing import Optional, Sequence
 from uuid import UUID
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 from sqlalchemy import and_, delete, desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -94,9 +94,26 @@ class TaskRepository:
             ).where(
                 and_(
                     Task.user_id == user_id, 
-                    Task.repeat_frequency == TaskRepeatFrequency.DAILY
+                    Task.repeat_frequency == TaskRepeatFrequency.DAILY, 
+                    Task.deleted == False
                     )
                 )
+        result = await self._session.scalars(tasks)
+        return result.all()
+    
+    async def get_todays_deadline_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]:
+        today = datetime.now(tz=timezone.utc).replace(hour=0, minute=0, second=0)
+        next_day = today + timedelta(days=1)
+        tasks = select(
+            Task
+        ).where(
+            and_(
+                Task.user_id == user_id, 
+                Task.deadline >= today, 
+                Task.deadline < next_day, 
+                Task.deleted == False
+                )
+        )
         result = await self._session.scalars(tasks)
         return result.all()
 

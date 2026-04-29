@@ -11,8 +11,9 @@ from .get_task import GetTaskInteractor
 from .uncomplete_task import UncompleteTaskInteractor
 from .update_task import UpdateTaskInteractor
 from .get_overdue_tasks import GetOverdueTasksInteractor
+from .get_todays_deadline_tasks import GetTodaysDeadlineInteractor
 
 __all__ = ("GetAllTasksInteractor", "CreateCurrentUserTaskInteractor", "GetCurentUserTasksInteractor",
            "GetTaskInteractor", "DeleteTaskInteractor", "CompleteTaskInteractor",
            "UpdateTaskInteractor", "UncompleteTaskInteractor", "GetDeletedTasksBySessionTokenInteractor", 
-           "GetDailyTasksBySessionTokenInteractor", "GetOverdueTasksInteractor")
+           "GetDailyTasksBySessionTokenInteractor", "GetOverdueTasksInteractor", "GetTodaysDeadlineInteractor")

@@ -7,7 +7,8 @@ from src.app.application.interactors import (
     DeleteTaskInteractor, GetAllTasksInteractor, GetCurentUserTasksInteractor,
     GetDailyTasksBySessionTokenInteractor,
     GetDeletedTasksBySessionTokenInteractor, GetOverdueTasksInteractor,
-    GetTaskInteractor, UncompleteTaskInteractor, UpdateTaskInteractor)
+    GetTaskInteractor, UncompleteTaskInteractor, UpdateTaskInteractor, 
+    GetTodaysDeadlineInteractor)
 from src.app.presentation.mappers import TaskSchemaMapper
 from src.app.presentation.schemas import (TaskFilterParams, TaskSchemaCreate,
                                           TaskSchemaRead, TaskSchemaReadable,
@@ -54,6 +55,11 @@ async def get_deleted_tasks_by_session_token(interactor: FromDishka[GetDeletedTa
 
 @router.get("/daily")
 async def get_daily_tasks_by_session_token(interactor: FromDishka[GetDailyTasksBySessionTokenInteractor], 
+                                       session_token = Cookie(None)):
+    return await interactor(session_token)
+
+@router.get("/today")
+async def get_todays_deadline_tasks_by_session_token(interactor: FromDishka[GetTodaysDeadlineInteractor], 
                                        session_token = Cookie(None)):
     return await interactor(session_token)
 
