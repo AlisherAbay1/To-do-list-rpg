@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Cookie, HTTPException
 from dishka.integrations.fastapi import DishkaRoute, FromDishka
 from src.app.application.interactors.task_categories import GetAllTaskCategories, GetCurrentUserTaskCategories, CreateCurrentUserTaskCategory, \
-                                                            UpdateCurrentUserTaskCategory
-from src.app.presentation.schemas.task_categories import TaskCategoriesSchema, CreateTaskCategorySchema, UpdateTaskCategorySchema
+                                                            UpdateCurrentUserTaskCategory, GetCurrentUserTaskCategoryById, DeleteCurrentUserTaskCategoryById
+from src.app.presentation.schemas.task_categories import TaskCategoriesSchema, CreateTaskCategorySchema, UpdateTaskCategorySchema, \
+                                                         TaskCategoryWithTasksDTO
 from src.app.presentation.mappers import TaskCategoriesSchemaMapper
 from uuid import UUID
 
@@ -18,6 +19,15 @@ async def get_current_user_task_catigories(interactor: FromDishka[GetCurrentUser
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
     return await interactor(session_token)
+
+@router.get("/me/{task_category_id}", response_model=TaskCategoryWithTasksDTO)
+async def get_current_user_task_catigory_by_id(interactor: FromDishka[GetCurrentUserTaskCategoryById], 
+                                               task_category_id: UUID,
+                                               get_tasks: bool,
+                                               session_token = Cookie(None)):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(session_token, task_category_id, get_tasks)
 
 @router.post("/me", response_model=TaskCategoriesSchema)
 async def create_current_user_task_category(schema: CreateTaskCategorySchema,
@@ -37,3 +47,11 @@ async def update_current_user_task_category(task_category_id: UUID,
         raise HTTPException(401, "Not authenticated")
     dto = TaskCategoriesSchemaMapper.to_update_dto(schema)
     return await interactor(task_category_id, dto, session_token)
+
+@router.delete("/me/{task_category_id}", status_code=204)
+async def delete_current_user_task_catigory_by_id(interactor: FromDishka[DeleteCurrentUserTaskCategoryById], 
+                                               task_category_id: UUID,
+                                               session_token = Cookie(None)):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(session_token, task_category_id)

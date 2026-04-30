@@ -116,6 +116,11 @@ class TaskRepository:
         )
         result = await self._session.scalars(tasks)
         return result.all()
+    
+    async def get_tasks_by_category_id(self, task_category: UUID) -> Sequence[Task]:
+        tasks = select(Task).where(Task.category_id == task_category)
+        result = await self._session.scalars(tasks)
+        return result.all()
 
     async def delete(self, task_id: UUID) -> None:
         task = delete(Task).where(Task.id == task_id)

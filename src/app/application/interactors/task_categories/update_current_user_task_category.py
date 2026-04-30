@@ -21,7 +21,7 @@ class UpdateCurrentUserTaskCategory:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        task_category = await self.repo.get_task_category_by_category_id(task_category_id)
+        task_category = await self.repo.get_task_category_by_id(task_category_id)
         if task_category is None:
             raise TaskCategoryNotFoundError()
         if task_category.user_id != user_id:
