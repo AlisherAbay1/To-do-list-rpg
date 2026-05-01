@@ -4,7 +4,8 @@ from .items import (CreateCurrentUserItemInteractor, DeleteItemInteractor,
 from .skills import (ClearExpiredSkillsInteractor,
                      CreateCurrentUserSkillInteractor, DeleteSkillInteractor,
                      GetAllSkillsInteractor, GetCurrentUserSkillsInteractor,
-                     GetSkillInteractor)
+                     GetSkillInteractor, DeleteCurrentUserSkillByIdInteractor, 
+                     GetCurrentUserSkillByIdInteractor)
 from .tasks import (CompleteTaskInteractor, CreateCurrentUserTaskInteractor,
                     DeleteTaskInteractor, GetAllTasksInteractor,
                     GetCurentUserTasksInteractor,
@@ -20,6 +21,10 @@ from .users import (AuthenticateUserInteractor, CreateUserInteractor,
                     UpdateCurrentUserEmailInteractor,
                     UpdateCurrentUserPasswordInteractor)
 
+from .task_categories import (GetAllTaskCategories, GetCurrentUserTaskCategories, 
+                              GetCurrentUserTaskCategoryById, CreateCurrentUserTaskCategory, 
+                              DeleteCurrentUserTaskCategoryById, UpdateCurrentUserTaskCategory)
+
 __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteCurrentUserInteractor", 
            "GetUserInteractor", "GetAllTasksInteractor", "UncompleteTaskInteractor",
            "CreateCurrentUserTaskInteractor", "GetCurentUserTasksInteractor", "GetTaskInteractor", 
@@ -31,4 +36,8 @@ __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteC
            "GetCurrentUser", "AuthenticateUserInteractor", "DeleteSessionInteractor", 
            "RefreshSessionTokenInteractor", "GetSessionTimeInteractor", "ClearExpiredSkillsInteractor", 
            "GetDeletedTasksBySessionTokenInteractor", "GetDailyTasksBySessionTokenInteractor", 
-           "GetOverdueTasksInteractor", "GetTodaysDeadlineInteractor")
+           "GetOverdueTasksInteractor", "GetTodaysDeadlineInteractor", 
+           "GetAllTaskCategories", "GetCurrentUserTaskCategories", 
+           "GetCurrentUserTaskCategoryById", "CreateCurrentUserTaskCategory", 
+           "DeleteCurrentUserTaskCategoryById", "UpdateCurrentUserTaskCategory", 
+           "GetCurrentUserSkillByIdInteractor", "DeleteCurrentUserSkillByIdInteractor")

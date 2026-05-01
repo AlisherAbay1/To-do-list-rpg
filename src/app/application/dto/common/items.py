@@ -17,7 +17,6 @@ class ItemUpdateDTO:
     title: Optional[str]
     description: Optional[str]
 
-
 @dataclass(slots=True)
 class ItemCreateDTO:
     title: str

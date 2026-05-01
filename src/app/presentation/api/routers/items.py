@@ -1,5 +1,5 @@
 from dishka.integrations.fastapi import DishkaRoute, FromDishka
-from fastapi import APIRouter, HTTPException, Request, Cookie
+from fastapi import APIRouter, HTTPException, Cookie
 from pydantic import UUID7
 
 from src.app.application.interactors import (CreateCurrentUserItemInteractor,

@@ -1,6 +1,6 @@
-from src.app.presentation.schemas.tasks import (TaskFilterParams, TaskSortParams, TaskSchemaCreate, 
+from src.app.presentation.schemas import (TaskFilterParams, TaskSortParams, TaskSchemaCreate, 
                                                 TaskSchemaUpdate)
-from src.app.application.dto.tasks import (TaskFilterParamsDTO, TaskSortParamsDTO, TaskCreateDTO, 
+from src.app.application.dto import (TaskFilterParamsDTO, TaskSortParamsDTO, TaskCreateDTO, 
                                            TaskUpdateDTO)
 from src.app.application.dto.sentinel_types import UNSET
 

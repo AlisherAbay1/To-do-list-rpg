@@ -3,7 +3,7 @@ from src.app.application.interfaces.cash_interfaces import \
 from src.app.application.interfaces.repositories_interfaces import \
     TaskRepositoryProtocol
 from src.app.application.exceptions import SessionNotFoundError
-from src.app.application.mappers import TaskMapper
+from src.app.application.mappers.common import TaskMapper
 
 class GetTodaysDeadlineInteractor:
     def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:

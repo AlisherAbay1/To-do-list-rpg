@@ -1,4 +1,4 @@
-from src.app.application.mappers import UserMapper
+from src.app.application.mappers.common import UserMapper
 from src.app.application.exceptions import UserNotFoundError
 from src.app.application.interfaces.repositories_interfaces import \
     UserRepositoryProtocol

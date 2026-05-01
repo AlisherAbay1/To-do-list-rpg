@@ -1,4 +1,4 @@
-from src.app.application.dto.users import UserPasswordDTO
+from src.app.application.dto.common.users import UserPasswordDTO
 from src.app.application.exceptions import (IncorrectPasswordError,
                                             SessionNotFoundError,
                                             UserNotFoundError)

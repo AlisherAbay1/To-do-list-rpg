@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.app.application.dto.tasks import TaskDTO
+from src.app.application.dto import TaskDTO
 from src.app.application.exceptions import (SessionNotFoundError,
                                             AccessDeniedError,
                                             TaskNotFoundError,
@@ -12,7 +12,7 @@ from src.app.application.interfaces.repositories_interfaces import (
     TaskRepositoryProtocol, UserRepositoryProtocol)
 from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
-from src.app.application.mappers import TaskMapper
+from src.app.application.mappers import ExtendedTaskMapper
 
 class UncompleteTaskInteractor:
     def __init__(self, 
@@ -58,7 +58,7 @@ class UncompleteTaskInteractor:
         for skill in previous.skills: 
             skill.xp -= previous.xp_earned
 
-        dto = TaskMapper.to_dto_with_skills_and_user(task, user, skills)
+        dto = ExtendedTaskMapper.to_dto_with_skills_and_user(task, user, skills)
         
         await self.transaction.delete(tasks_history[0])
 

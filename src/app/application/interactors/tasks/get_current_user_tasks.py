@@ -1,5 +1,5 @@
-from src.app.application.mappers import TaskMapper
-from src.app.application.dto.tasks import TaskDetailDTO
+from src.app.application.mappers.common import TaskMapper
+from src.app.application.dto import TaskDetailDTO
 from src.app.application.exceptions import SessionNotFoundError
 from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol

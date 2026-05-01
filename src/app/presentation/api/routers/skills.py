@@ -6,9 +6,11 @@ from src.app.application.interactors import (CreateCurrentUserSkillInteractor,
                                              DeleteSkillInteractor,
                                              GetAllSkillsInteractor,
                                              GetCurrentUserSkillsInteractor,
-                                             GetSkillInteractor)
+                                             GetSkillInteractor, 
+                                             DeleteCurrentUserSkillByIdInteractor, 
+                                             GetCurrentUserSkillByIdInteractor)
 from src.app.presentation.mappers import SkillSchemaMapper
-from src.app.presentation.schemas import SkillSchemaCreate, SkillSchemaRead
+from src.app.presentation.schemas import SkillSchemaCreate, SkillSchemaRead, SkillWithTasksSchemaRead
 
 router = APIRouter(prefix="/skill", route_class=DishkaRoute)
 
@@ -36,6 +38,21 @@ async def create_current_user_skill(interactor: FromDishka[CreateCurrentUserSkil
     dto = SkillSchemaMapper.to_create_dto(data)
     return await interactor(session_token, dto)
 
+@router.delete("/me/{skill_id}", status_code=204)
+async def delete_current_user_skill(skill_id: UUID7, 
+                                    interactor: FromDishka[DeleteCurrentUserSkillByIdInteractor], 
+                                    session_token = Cookie(None)):
+    await interactor(skill_id, session_token)
+
+@router.get("/me/{skill_id}", response_model=SkillWithTasksSchemaRead)
+async def get_current_user_skill_by_id(skill_id: UUID7, 
+                                       interactor: FromDishka[GetCurrentUserSkillByIdInteractor], 
+                                       get_related_tasks: bool,
+                                       session_token = Cookie(None)):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(skill_id, session_token, get_related_tasks)
+
 @router.get("/{skill_id}", response_model=SkillSchemaRead)
 async def get_skill(skill_id: UUID7, 
                     interactor: FromDishka[GetSkillInteractor], ):
@@ -45,3 +62,4 @@ async def get_skill(skill_id: UUID7,
 async def delete_skill(skill_id: UUID7, 
                        interactor: FromDishka[DeleteSkillInteractor]):
     await interactor(skill_id)
+

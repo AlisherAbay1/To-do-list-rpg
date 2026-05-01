@@ -1,5 +1,5 @@
 from src.app.domain import User 
-from src.app.application.dto.users import UserDTO, UserAuthDTO
+from src.app.application.dto.common.users import UserDTO, UserAuthDTO
 from typing import Sequence
 
 class UserMapper:

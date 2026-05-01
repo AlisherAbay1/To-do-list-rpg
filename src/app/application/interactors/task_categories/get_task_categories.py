@@ -1,6 +1,6 @@
 from src.app.application.interfaces.repositories_interfaces import TaskCategoriesRepositoryProtocol
-from src.app.application.mappers import TaskCategoriesMapper
-from src.app.application.dto.task_categories import TaskCategoryDTO
+from src.app.application.mappers.common import TaskCategoriesMapper
+from src.app.application.dto import TaskCategoryDTO
 
 class GetAllTaskCategories:
     def __init__(self, repo: TaskCategoriesRepositoryProtocol) -> None:

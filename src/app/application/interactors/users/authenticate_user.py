@@ -1,4 +1,4 @@
-from src.app.application.dto.users import (UserAuthDTO,
+from src.app.application.dto.common.users import (UserAuthDTO,
                                            SignInDTO)
 from src.app.application.exceptions import (IncorrectPasswordError,
                                             UserNotFoundError)
@@ -7,7 +7,7 @@ from src.app.application.interfaces.cash_interfaces import \
 from src.app.application.interfaces.repositories_interfaces import \
     UserRepositoryProtocol
 from src.app.core.security import password_verify
-from src.app.application.mappers import UserMapper
+from src.app.application.mappers.common import UserMapper
 
 class AuthenticateUserInteractor:
     def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:

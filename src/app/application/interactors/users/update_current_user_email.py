@@ -1,4 +1,4 @@
-from src.app.application.dto.users import UserEmailDTO
+from src.app.application.dto.common.users import UserEmailDTO
 from src.app.application.exceptions import (EmailAlreadyTakenError,
                                             IncorrectPasswordError,
                                             SessionNotFoundError,

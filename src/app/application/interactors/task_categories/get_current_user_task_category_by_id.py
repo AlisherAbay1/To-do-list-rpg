@@ -2,8 +2,8 @@ from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtoc
 from src.app.application.interfaces.repositories_interfaces import TaskCategoriesRepositoryProtocol, TaskRepositoryProtocol
 from uuid import UUID
 from src.app.application.exceptions import TaskCategoryNotFoundError, SessionNotFoundError, AccessDeniedError
-from src.app.application.mappers import TaskCategoriesMapper
-from src.app.application.dto.task_categories import TaskCategoryWithTasksDTO
+from src.app.application.mappers import ExtendedTaskCategoriesMapper
+from src.app.application.dto import TaskCategoryWithTasksDTO
 
 class GetCurrentUserTaskCategoryById:
     def __init__(self, 
@@ -27,5 +27,5 @@ class GetCurrentUserTaskCategoryById:
             tasks = await self.task_repo.get_tasks_by_category_id(task_category_id)
         else:
             tasks = []
-        dto = TaskCategoriesMapper.to_dto_with_tasks(task_category, tasks)
+        dto = ExtendedTaskCategoriesMapper.to_dto_with_tasks(task_category, tasks)
         return dto

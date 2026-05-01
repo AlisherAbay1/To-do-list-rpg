@@ -4,9 +4,6 @@ from uuid import UUID
 from src.app.domain.enums import TaskRepeatFrequency, TaskType, TaskDifficulty, TaskPriority
 from datetime import datetime
 from src.app.application.dto.sentinel_types import Unset, UNSET
-from src.app.application.dto.users import UserDTO
-from src.app.application.dto.items import ItemDTO
-from src.app.application.dto.skills import SkillDTO
 
 @dataclass(slots=True)
 class TaskFilterParamsDTO:
@@ -55,47 +52,6 @@ class TaskDetailDTO:
     custom_gold_reward: Optional[int]
     deleted: bool
     deleted_at: Optional[datetime]
-
-
-@dataclass(slots=True)
-class TaskReward:
-    xp: int
-    gold: int
-
-@dataclass(slots=True)
-class TaskWithUserAndSkillsDTO:
-    id: UUID
-    title: str
-    description: Optional[str]
-    category_id: Optional[UUID]
-    xp: int
-    gold: int
-    repeat_limit: Optional[int]
-    repeat_frequency: Optional[TaskRepeatFrequency]
-    deadline: Optional[datetime]
-
-    user: UserDTO
-    skills: list[SkillDTO]
-
-@dataclass(slots=True)
-class TaskWithSkillsAndItemsDTO:
-    id: UUID
-    user_id: UUID
-    title: str
-    description: Optional[str]
-    category_id: Optional[UUID]
-    repeat_limit: Optional[int]
-    repeat_frequency: Optional[TaskRepeatFrequency]
-    deadline: Optional[datetime]
-    created_at: datetime
-    type: Optional[TaskType]
-    difficulty: Optional[TaskDifficulty]
-    priority: Optional[TaskPriority]
-    custom_xp_reward: Optional[int]
-    custom_gold_reward: Optional[int]
-
-    skills: list[SkillDTO]
-    items: list[ItemDTO]
 
 @dataclass(slots=True)
 class TaskDTO:

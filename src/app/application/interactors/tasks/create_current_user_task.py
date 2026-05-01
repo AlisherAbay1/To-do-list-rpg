@@ -1,6 +1,6 @@
 from uuid6 import uuid7
 
-from src.app.application.dto.tasks import TaskCreateDTO
+from src.app.application.dto import TaskCreateDTO
 from src.app.application.exceptions import SessionNotFoundError
 from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
@@ -11,7 +11,7 @@ from src.app.application.interfaces.transaction_interfaces import \
 from src.app.domain import Task
 from src.app.infrastructure.database.models import (Tasks_to_items,
                                                     Tasks_to_skills)
-from src.app.application.mappers import TaskMapper
+from src.app.application.mappers.common import TaskMapper
 
 class CreateCurrentUserTaskInteractor:
     def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:

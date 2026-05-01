@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.app.application.mappers import TaskMapper
+from src.app.application.mappers import ExtendedTaskMapper
 from src.app.application.exceptions import (SessionNotFoundError,
                                             AccessDeniedError,
                                             TaskNotFoundError,
@@ -54,7 +54,7 @@ class CompleteTaskInteractor:
         
         await self.task_history_repo.save_completion(task, skills, rewards)
 
-        dto = TaskMapper.to_dto_with_skills_and_user(task, user, skills)
+        dto = ExtendedTaskMapper.to_dto_with_skills_and_user(task, user, skills)
 
         await self.transaction.commit()
         return dto

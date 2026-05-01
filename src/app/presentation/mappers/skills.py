@@ -1,5 +1,5 @@
-from src.app.presentation.schemas import SkillSchemaCreate, SkillSchemaRead
-from src.app.application.dto.skills import SkillCreateDTO
+from src.app.presentation.schemas import SkillSchemaCreate
+from src.app.application.dto import SkillCreateDTO
 
 class SkillSchemaMapper:
     @staticmethod

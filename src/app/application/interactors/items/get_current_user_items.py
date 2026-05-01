@@ -3,7 +3,7 @@ from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
 from src.app.application.interfaces.repositories_interfaces import \
     ItemRepositoryProtocol
-from src.app.application.mappers import ItemMapper
+from src.app.application.mappers.common import ItemMapper
 
 class GetCurrentUserItemsInteractor:
     def __init__(self, repo: ItemRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:

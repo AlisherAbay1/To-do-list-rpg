@@ -1,8 +1,4 @@
-from uuid import UUID
-
-from uuid6 import uuid7
-
-from src.app.application.dto.items import ItemCreateDTO, ItemDTO
+from src.app.application.dto.common.items import ItemCreateDTO, ItemDTO
 from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
 from src.app.application.interfaces.repositories_interfaces import \
@@ -11,7 +7,7 @@ from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
 from src.app.domain import Item
 from src.app.application.exceptions import SessionNotFoundError
-from src.app.application.mappers import ItemMapper
+from src.app.application.mappers.common import ItemMapper
 
 class CreateCurrentUserItemInteractor:
     def __init__(self, repo: ItemRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:

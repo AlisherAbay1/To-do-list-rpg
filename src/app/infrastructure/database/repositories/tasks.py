@@ -5,9 +5,9 @@ from datetime import datetime, timezone, timedelta
 from sqlalchemy import and_, delete, desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.app.application.dto.tasks import (TaskFilterParamsDTO,
+from src.app.application.dto import (TaskFilterParamsDTO,
                                            TaskSortParamsDTO)
-from src.app.domain import Task
+from src.app.domain import Task, Skill
 from src.app.domain.enums import TaskRepeatFrequency
 
 
@@ -119,6 +119,11 @@ class TaskRepository:
     
     async def get_tasks_by_category_id(self, task_category: UUID) -> Sequence[Task]:
         tasks = select(Task).where(Task.category_id == task_category)
+        result = await self._session.scalars(tasks)
+        return result.all()
+    
+    async def get_tasks_by_skill_id(self, skill_id: UUID) -> Sequence[Task]:
+        tasks = select(Task).filter(Task.skills.any(Skill.id == skill_id))
         result = await self._session.scalars(tasks)
         return result.all()
 

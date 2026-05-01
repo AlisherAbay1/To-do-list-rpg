@@ -5,7 +5,7 @@ from sqlalchemy import BigInteger, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 from uuid6 import uuid7
 
-from src.app.application.dto.tasks import TaskReward
+from src.app.domain.value_objects import TaskReward
 from src.app.infrastructure.database.models.base import Base
 
 

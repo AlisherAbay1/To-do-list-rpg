@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 from uuid import UUID
@@ -14,8 +14,6 @@ class SkillSchemaRead(BaseModel):
     deleted: bool
     deleted_at: Optional[datetime]
 
-    model_config = ConfigDict(from_attributes=True)
-
 class SkillSchemaCreate(BaseModel):
     title: str
     description: Optional[str]
@@ -23,5 +21,5 @@ class SkillSchemaCreate(BaseModel):
     lvl: int = 1
     xp: int = 0
 
-    model_config = ConfigDict(from_attributes=True)
+
 

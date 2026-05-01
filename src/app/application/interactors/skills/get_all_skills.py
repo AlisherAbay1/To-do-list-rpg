@@ -1,6 +1,6 @@
 from src.app.application.interfaces.repositories_interfaces import \
     SkillRepositoryProtocol
-from src.app.application.mappers import SkillMapper
+from src.app.application.mappers.common import SkillMapper
 
 class GetAllSkillsInteractor:
     def __init__(self, repo: SkillRepositoryProtocol) -> None:

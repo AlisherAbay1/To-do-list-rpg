@@ -2,8 +2,8 @@ from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtoc
 from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
 from src.app.application.exceptions import SessionNotFoundError
 from src.app.domain import TaskCategory
-from src.app.application.dto.task_categories import CreateTaskCategoryDTO
-from src.app.application.mappers import TaskCategoriesMapper
+from src.app.application.dto import CreateTaskCategoryDTO
+from src.app.application.mappers.common import TaskCategoriesMapper
 
 class CreateCurrentUserTaskCategory:
     def  __init__(self, 

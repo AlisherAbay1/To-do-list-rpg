@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class TaskRepeatFrequency(Enum):
     DAILY = "DAILY"
     ONCE_TWO_DAYS = "ONCE-TWO-DAYS"

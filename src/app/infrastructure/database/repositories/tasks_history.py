@@ -5,11 +5,10 @@ from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from src.app.application.dto.tasks import TaskReward
+from src.app.domain.value_objects import TaskReward
 from src.app.domain import Skill, Task, TaskHistory
 from src.app.infrastructure.database.models.relations import \
     Tasks_history_to_skills
-
 
 class TaskHistoryRepository:
     __slots__ = ("_session",)    

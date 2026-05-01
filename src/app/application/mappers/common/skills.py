@@ -1,5 +1,5 @@
 from src.app.domain import Skill
-from src.app.application.dto.skills import SkillDTO
+from src.app.application.dto.common.skills import SkillDTO
 from typing import Sequence
 
 class SkillMapper:

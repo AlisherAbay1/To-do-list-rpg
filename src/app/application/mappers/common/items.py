@@ -1,5 +1,5 @@
 from src.app.domain import Item
-from src.app.application.dto.items import ItemDTO
+from src.app.application.dto.common.items import ItemDTO
 from typing import Sequence
 
 class ItemMapper:

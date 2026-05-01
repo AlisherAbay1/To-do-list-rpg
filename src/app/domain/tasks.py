@@ -1,4 +1,3 @@
-from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 from uuid import UUID
@@ -8,7 +7,7 @@ from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid6 import uuid7
 
-from src.app.application.dto.tasks import TaskReward
+from src.app.domain.value_objects import TaskReward
 from src.app.application.exceptions import (TaskAlreadyDoneError,
                                             TaskExecutedTooEarlyError)
 from src.app.domain.enums import (TaskDifficulty, TaskPriority,

@@ -1,5 +1,5 @@
-from src.app.presentation.schemas import ItemSchemaCreate
-from src.app.application.dto.items import ItemCreateDTO
+from src.app.presentation.schemas.common import ItemSchemaCreate
+from src.app.application.dto.common.items import ItemCreateDTO
 
 class ItemSchemaMapper:
     @staticmethod

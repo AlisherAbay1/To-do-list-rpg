@@ -2,7 +2,7 @@ from uuid import UUID
 
 from uuid6 import uuid7
 
-from src.app.application.dto.skills import SkillCreateDTO, SkillDTO
+from src.app.application.dto.common.skills import SkillCreateDTO, SkillDTO
 from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
 from src.app.application.interfaces.repositories_interfaces import \
@@ -11,7 +11,7 @@ from src.app.application.interfaces.transaction_interfaces import \
     TransactionProtocol
 from src.app.domain import Skill
 from src.app.application.exceptions import SessionNotFoundError
-from src.app.application.mappers import SkillMapper
+from src.app.application.mappers.common import SkillMapper
 
 class CreateCurrentUserSkillInteractor:
     def __init__(self, repo: SkillRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:

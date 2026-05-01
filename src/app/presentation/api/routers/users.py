@@ -2,7 +2,7 @@ from dishka.integrations.fastapi import DishkaRoute, FromDishka
 from fastapi import APIRouter, Cookie, HTTPException, Response
 from pydantic import UUID7
 
-from src.app.application.dto.users import UserPasswordDTO
+from src.app.application.dto import UserPasswordDTO
 from src.app.application.interactors import (
     AuthenticateUserInteractor, CreateUserInteractor,
     DeleteCurrentUserInteractor, DeleteSessionInteractor,

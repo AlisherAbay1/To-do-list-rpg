@@ -2,11 +2,11 @@ from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtoc
 from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
 from src.app.application.interfaces.repositories_interfaces import TaskCategoriesRepositoryProtocol
 from src.app.application.exceptions import SessionNotFoundError
-from src.app.application.dto.task_categories import UpdateTaskCategoryDTO, TaskCategoryDTO
+from src.app.application.dto import UpdateTaskCategoryDTO, TaskCategoryDTO
 from uuid import UUID
 from src.app.application.dto.sentinel_types import Unset
 from src.app.application.exceptions import AccessDeniedError, TaskCategoryNotFoundError
-from src.app.application.mappers import TaskCategoriesMapper
+from src.app.application.mappers.common import TaskCategoriesMapper
 
 class UpdateCurrentUserTaskCategory:
     def  __init__(self, 

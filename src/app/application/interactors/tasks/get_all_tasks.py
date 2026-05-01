@@ -1,4 +1,4 @@
-from src.app.application.dto.tasks import (TaskFilterParamsDTO,
+from src.app.application.dto import (TaskFilterParamsDTO,
                                            TaskSortParamsDTO)
 from src.app.application.interfaces.repositories_interfaces import \
     TaskRepositoryProtocol

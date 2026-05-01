@@ -2,8 +2,8 @@ from fastapi import APIRouter, Cookie, HTTPException
 from dishka.integrations.fastapi import DishkaRoute, FromDishka
 from src.app.application.interactors.task_categories import GetAllTaskCategories, GetCurrentUserTaskCategories, CreateCurrentUserTaskCategory, \
                                                             UpdateCurrentUserTaskCategory, GetCurrentUserTaskCategoryById, DeleteCurrentUserTaskCategoryById
-from src.app.presentation.schemas.task_categories import TaskCategoriesSchema, CreateTaskCategorySchema, UpdateTaskCategorySchema, \
-                                                         TaskCategoryWithTasksDTO
+from src.app.presentation.schemas import TaskCategoriesSchema, CreateTaskCategorySchema, UpdateTaskCategorySchema, \
+                                     TaskCategoryWithTasksSchema
 from src.app.presentation.mappers import TaskCategoriesSchemaMapper
 from uuid import UUID
 
@@ -20,7 +20,7 @@ async def get_current_user_task_catigories(interactor: FromDishka[GetCurrentUser
         raise HTTPException(401, "Not authenticated")
     return await interactor(session_token)
 
-@router.get("/me/{task_category_id}", response_model=TaskCategoryWithTasksDTO)
+@router.get("/me/{task_category_id}", response_model=TaskCategoryWithTasksSchema)
 async def get_current_user_task_catigory_by_id(interactor: FromDishka[GetCurrentUserTaskCategoryById], 
                                                task_category_id: UUID,
                                                get_tasks: bool,

@@ -1,5 +1,5 @@
-from src.app.presentation.schemas.users import (UserSchemaCreateAuth, UserSignInSchema,UserSchemaPatchEmail)
-from src.app.application.dto.users import (CreateUserDTO, SignInDTO,UserEmailDTO)
+from src.app.presentation.schemas import (UserSchemaCreateAuth, UserSignInSchema,UserSchemaPatchEmail)
+from src.app.application.dto import (CreateUserDTO, SignInDTO,UserEmailDTO)
 
 class UserSchemaMapper:
     @staticmethod

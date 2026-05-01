@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel, EmailStr, ConfigDict, field_validator
+from pydantic import BaseModel, EmailStr, field_validator
 from fastapi import HTTPException
 from re import match
 from uuid import UUID
@@ -17,8 +17,6 @@ class UserSchemaRead(BaseModel):
     language: str
     timezone: str
 
-    model_config = ConfigDict(from_attributes=True)
-
 class UserSchemaCreate(BaseModel):
     username: str
     email: EmailStr
@@ -32,13 +30,9 @@ class UserSchemaCreate(BaseModel):
     language: str = "eng"
     timezone: str = "UTC"
 
-    model_config = ConfigDict(from_attributes=True)
-
 class UserSchemaPatchEmail(BaseModel):
     new_email: EmailStr
     password: str
-
-    model_config = ConfigDict(from_attributes=True)
 
     @field_validator("password")
     def is_lenght_correct_schema(cls, password: str):
@@ -50,8 +44,6 @@ class UserSchemaPatchPassword(BaseModel):
     old_password: str
     new_password: str
 
-    model_config = ConfigDict(from_attributes=True)
-
     @field_validator("new_password")
     def is_lenght_correct_schema(cls, password: str):
         if len(password) > 3 and len(password) < 50:
@@ -61,8 +53,6 @@ class UserSchemaPatchPassword(BaseModel):
 class UserSignInSchema(BaseModel):
     username_or_email: str
     password: str
-
-    model_config = ConfigDict(from_attributes=True)
 
 class UserSuccessAuthSchema(BaseModel):
     username: str
@@ -77,8 +67,6 @@ class UserSchemaCreateAuth(BaseModel):
     username: str
     email: EmailStr
     password: str
-
-    model_config = ConfigDict(from_attributes=True)
         
     @field_validator("username")
     def has_valid_chars_schema(cls, username: str):

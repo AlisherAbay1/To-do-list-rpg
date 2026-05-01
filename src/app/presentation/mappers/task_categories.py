@@ -1,5 +1,5 @@
-from src.app.application.dto.task_categories import CreateTaskCategoryDTO, UpdateTaskCategoryDTO
-from src.app.presentation.schemas.task_categories import CreateTaskCategorySchema, UpdateTaskCategorySchema
+from src.app.application.dto import CreateTaskCategoryDTO, UpdateTaskCategoryDTO
+from src.app.presentation.schemas import CreateTaskCategorySchema, UpdateTaskCategorySchema
 from src.app.application.dto.sentinel_types import UNSET
 
 class TaskCategoriesSchemaMapper: 
