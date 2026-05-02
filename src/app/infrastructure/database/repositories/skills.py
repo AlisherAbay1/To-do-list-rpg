@@ -30,7 +30,6 @@ class SkillRepository:
     
     async def delete_all_skills_deleted_more_than_year(self) -> None:
         year_ago = datetime.now(tz=timezone.utc) - timedelta(days=365)
-        print(f"Удаляю всё старше: {year_ago}")
         stmt = delete(Skill).where(Skill.deleted_at < year_ago)
         await self._session.execute(stmt)
 

@@ -130,3 +130,8 @@ class TaskRepository:
     async def delete(self, task_id: UUID) -> None:
         task = delete(Task).where(Task.id == task_id)
         await self._session.execute(task)
+
+    async def delete_all_tasks_deleted_more_than_year(self) -> None:
+        year_ago = datetime.now(tz=timezone.utc) - timedelta(days=365)
+        stmt = delete(Task).where(Task.deleted_at < year_ago)
+        await self._session.delete(stmt)

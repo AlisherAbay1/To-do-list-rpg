@@ -4,7 +4,8 @@ from src.app.application.interfaces.repositories_interfaces import TaskRepositor
 from src.app.application.interactors import GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, \
                                      GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor, \
                                      UpdateTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksBySessionTokenInteractor, \
-                                     GetDailyTasksBySessionTokenInteractor, GetOverdueTasksInteractor, GetTodaysDeadlineInteractor
+                                     GetDailyTasksBySessionTokenInteractor, GetOverdueTasksInteractor, GetTodaysDeadlineInteractor, \
+                                     ClearExpiredTasksInteractor
 
 class TaskProvider(Provider):
     scope = Scope.REQUEST
@@ -22,3 +23,4 @@ class TaskProvider(Provider):
     get_daily_tasks = provide(GetDailyTasksBySessionTokenInteractor)
     get_overdue_tasks = provide(GetOverdueTasksInteractor)
     get_todays_deadline_tasks = provide(GetTodaysDeadlineInteractor)
+    clear_expired_tasks = provide(ClearExpiredTasksInteractor)

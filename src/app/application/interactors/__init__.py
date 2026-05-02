@@ -12,7 +12,8 @@ from .tasks import (CompleteTaskInteractor, CreateCurrentUserTaskInteractor,
                     GetDailyTasksBySessionTokenInteractor,
                     GetDeletedTasksBySessionTokenInteractor, GetTaskInteractor,
                     UncompleteTaskInteractor, UpdateTaskInteractor, 
-                    GetOverdueTasksInteractor, GetTodaysDeadlineInteractor)
+                    GetOverdueTasksInteractor, GetTodaysDeadlineInteractor, 
+                    ClearExpiredTasksInteractor)
 from .users import (AuthenticateUserInteractor, CreateUserInteractor,
                     DeleteCurrentUserInteractor, DeleteSessionInteractor,
                     GetAllUsersInteractor, GetCurrentUser,
@@ -40,4 +41,5 @@ __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteC
            "GetAllTaskCategories", "GetCurrentUserTaskCategories", 
            "GetCurrentUserTaskCategoryById", "CreateCurrentUserTaskCategory", 
            "DeleteCurrentUserTaskCategoryById", "UpdateCurrentUserTaskCategory", 
-           "GetCurrentUserSkillByIdInteractor", "DeleteCurrentUserSkillByIdInteractor")
+           "GetCurrentUserSkillByIdInteractor", "DeleteCurrentUserSkillByIdInteractor", 
+           "ClearExpiredTasksInteractor")
