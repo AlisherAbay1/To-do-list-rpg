@@ -17,6 +17,5 @@ class DeleteTaskInteractor:
         task = await self.repo.get_task_by_id(task_id)
         if task is None:
             raise TaskNotFoundError()
-        task.deleted = True
-        task.deleted_at = datetime.now(tz=timezone.utc)
+        task.delete()
         await self.transaction.commit()

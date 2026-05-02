@@ -102,3 +102,7 @@ class Task(Base, kw_only=True):
             case _: 
                 priority_multiplier = 0
         return difficulty_multiplier, priority_multiplier
+
+    def delete(self) -> None:
+        self.deleted = True
+        self.deleted_at = datetime.now(tz=timezone.utc)
