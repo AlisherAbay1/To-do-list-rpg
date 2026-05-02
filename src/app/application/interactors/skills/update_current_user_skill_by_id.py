@@ -31,7 +31,7 @@ class UpdateCurrentUserSkillById:
         if not isinstance(dto.description, Unset):
             skill.description = dto.description
         if not isinstance(dto.ico, Unset):
-            skill.ico = dto.ico
+            skill.ico = dto.ico 
         if not isinstance(dto.xp, Unset):
             skill.xp = dto.xp
         if not isinstance(dto.lvl, Unset):

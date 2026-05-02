@@ -16,12 +16,7 @@ class AppProvider(Provider):
     @provide(scope=Scope.REQUEST)
     async def get_pgsql_session(self, session_maker: async_sessionmaker[AsyncSession]) -> AsyncGenerator[AsyncSession]:
         async with session_maker() as session:
-            async with session.begin():
-                try:
-                    yield session
-                except Exception as e:
-                    await session.rollback()
-                    raise e
+            yield session
 
     @provide(scope=Scope.REQUEST)
     async def get_redis_session(self) -> AsyncGenerator[Redis]:
