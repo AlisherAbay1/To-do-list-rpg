@@ -46,7 +46,7 @@ class TaskSchemaMapper:
     def to_update_dto(schema: TaskSchemaUpdate) -> TaskUpdateDTO:
         clean_data = schema.model_dump(exclude_unset=True)
         dto = TaskUpdateDTO(
-            title=clean_data.get("title") or UNSET,
+            title=clean_data.get("title", UNSET),
             description=clean_data.get("description", UNSET),
             category_id=clean_data.get("category_id", UNSET),
             repeat_limit=clean_data.get("repeat_limit", UNSET),
@@ -57,6 +57,6 @@ class TaskSchemaMapper:
             priority=clean_data.get("priority", UNSET),
             custom_xp_reward=clean_data.get("custom_xp_reward", UNSET),
             custom_gold_reward=clean_data.get("custom_gold_reward", UNSET),
-            deleted=clean_data.get("deleted") or UNSET,
+            deleted=clean_data.get("deleted", UNSET)
         )
         return dto

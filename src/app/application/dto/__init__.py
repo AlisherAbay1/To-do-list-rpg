@@ -4,7 +4,8 @@ from .common import (ItemDTO, ItemUpdateDTO, ItemCreateDTO,
            TaskCreateDTO, TaskDetailDTO, TaskFilterParamsDTO, 
            TaskDTO, TaskUpdateDTO, TaskSortParamsDTO,
            UserAuthDTO, UserDTO, SignInDTO, 
-           UserEmailDTO, CreateUserDTO, UserPasswordDTO)
+           UserEmailDTO, CreateUserDTO, UserPasswordDTO, 
+           SkillUpdateDTO)
 from .extended import (SkillWithTasksAndNextLvlXpDTO, TaskCategoryWithTasksDTO, 
                        TaskWithUserAndSkillsDTO, TaskWithSkillsAndItemsDTO)
 from .shared import MessageDTO

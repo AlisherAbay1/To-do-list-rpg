@@ -5,7 +5,7 @@ from .skills import (ClearExpiredSkillsInteractor,
                      CreateCurrentUserSkillInteractor, DeleteSkillInteractor,
                      GetAllSkillsInteractor, GetCurrentUserSkillsInteractor,
                      GetSkillInteractor, DeleteCurrentUserSkillByIdInteractor, 
-                     GetCurrentUserSkillByIdInteractor)
+                     GetCurrentUserSkillByIdInteractor, UpdateCurrentUserSkillById)
 from .tasks import (CompleteTaskInteractor, CreateCurrentUserTaskInteractor,
                     DeleteTaskInteractor, GetAllTasksInteractor,
                     GetCurentUserTasksInteractor,
@@ -42,4 +42,4 @@ __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteC
            "GetCurrentUserTaskCategoryById", "CreateCurrentUserTaskCategory", 
            "DeleteCurrentUserTaskCategoryById", "UpdateCurrentUserTaskCategory", 
            "GetCurrentUserSkillByIdInteractor", "DeleteCurrentUserSkillByIdInteractor", 
-           "ClearExpiredTasksInteractor")
+           "ClearExpiredTasksInteractor", "UpdateCurrentUserSkillById")

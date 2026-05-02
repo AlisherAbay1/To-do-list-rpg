@@ -3,7 +3,7 @@ from src.app.application.interfaces.repositories_interfaces import SkillReposito
 from src.app.infrastructure.database.repositories import SkillRepository
 from src.app.application.interactors import GetAllSkillsInteractor, GetCurrentUserSkillsInteractor, CreateCurrentUserSkillInteractor, \
                                             GetSkillInteractor, DeleteSkillInteractor, ClearExpiredSkillsInteractor, \
-                                            DeleteCurrentUserSkillByIdInteractor, GetCurrentUserSkillByIdInteractor
+                                            DeleteCurrentUserSkillByIdInteractor, GetCurrentUserSkillByIdInteractor, UpdateCurrentUserSkillById
 
 class SkillProvider(Provider):
     scope=Scope.REQUEST
@@ -16,3 +16,4 @@ class SkillProvider(Provider):
     clear_expired_skills = provide(ClearExpiredSkillsInteractor)
     delete_current_user_skill_by_id = provide(DeleteCurrentUserSkillByIdInteractor)
     get_current_user_skill_by_id = provide(GetCurrentUserSkillByIdInteractor)
+    update_current_user_skill_by_id = provide(UpdateCurrentUserSkillById)

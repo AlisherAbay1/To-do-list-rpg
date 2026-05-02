@@ -21,5 +21,9 @@ class SkillSchemaCreate(BaseModel):
     lvl: int = 1
     xp: int = 0
 
-
-
+class SkillSchemaUpdate(BaseModel):
+    title: str | None = None
+    description: Optional[str] = None
+    ico: Optional[str] = None
+    lvl: int | None = None
+    xp: int | None = None

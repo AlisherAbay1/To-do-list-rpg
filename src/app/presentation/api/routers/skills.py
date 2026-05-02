@@ -8,9 +8,11 @@ from src.app.application.interactors import (CreateCurrentUserSkillInteractor,
                                              GetCurrentUserSkillsInteractor,
                                              GetSkillInteractor, 
                                              DeleteCurrentUserSkillByIdInteractor, 
-                                             GetCurrentUserSkillByIdInteractor)
+                                             GetCurrentUserSkillByIdInteractor,
+                                             UpdateCurrentUserSkillById)
 from src.app.presentation.mappers import SkillSchemaMapper
-from src.app.presentation.schemas import SkillSchemaCreate, SkillSchemaRead, SkillWithTasksAndNextLvlXpSchemaRead
+from src.app.presentation.schemas import SkillSchemaCreate, SkillSchemaRead, SkillWithTasksAndNextLvlXpSchemaRead, \
+                                         SkillSchemaUpdate
 
 router = APIRouter(prefix="/skill", route_class=DishkaRoute)
 
@@ -53,6 +55,14 @@ async def get_current_user_skill_by_id(skill_id: UUID7,
         raise HTTPException(401, "Not authenticated")
     return await interactor(skill_id, session_token, get_related_tasks)
 
+@router.patch("/me/{skill_id}", response_model=SkillSchemaRead)
+async def update_current_user_skill_by_id(skill_id: UUID7, 
+                                          data: SkillSchemaUpdate,
+                                          interactor: FromDishka[UpdateCurrentUserSkillById], 
+                                          session_token = Cookie(None)):
+    dto = SkillSchemaMapper.to_update_dto(data)
+    return await interactor(skill_id, dto, session_token)
+
 @router.get("/{skill_id}", response_model=SkillSchemaRead)
 async def get_skill(skill_id: UUID7, 
                     interactor: FromDishka[GetSkillInteractor], ):
@@ -62,4 +72,3 @@ async def get_skill(skill_id: UUID7,
 async def delete_skill(skill_id: UUID7, 
                        interactor: FromDishka[DeleteSkillInteractor]):
     await interactor(skill_id)
-

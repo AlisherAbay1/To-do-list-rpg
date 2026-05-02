@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 from uuid import UUID
 from datetime import datetime
+from src.app.application.dto.sentinel_types import UNSET, Unset
 
 @dataclass(slots=True)
 class SkillDTO:
@@ -25,8 +26,8 @@ class SkillCreateDTO:
 
 @dataclass(slots=True)
 class SkillUpdateDTO:
-    title: Optional[str]
-    description: Optional[str]
-    ico: Optional[str]
-    lvl: Optional[int]
-    xp: Optional[int]
+    title: str | Unset = UNSET
+    description: Optional[str] | Unset = UNSET
+    ico: Optional[str] | Unset = UNSET
+    lvl: int | Unset = UNSET
+    xp: int | Unset = UNSET
