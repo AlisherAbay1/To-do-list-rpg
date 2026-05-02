@@ -4,7 +4,7 @@ from datetime import datetime
 from uuid import UUID
 from src.app.presentation.schemas import TaskSchemaReadable
 
-class SkillWithTasksSchemaRead(BaseModel):
+class SkillWithTasksAndNextLvlXpSchemaRead(BaseModel):
     id: UUID
     user_id: UUID
     title: str
@@ -14,5 +14,7 @@ class SkillWithTasksSchemaRead(BaseModel):
     xp: int
     deleted: bool
     deleted_at: Optional[datetime]
+
+    xp_for_next_lvl: int
 
     tasks: list[TaskSchemaReadable]

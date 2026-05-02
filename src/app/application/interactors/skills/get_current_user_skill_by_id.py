@@ -28,5 +28,5 @@ class GetCurrentUserSkillByIdInteractor:
             tasks = await self.task_repo.get_tasks_by_skill_id(skill_id)
         else: 
             tasks = []
-        dto = ExtendedSkillMapper.to_with_tasks_dto(skill, tasks)
+        dto = ExtendedSkillMapper.to_with_tasks_and_next_lvl_xp_dto(skill, tasks)
         return dto

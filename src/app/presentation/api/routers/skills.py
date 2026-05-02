@@ -10,7 +10,7 @@ from src.app.application.interactors import (CreateCurrentUserSkillInteractor,
                                              DeleteCurrentUserSkillByIdInteractor, 
                                              GetCurrentUserSkillByIdInteractor)
 from src.app.presentation.mappers import SkillSchemaMapper
-from src.app.presentation.schemas import SkillSchemaCreate, SkillSchemaRead, SkillWithTasksSchemaRead
+from src.app.presentation.schemas import SkillSchemaCreate, SkillSchemaRead, SkillWithTasksAndNextLvlXpSchemaRead
 
 router = APIRouter(prefix="/skill", route_class=DishkaRoute)
 
@@ -44,7 +44,7 @@ async def delete_current_user_skill(skill_id: UUID7,
                                     session_token = Cookie(None)):
     await interactor(skill_id, session_token)
 
-@router.get("/me/{skill_id}", response_model=SkillWithTasksSchemaRead)
+@router.get("/me/{skill_id}", response_model=SkillWithTasksAndNextLvlXpSchemaRead)
 async def get_current_user_skill_by_id(skill_id: UUID7, 
                                        interactor: FromDishka[GetCurrentUserSkillByIdInteractor], 
                                        get_related_tasks: bool,

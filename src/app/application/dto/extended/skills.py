@@ -5,7 +5,7 @@ from datetime import datetime
 from src.app.application.dto import TaskDTO
 
 @dataclass(slots=True)
-class SkillWithTasksDTO:
+class SkillWithTasksAndNextLvlXpDTO:
     id: UUID
     user_id: UUID
     title: str
@@ -15,5 +15,7 @@ class SkillWithTasksDTO:
     xp: int
     deleted: bool
     deleted_at: Optional[datetime]
+
+    xp_for_next_lvl: int
 
     tasks: list[TaskDTO]

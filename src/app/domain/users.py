@@ -27,5 +27,8 @@ class User(Base, kw_only=True):
 
     def apply_rewards(self, rewards: TaskReward):
         self.xp += rewards.xp
-        self.lvl = 1 + self.xp // 1000
+        self.lvl = self.calculate_lvl(rewards.xp)
         self.gold += rewards.gold
+
+    def calculate_lvl(self, xp: int):
+        return 1 + xp // 1000

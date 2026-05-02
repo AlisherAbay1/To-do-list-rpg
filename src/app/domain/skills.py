@@ -23,4 +23,10 @@ class Skill(Base, kw_only=True):
 
     def apply_reward(self, xp: int):
         self.xp += xp
-        self.lvl = self.xp // 1000
+        self.lvl = self.calculate_lvl(xp)
+
+    def calculate_lvl(self, xp: int) -> int:
+        return 1 + xp // 1000
+    
+    def calculate_xp_for_next_lvl(self, xp: int) -> int:
+        return 1000 - xp % 1000

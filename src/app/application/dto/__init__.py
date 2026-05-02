@@ -5,7 +5,7 @@ from .common import (ItemDTO, ItemUpdateDTO, ItemCreateDTO,
            TaskDTO, TaskUpdateDTO, TaskSortParamsDTO,
            UserAuthDTO, UserDTO, SignInDTO, 
            UserEmailDTO, CreateUserDTO, UserPasswordDTO)
-from .extended import (SkillWithTasksDTO, TaskCategoryWithTasksDTO, 
+from .extended import (SkillWithTasksAndNextLvlXpDTO, TaskCategoryWithTasksDTO, 
                        TaskWithUserAndSkillsDTO, TaskWithSkillsAndItemsDTO)
 from .shared import MessageDTO
 
@@ -16,5 +16,5 @@ __all__ = ("ItemDTO", "ItemUpdateDTO", "ItemCreateDTO",
            "TaskDTO", "TaskUpdateDTO", "TaskSortParamsDTO",
            "UserAuthDTO", "UserDTO", "SignInDTO", 
            "UserEmailDTO", "CreateUserDTO", "UserPasswordDTO",
-           "SkillWithTasksDTO", "TaskCategoryWithTasksDTO", "TaskWithUserAndSkillsDTO", 
+           "SkillWithTasksAndNextLvlXpDTO", "TaskCategoryWithTasksDTO", "TaskWithUserAndSkillsDTO", 
            "TaskWithSkillsAndItemsDTO", "MessageDTO")
