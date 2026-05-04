@@ -34,11 +34,14 @@ class TaskWithSkillsAndItemsDTO:
     repeat_frequency: Optional[TaskRepeatFrequency]
     deadline: Optional[datetime]
     created_at: datetime
+    last_completed_at: Optional[datetime]
     type: Optional[TaskType]
     difficulty: Optional[TaskDifficulty]
     priority: Optional[TaskPriority]
     custom_xp_reward: Optional[int]
     custom_gold_reward: Optional[int]
+    deleted: bool 
+    deleted_at: Optional[datetime]
 
     skills: list[SkillDTO]
     items: list[ItemDTO]

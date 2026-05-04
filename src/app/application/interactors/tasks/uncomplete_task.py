@@ -43,15 +43,18 @@ class UncompleteTaskInteractor:
             raise AccessDeniedError()
         if task.repeat_limit is not None:
             task.repeat_limit += 1
-
-        before_previous, previous = tasks_history
+        
+        before_previous, previous = tasks_history[-1], tasks_history[0]
         user = await self.user_repo.get_user(user_id)
         skills = await self.skill_repo.get_skills_by_task_id(task_id)
 
         if user is None:
             raise UserNotFoundError()
         
-        task.last_completed_at = before_previous.completed_at
+        if len(tasks_history) < 2:
+            task.last_completed_at = None
+        else: 
+            task.last_completed_at = before_previous.completed_at
         user.xp -= previous.xp_earned
         user.lvl = 1 + user.xp // 1000
         user.gold -= previous.gold_earned

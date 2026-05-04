@@ -21,11 +21,14 @@ class ExtendedTaskMapper:
             repeat_frequency=task_domain.repeat_frequency, 
             deadline=task_domain.deadline, 
             created_at=task_domain.created_at,
+            last_completed_at=task_domain.last_completed_at,
             type=task_domain.type,
             difficulty=task_domain.difficulty, 
             priority=task_domain.priority,
             custom_xp_reward=task_domain.custom_xp_reward,
             custom_gold_reward=task_domain.custom_gold_reward,
+            deleted=task_domain.deleted, 
+            deleted_at=task_domain.deleted_at,
             skills=SkillMapper.to_list_dto(skill_domains),  
             items=ItemMapper.to_list_dto(item_domains)
         )
