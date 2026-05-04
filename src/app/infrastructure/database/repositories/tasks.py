@@ -2,7 +2,7 @@ from typing import Optional, Sequence
 from uuid import UUID
 from datetime import datetime, timezone, timedelta
 
-from sqlalchemy import and_, delete, desc, select
+from sqlalchemy import and_, delete, desc, select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.application.dto import (TaskFilterParamsDTO,
@@ -75,7 +75,6 @@ class TaskRepository:
                 )
         result = await self._session.scalars(tasks)
         m = result.all()
-        print(len(m), [t.id for t in m])
         return m
 
     async def get_tasks_by_user_id(self, user_id: UUID, limit: int, offset: int) -> Sequence[Task]:
@@ -102,7 +101,7 @@ class TaskRepository:
         return result.all()
     
     async def get_todays_deadline_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]:
-        today = datetime.now(tz=timezone.utc).replace(hour=0, minute=0, second=0)
+        today = datetime.now(tz=timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
         next_day = today + timedelta(days=1)
         tasks = select(
             Task
@@ -135,3 +134,16 @@ class TaskRepository:
         year_ago = datetime.now(tz=timezone.utc) - timedelta(days=365)
         stmt = delete(Task).where(Task.deleted_at < year_ago)
         await self._session.delete(stmt)
+
+    async def get_amount_of_overdue_tasks(self, user_id: UUID) -> Optional[int]: 
+        tasks = select(
+            func.count()
+            ).select_from(Task).where(
+                and_(
+                    Task.user_id == user_id,
+                    Task.deadline < datetime.now(tz=timezone.utc),
+                    Task.deleted == False
+                    )
+                )
+        result = await self._session.scalar(tasks)
+        return result

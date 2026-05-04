@@ -37,3 +37,8 @@ class SkillRepository:
         skills = select(Skill).join(Task.skills).where(Task.id == task_id)
         result = await self._session.scalars(skills)
         return result.all()
+    
+    async def get_skills_by_lvl_desc_order(self, user_id: UUID) -> Sequence[Skill]: 
+        skills = select(Skill).where(Skill.user_id == user_id).order_by(Skill.lvl.desc())
+        result = await self._session.scalars(skills)
+        return result.all()

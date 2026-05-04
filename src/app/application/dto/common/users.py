@@ -43,3 +43,10 @@ class UserEmailDTO:
 class UserPasswordDTO:
     old_password: str
     new_password: str
+
+@dataclass(slots=True)
+class UserStatsDTO:
+    lvl: int
+    xp: int
+    xp_to_next_level: int
+    gold: int

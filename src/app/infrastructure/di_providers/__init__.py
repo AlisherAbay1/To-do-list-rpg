@@ -4,6 +4,8 @@ from .task import TaskProvider
 from .skill import SkillProvider
 from .item import ItemProvider
 from .task_categories import TaskCategoriesProvider
+from .stats import StatsProvider
 
 __all__ = ("AppProvider", "UserProvider", "TaskProvider", 
-           "SkillProvider", "ItemProvider", "TaskCategoriesProvider")
+           "SkillProvider", "ItemProvider", "TaskCategoriesProvider", 
+           "StatsProvider")

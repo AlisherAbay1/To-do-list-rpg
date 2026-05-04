@@ -1,7 +1,8 @@
-from typing import Sequence
+from typing import Sequence, Optional
 from uuid import UUID
+from datetime import datetime, timezone, timedelta
 
-from sqlalchemy import desc, select
+from sqlalchemy import desc, select, func, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -48,3 +49,36 @@ class TaskHistoryRepository:
                 skill_id=skill.id
             )
             self._session.add(skill_history)
+
+    async def get_amount_of_total_completed_tasks(self, user_id: UUID) -> Optional[int]: 
+        tasks_history = select(func.count()).select_from(TaskHistory).where(TaskHistory.user_id == user_id)
+        result = await self._session.scalar(tasks_history)
+        return result
+
+    async def get_amount_of_today_completed_tasks(self, user_id: UUID) -> Optional[int]: 
+        day_start = datetime.now(tz=timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        day_end = day_start + timedelta(days=1)
+        tasks_history = select(func.count()).select_from(TaskHistory).where(
+            and_(
+                TaskHistory.user_id == user_id, 
+                TaskHistory.completed_at >= day_start, 
+                TaskHistory.completed_at < day_end
+                )
+            )
+        result = await self._session.scalar(tasks_history)
+        return result
+
+    async def get_amount_of_this_week_completed_tasks(self, user_id: UUID) -> Optional[int]: 
+        date = datetime.now(tz=timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        date_data = date.isocalendar()
+        week_start = date - timedelta(days=date_data.weekday - 1)
+        week_end = week_start + timedelta(days=7)
+        tasks_history = select(func.count()).select_from(TaskHistory).where(
+            and_(
+                TaskHistory.user_id == user_id, 
+                TaskHistory.completed_at >= week_start, 
+                TaskHistory.completed_at < week_end
+                )
+            )
+        result = await self._session.scalar(tasks_history)
+        return result

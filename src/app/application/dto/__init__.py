@@ -3,19 +3,19 @@ from .common import (ItemDTO, ItemUpdateDTO, ItemCreateDTO,
            TaskCategoryDTO, CreateTaskCategoryDTO, UpdateTaskCategoryDTO, 
            TaskCreateDTO, TaskDetailDTO, TaskFilterParamsDTO, 
            TaskDTO, TaskUpdateDTO, TaskSortParamsDTO,
-           UserAuthDTO, UserDTO, SignInDTO, 
+           UserAuthDTO, UserDTO, SignInDTO, SkillShortDTO,
            UserEmailDTO, CreateUserDTO, UserPasswordDTO, 
-           SkillUpdateDTO)
+           SkillUpdateDTO, TaskStatsDTO, UserStatsDTO)
 from .extended import (SkillWithTasksAndNextLvlXpDTO, TaskCategoryWithTasksDTO, 
-                       TaskWithUserAndSkillsDTO, TaskWithSkillsAndItemsDTO)
+                       TaskWithUserAndSkillsDTO, TaskWithSkillsAndItemsDTO, StatsOverviewDTO)
 from .shared import MessageDTO
 
-__all__ = ("ItemDTO", "ItemUpdateDTO", "ItemCreateDTO", 
-           "SkillCreateDTO", "SkillDTO", "SkillUpdateDTO", 
+__all__ = ("ItemDTO", "ItemUpdateDTO", "ItemCreateDTO", "UserStatsDTO",
+           "SkillCreateDTO", "SkillDTO", "SkillUpdateDTO", "SkillShortDTO",
            "TaskCategoryDTO", "CreateTaskCategoryDTO", "UpdateTaskCategoryDTO", 
            "TaskCreateDTO", "TaskDetailDTO", "TaskFilterParamsDTO", 
-           "TaskDTO", "TaskUpdateDTO", "TaskSortParamsDTO",
-           "UserAuthDTO", "UserDTO", "SignInDTO", 
-           "UserEmailDTO", "CreateUserDTO", "UserPasswordDTO",
-           "SkillWithTasksAndNextLvlXpDTO", "TaskCategoryWithTasksDTO", "TaskWithUserAndSkillsDTO", 
-           "TaskWithSkillsAndItemsDTO", "MessageDTO")
+           "TaskDTO", "TaskUpdateDTO", "TaskSortParamsDTO", "MessageDTO",
+           "UserAuthDTO", "UserDTO", "SignInDTO", "TaskStatsDTO", 
+           "UserEmailDTO", "CreateUserDTO", "UserPasswordDTO","StatsOverviewDTO",
+           "SkillWithTasksAndNextLvlXpDTO", "TaskCategoryWithTasksDTO", 
+           "TaskWithUserAndSkillsDTO", "TaskWithSkillsAndItemsDTO", )

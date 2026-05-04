@@ -82,3 +82,10 @@ class TaskCreateDTO:
 
     related_skills: list[UUID] = field(default_factory=list)
     related_items: list[UUID] = field(default_factory=list)
+
+@dataclass(slots=True)
+class TaskStatsDTO:
+    total_completed: int
+    completed_today: int
+    completed_this_week: int
+    overdue_count: int

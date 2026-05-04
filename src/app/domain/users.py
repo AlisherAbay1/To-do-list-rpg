@@ -32,3 +32,6 @@ class User(Base, kw_only=True):
 
     def calculate_lvl(self, xp: int):
         return 1 + xp // 1000
+    
+    def calculate_xp_for_next_lvl(self, xp: int) -> int:
+        return 1000 - xp % 1000

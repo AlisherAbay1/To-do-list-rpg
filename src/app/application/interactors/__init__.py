@@ -26,6 +26,8 @@ from .task_categories import (GetAllTaskCategories, GetCurrentUserTaskCategories
                               GetCurrentUserTaskCategoryById, CreateCurrentUserTaskCategory, 
                               DeleteCurrentUserTaskCategoryById, UpdateCurrentUserTaskCategory)
 
+from .stats import GetStatsOverviewInteractor
+
 __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteCurrentUserInteractor", 
            "GetUserInteractor", "GetAllTasksInteractor", "UncompleteTaskInteractor",
            "CreateCurrentUserTaskInteractor", "GetCurentUserTasksInteractor", "GetTaskInteractor", 
@@ -38,7 +40,7 @@ __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteC
            "RefreshSessionTokenInteractor", "GetSessionTimeInteractor", "ClearExpiredSkillsInteractor", 
            "GetDeletedTasksBySessionTokenInteractor", "GetDailyTasksBySessionTokenInteractor", 
            "GetOverdueTasksInteractor", "GetTodaysDeadlineInteractor", 
-           "GetAllTaskCategories", "GetCurrentUserTaskCategories", 
+           "GetAllTaskCategories", "GetCurrentUserTaskCategories", "GetStatsOverviewInteractor",
            "GetCurrentUserTaskCategoryById", "CreateCurrentUserTaskCategory", 
            "DeleteCurrentUserTaskCategoryById", "UpdateCurrentUserTaskCategory", 
            "GetCurrentUserSkillByIdInteractor", "DeleteCurrentUserSkillByIdInteractor", 

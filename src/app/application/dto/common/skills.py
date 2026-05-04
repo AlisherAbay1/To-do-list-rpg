@@ -31,3 +31,12 @@ class SkillUpdateDTO:
     ico: Optional[str] | Unset = UNSET
     lvl: int | Unset = UNSET
     xp: int | Unset = UNSET
+
+@dataclass(slots=True)
+class SkillShortDTO:
+    id: UUID
+    title: str
+    description: Optional[str]
+    ico: Optional[str]
+    lvl: int
+    xp: int
