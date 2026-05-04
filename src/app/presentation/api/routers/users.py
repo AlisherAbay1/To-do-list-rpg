@@ -34,6 +34,10 @@ async def get_current_user(interactor: FromDishka[GetCurrentUser],
         raise HTTPException(401, "Not authenticated")
     return await interactor(session_token)
 
+@router.get("/{user_id}", response_model=UserSchemaRead)
+async def get_user(interactor: FromDishka[GetUserInteractor], 
+                   user_id: UUID7):
+    return await interactor(user_id)
 
 @router.post("/auth/registration", response_model=UserSuccessAuthSchema)
 async def create_user(response: Response, 
@@ -126,8 +130,3 @@ async def delete_current_user(interactor: FromDishka[DeleteCurrentUserInteractor
         raise HTTPException(401, "Not authenticated")
     
     await interactor(session_token)
-
-@router.get("/{user_id}", response_model=UserSchemaRead)
-async def get_user(interactor: FromDishka[GetUserInteractor], 
-                   user_id: UUID7):
-    return await interactor(user_id)

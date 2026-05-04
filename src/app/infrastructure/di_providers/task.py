@@ -3,7 +3,7 @@ from src.app.infrastructure.database.repositories import TaskRepository, TaskHis
 from src.app.application.interfaces.repositories_interfaces import TaskRepositoryProtocol, TaskHistoryRepositoryProtocol
 from src.app.application.interactors import GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, \
                                      GetTaskInteractor, DeleteTaskInteractor, CompleteTaskInteractor, \
-                                     UpdateTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksBySessionTokenInteractor, \
+                                     UpdateCurrentUserTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksBySessionTokenInteractor, \
                                      GetDailyTasksBySessionTokenInteractor, GetOverdueTasksInteractor, GetTodaysDeadlineInteractor, \
                                      ClearExpiredTasksInteractor
 
@@ -15,7 +15,7 @@ class TaskProvider(Provider):
     get_current_user_tasks = provide(GetCurentUserTasksInteractor)
     get_task = provide(GetTaskInteractor)
     create_task = provide(CreateCurrentUserTaskInteractor)
-    update_task = provide(UpdateTaskInteractor)
+    update_task = provide(UpdateCurrentUserTaskInteractor)
     delete_task = provide(DeleteTaskInteractor)
     complete_task = provide(CompleteTaskInteractor)
     uncomplete_task = provide(UncompleteTaskInteractor)

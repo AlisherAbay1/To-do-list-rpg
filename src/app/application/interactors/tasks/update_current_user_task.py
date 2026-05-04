@@ -13,7 +13,7 @@ from src.app.application.interfaces.transaction_interfaces import \
 from src.app.application.dto.sentinel_types import Unset
 from src.app.application.mappers.common import TaskMapper
 
-class UpdateTaskInteractor:
+class UpdateCurrentUserTaskInteractor:
     def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
