@@ -6,7 +6,7 @@ from .common import (ItemSchemaRead, ItemSchemaCreate, SkillSchemaRead,
                     TaskSchemaUpdate, UpdateTaskCategorySchema, UserSuccessAuthSchema, 
                     MessageSchema, UserNewEmailSchema, TaskCategoriesSchema, 
                     CreateTaskCategorySchema, SkillSchemaUpdate, SkillShortSchema, 
-                    SkillRequirementsSchema)
+                    SkillRequirementsSchema, ItemSchemaUpdate)
 
 from .extended import (SkillWithTasksAndNextLvlXpSchemaRead, TaskWithSkillsAndItemsSchemaRead, 
                        TaskWithUserAndSkillsSchema, TaskCategoryWithTasksSchema, ItemWithRequirementsSchema)
@@ -21,4 +21,4 @@ __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead",
             "CreateTaskCategorySchema", "SkillWithTasksAndNextLvlXpSchemaRead",
             "TaskWithSkillsAndItemsSchemaRead", "TaskWithUserAndSkillsSchema",
             "TaskCategoryWithTasksSchema", "SkillSchemaUpdate", "SkillShortSchema", 
-            "SkillRequirementsSchema", "ItemWithRequirementsSchema")
+            "SkillRequirementsSchema", "ItemWithRequirementsSchema", "ItemSchemaUpdate")

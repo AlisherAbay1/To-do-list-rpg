@@ -14,3 +14,7 @@ class ItemSchemaRead(BaseModel):
 class ItemSchemaCreate(BaseModel):
     title: str
     description: Optional[str] = None
+
+class ItemSchemaUpdate(BaseModel):
+    title: str | None = None
+    description: Optional[str] = None

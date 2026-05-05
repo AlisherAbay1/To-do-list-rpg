@@ -1,4 +1,4 @@
-from .items import ItemDTO, ItemUpdateDTO, ItemCreateDTO
+from .items import ItemDTO, ItemUpdateDTO, ItemCreateDTO, ItemUpdateDTO
 from .skills import SkillCreateDTO, SkillDTO, SkillUpdateDTO, SkillShortDTO, SkillRequirementsDTO
 from .task_categories import TaskCategoryDTO, CreateTaskCategoryDTO, UpdateTaskCategoryDTO
 from .tasks import TaskCreateDTO, TaskDetailDTO, TaskFilterParamsDTO, TaskDTO, TaskUpdateDTO, TaskSortParamsDTO, TaskStatsDTO
@@ -11,4 +11,5 @@ __all__ = ("ItemDTO", "ItemUpdateDTO", "ItemCreateDTO",
            "TaskDTO", "TaskUpdateDTO", "TaskSortParamsDTO",
            "UserAuthDTO", "UserDTO", "SignInDTO", "SkillRequirementsDTO",
            "UserEmailDTO", "CreateUserDTO", "UserPasswordDTO", 
-           "UserStatsDTO", "TaskStatsDTO", "SkillShortDTO")
+           "UserStatsDTO", "TaskStatsDTO", "SkillShortDTO", 
+           "ItemUpdateDTO")
