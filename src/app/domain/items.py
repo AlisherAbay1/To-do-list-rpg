@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from uuid import UUID
 
@@ -21,3 +21,7 @@ class Item(Base, kw_only=True):
     deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=None)
 
     requirements: Mapped[list["ItemRequirements"]] = relationship(lazy="noload", init=False, default_factory=list)
+
+    def delete(self) -> None:
+        self.deleted = True
+        self.deleted_at = datetime.now(tz=timezone.utc)

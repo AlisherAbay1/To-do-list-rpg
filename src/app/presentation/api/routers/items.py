@@ -8,7 +8,8 @@ from src.app.application.interactors import (CreateCurrentUserItemInteractor,
                                              GetCurrentUserItemsInteractor,
                                              GetItemInteractor, 
                                              GetCurrentUserItemInteractor, 
-                                             UpdateCurrentUserItemInteractor)
+                                             UpdateCurrentUserItemInteractor, 
+                                             DeleteCurrentUserItemInteractor)
 from src.app.presentation.mappers import ItemSchemaMapper
 from src.app.presentation.schemas import (ItemSchemaCreate, ItemSchemaRead, ItemWithRequirementsSchema, 
                                           ItemSchemaUpdate)
@@ -58,6 +59,13 @@ async def update_current_user_item(item_id: UUID7,
                    session_token = Cookie(None)):
     dto = ItemSchemaMapper.to_update_dto(schema)
     return await interactor(item_id, session_token, dto)
+
+@router.delete("/{item_id}", status_code=204)
+async def delete_current_user_item(item_id: UUID7,
+                                   interactor: FromDishka[DeleteCurrentUserItemInteractor], 
+                                   session_token = Cookie(None)):
+    return await interactor(item_id, session_token)
+
 
 @router.delete("/{item_id}", status_code=204)
 async def delete_item(item_id: UUID7,

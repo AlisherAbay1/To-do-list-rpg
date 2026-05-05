@@ -5,7 +5,8 @@ from .get_current_user_items import GetCurrentUserItemsInteractor
 from .get_item import GetItemInteractor
 from .get_current_user_item import GetCurrentUserItemInteractor
 from .update_current_user_item import UpdateCurrentUserItemInteractor
+from .delete_current_user_item import DeleteCurrentUserItemInteractor
 
 __all__ = ("GetAllItemsInteractor", "GetCurrentUserItemsInteractor", "CreateCurrentUserItemInteractor", 
            "GetItemInteractor", "DeleteItemInteractor", "GetCurrentUserItemInteractor", 
-           "UpdateCurrentUserItemInteractor")
+           "UpdateCurrentUserItemInteractor", "DeleteCurrentUserItemInteractor")

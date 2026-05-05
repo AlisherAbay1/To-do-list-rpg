@@ -4,7 +4,7 @@ from src.app.infrastructure.database.repositories import ItemRepository
 from src.app.application.interactors import (
     GetAllItemsInteractor, GetCurrentUserItemsInteractor, CreateCurrentUserItemInteractor, 
     GetItemInteractor, DeleteItemInteractor, GetCurrentUserItemInteractor, 
-    UpdateCurrentUserItemInteractor)
+    UpdateCurrentUserItemInteractor, DeleteCurrentUserItemInteractor)
 
 
 class ItemProvider(Provider):
@@ -17,3 +17,4 @@ class ItemProvider(Provider):
     delete_item = provide(DeleteItemInteractor)
     get_current_user_item = provide(GetCurrentUserItemInteractor)
     update_current_user_item = provide(UpdateCurrentUserItemInteractor)
+    delete_current_user_item = provide(DeleteCurrentUserItemInteractor)
