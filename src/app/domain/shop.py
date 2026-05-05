@@ -2,7 +2,7 @@ from uuid import UUID
 
 from sqlalchemy import BigInteger, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
-from uuid_utils import uuid7
+from uuid6 import uuid7
 
 from src.app.infrastructure.database.models.base import Base
 

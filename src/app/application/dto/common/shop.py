@@ -15,3 +15,9 @@ class ShopListingShortDTO:
     item_id: UUID
     price: int
     quantity: int
+
+@dataclass(slots=True)
+class ShopListingCreateDTO:
+    item_id: UUID
+    price: int
+    quantity: int
