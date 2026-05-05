@@ -6,7 +6,7 @@ from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid6 import uuid7
 
-from src.app.domain.item_requirements import ItemRequirements
+from src.app.domain.item_requirements import ItemRequirement
 from src.app.infrastructure.database.models.base import Base
 
 
@@ -20,7 +20,7 @@ class Item(Base, kw_only=True):
     deleted: Mapped[bool] = mapped_column(default=False)
     deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=None)
 
-    requirements: Mapped[list["ItemRequirements"]] = relationship(lazy="noload", init=False, default_factory=list)
+    requirements: Mapped[list["ItemRequirement"]] = relationship(lazy="noload", init=False, default_factory=list)
 
     def delete(self) -> None:
         self.deleted = True

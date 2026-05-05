@@ -5,7 +5,7 @@ from sqlalchemy import delete, select, and_
 from sqlalchemy.orm import selectinload, joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.app.domain import Item, Task, ItemRequirements, Skill
+from src.app.domain import Item, Task, ItemRequirement, Skill
 
 class ItemRepository:
     __slots__ = ("_session",)
@@ -48,7 +48,7 @@ class ItemRepository:
         ).where(
             Item.id == item_id
             ).options(
-                selectinload(Item.requirements).joinedload(ItemRequirements.skill)
+                selectinload(Item.requirements).joinedload(ItemRequirement.skill)
             )
         result = await self._session.scalar(item)
         return result
