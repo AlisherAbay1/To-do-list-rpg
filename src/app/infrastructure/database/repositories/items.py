@@ -1,11 +1,10 @@
 from typing import Optional, Sequence
 from uuid import UUID
 
-from sqlalchemy import delete, select
+from sqlalchemy import delete, select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.domain import Item, Task
-
 
 class ItemRepository:
     __slots__ = ("_session",)
@@ -17,11 +16,21 @@ class ItemRepository:
         result = await self._session.scalars(items)
         return result.all()
     
-    async def get_items_by_user_id(self, user_id: UUID, limit: int, offset: int) -> Sequence[Item]:
-        items = select(Item).where(Item.user_id == user_id).limit(limit).offset(offset)
+    async def get_items_by_user_id(self, user_id: UUID, limit: int, offset: int, get_deleted: bool) -> Sequence[Item]:
+        items = select(
+            Item
+            ).where(
+                Item.user_id == user_id
+                ).limit(
+                    limit
+                    ).offset(
+                        offset
+                        )
+        if get_deleted == False:
+            items = items.where(Item.deleted == False)
         result = await self._session.scalars(items)
         return result.all()
-    
+
     async def get_item_by_id(self, item_id: UUID) -> Optional[Item]:
         item = select(Item).where(Item.id == item_id)
         result = await self._session.scalar(item)

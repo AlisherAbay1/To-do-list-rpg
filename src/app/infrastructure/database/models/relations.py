@@ -15,13 +15,6 @@ class Tasks_to_items(Base):
     task_id: Mapped[UUID] = mapped_column(ForeignKey("task.id", ondelete="CASCADE"), primary_key=True)
     item_id: Mapped[UUID] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"), primary_key=True)
 
-class Items_to_skills(Base):
-    __tablename__ = "items_to_skills"
-
-    item_id: Mapped[UUID] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"), primary_key=True)
-    skill_id: Mapped[UUID] = mapped_column(ForeignKey("skill.id", ondelete="CASCADE"), primary_key=True)
-    required_lvl: Mapped[int] = mapped_column(BigInteger)
-
 class Tasks_history_to_items(Base):
     __tablename__ = "tasks_history_to_items"
 
