@@ -1,9 +1,9 @@
 from .common import (TaskMapper, UserMapper, SkillMapper, 
-                     ItemMapper, TaskCategoriesMapper)
+                     ItemMapper, TaskCategoriesMapper, ShopMapper)
 from .extended import (ExtendedSkillMapper, ExtendedTaskCategoriesMapper, 
                        ExtendedTaskMapper, StatsMapper, ItemExtendedMapper)
 
 __all__ = ("TaskMapper", "UserMapper", "SkillMapper",
            "ItemMapper", "TaskCategoriesMapper", "ExtendedTaskCategoriesMapper", 
            "ExtendedSkillMapper", "ExtendedTaskMapper", "StatsMapper", 
-           "ItemExtendedMapper")
+           "ItemExtendedMapper", "ShopMapper")

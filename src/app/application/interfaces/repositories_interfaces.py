@@ -1,5 +1,5 @@
 from typing import Protocol, Optional, Sequence
-from src.app.domain import Item, User, Task, Skill, Inventory, TaskHistory, TaskCategory
+from src.app.domain import Item, User, Task, Skill, Inventory, TaskHistory, TaskCategory, Shop
 from uuid import UUID 
 from src.app.application.dto import TaskFilterParamsDTO, TaskSortParamsDTO
 from src.app.domain.value_objects import TaskReward
@@ -62,3 +62,6 @@ class InventoryRepositoryProtocol(Protocol):
     async def get_items_in_inventory_by_user_id(self, user_id: str, offset: int, limit: int) -> Sequence[Inventory]: ...
     async def delete_item(self, item_id: UUID) -> None: ...
 
+class ShopRepositoryProtocol(Protocol):
+    async def get_shop_listings_by_user_id(self, user_id: UUID, limit: int, offset: int) -> Sequence[Shop]: ...  
+    async def get_shop_listings_by_id(self, shop_listing_id: UUID) -> Optional[Shop]: ...  

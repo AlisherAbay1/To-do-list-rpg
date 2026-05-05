@@ -5,7 +5,8 @@ from .common import (ItemDTO, ItemUpdateDTO, ItemCreateDTO,
            TaskDTO, TaskUpdateDTO, TaskSortParamsDTO,
            UserAuthDTO, UserDTO, SignInDTO, SkillShortDTO,
            UserEmailDTO, CreateUserDTO, UserPasswordDTO, ItemUpdateDTO,
-           SkillUpdateDTO, TaskStatsDTO, UserStatsDTO, SkillRequirementsDTO)
+           SkillUpdateDTO, TaskStatsDTO, UserStatsDTO, SkillRequirementsDTO, 
+           ShopListingDTO, ShopListingShortDTO)
 from .extended import (SkillWithTasksAndNextLvlXpDTO, TaskCategoryWithTasksDTO, 
                        TaskWithUserAndSkillsDTO, TaskWithSkillsAndItemsDTO, StatsOverviewDTO, 
                        ItemWithRequirementsDTO)
@@ -19,4 +20,5 @@ __all__ = ("ItemDTO", "ItemUpdateDTO", "ItemCreateDTO", "UserStatsDTO",
            "UserAuthDTO", "UserDTO", "SignInDTO", "TaskStatsDTO", "SkillRequirementsDTO",
            "UserEmailDTO", "CreateUserDTO", "UserPasswordDTO","StatsOverviewDTO",
            "SkillWithTasksAndNextLvlXpDTO", "TaskCategoryWithTasksDTO", "ItemUpdateDTO",
-           "TaskWithUserAndSkillsDTO", "TaskWithSkillsAndItemsDTO", "ItemWithRequirementsDTO")
+           "TaskWithUserAndSkillsDTO", "TaskWithSkillsAndItemsDTO", "ItemWithRequirementsDTO", 
+           "ShopListingShortDTO", "ShopListingDTO")
