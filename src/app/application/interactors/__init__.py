@@ -33,7 +33,9 @@ from .task_categories import (GetAllTaskCategories, GetCurrentUserTaskCategories
 
 from .stats import GetStatsOverviewInteractor
 
-from .shop import GetCurrentUserShopListingsInteractor, CreateCurrentUserShopListing
+from .shop import (GetCurrentUserShopListingsInteractor, 
+                   CreateCurrentUserShopListingInteractor, 
+                   UpdateCurrentUserShopListingInteractor)
 
 
 __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteCurrentUserInteractor", 
@@ -56,4 +58,4 @@ __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteC
            "GetCurrentUserItemInteractor", "UpdateCurrentUserItemInteractor", 
            "DeleteCurrentUserItemInteractor", "AddCurrentUserItemRequirementInteractor",
            "DeleteCurrentUserSkillRequirementInteractor", "GetCurrentUserShopListingsInteractor", 
-           "CreateCurrentUserShopListing")
+           "CreateCurrentUserShopListingInteractor", "UpdateCurrentUserShopListingInteractor")

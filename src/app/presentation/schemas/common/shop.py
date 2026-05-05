@@ -20,3 +20,7 @@ class ShopListingSchemaCreate(BaseModel):
     item_id: UUID
     price: int = 0
     quantity: int = 1
+
+class ShopListingSchemaUpdate(BaseModel):
+    price: int | None = None
+    quantity: int | None = None

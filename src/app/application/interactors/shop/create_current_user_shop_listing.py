@@ -5,7 +5,7 @@ from src.app.application.dto import ShopListingShortDTO, ShopListingCreateDTO
 from src.app.application.exceptions import SessionNotFoundError
 from src.app.domain import Shop
 
-class CreateCurrentUserShopListing:
+class CreateCurrentUserShopListingInteractor:
     def __init__(self, 
                  cash_repo: RedisRepositoryProtocol, 
                  transaction: TransactionProtocol) -> None:

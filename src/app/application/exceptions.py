@@ -36,3 +36,6 @@ class AccessDeniedError(Exception):
 
 class TaskCategoryNotFoundError(Exception):
     pass
+
+class ShopListingNotFoundError(Exception):
+    pass

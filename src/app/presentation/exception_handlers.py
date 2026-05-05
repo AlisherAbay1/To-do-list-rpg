@@ -2,7 +2,7 @@ from src.app.application.exceptions import UserNotFoundError, EmailAlreadyTakenE
                             TaskNotFoundError, TaskAlreadyDoneError, SkillNotFoundError, \
                             ItemNotFoundError, UsernameAlreadyTakenError, SessionNotFoundError, \
                             AccessDeniedError, TaskExecutedTooEarlyError, TaskNotFoundInHistoryError, \
-                            TaskCategoryNotFoundError
+                            TaskCategoryNotFoundError, ShopListingNotFoundError
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
@@ -58,3 +58,7 @@ def register_exeptions(app: FastAPI):
     @app.exception_handler(TaskCategoryNotFoundError)
     async def task_category_not_found(request: Request, exc: TaskCategoryNotFoundError):
         return JSONResponse(status_code=404, content={"detail": "Task category not found"})
+    
+    @app.exception_handler(ShopListingNotFoundError)
+    async def shop_listing_not_found(request: Request, exc: ShopListingNotFoundError):
+        return JSONResponse(status_code=404, content={"detail": "Shop listing not found"})

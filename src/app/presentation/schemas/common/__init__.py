@@ -8,7 +8,8 @@ from .users import UserSchemaRead, UserSchemaCreate, UserSchemaCreateAuth, \
                     UserSuccessAuthSchema, UserNewEmailSchema
 from ..shared import MessageSchema
 from .task_categories import TaskCategoriesSchema, CreateTaskCategorySchema, UpdateTaskCategorySchema
-from .shop import ShopListingSchemaCreate, ShopListingShortSchemaRead, ShopListingSchemaRead
+from .shop import ShopListingSchemaCreate, ShopListingShortSchemaRead, ShopListingSchemaRead, \
+                  ShopListingSchemaUpdate
 
 __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead", 
            "SkillSchemaCreate", "TaskSchemaRead", "TaskSchemaCreate", 
@@ -19,4 +20,4 @@ __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead",
            "MessageSchema", "UserNewEmailSchema", "TaskCategoriesSchema", 
            "CreateTaskCategorySchema", "SkillSchemaUpdate", "SkillShortSchema", 
            "SkillRequirementsSchema", "ItemSchemaUpdate", "ShopListingSchemaCreate", 
-           "ShopListingShortSchemaRead", "ShopListingSchemaRead")
+           "ShopListingShortSchemaRead", "ShopListingSchemaRead", "ShopListingSchemaUpdate")
