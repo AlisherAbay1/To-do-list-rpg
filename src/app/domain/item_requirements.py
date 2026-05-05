@@ -1,9 +1,10 @@
 from uuid import UUID
 
 from sqlalchemy import ForeignKey, BigInteger, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid6 import uuid7
 
+from src.app.domain.skills import Skill
 from src.app.infrastructure.database.models.base import Base
 
 class ItemRequirements(Base, kw_only=True):
@@ -14,3 +15,5 @@ class ItemRequirements(Base, kw_only=True):
     item_id: Mapped[UUID] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))
     skill_id: Mapped[UUID] = mapped_column(ForeignKey("skill.id", ondelete="CASCADE"))
     required_lvl: Mapped[int] = mapped_column(BigInteger)
+
+    skill: Mapped[Skill] = relationship(lazy="noload", init=False)

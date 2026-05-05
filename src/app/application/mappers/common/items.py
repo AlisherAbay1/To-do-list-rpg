@@ -1,5 +1,5 @@
 from src.app.domain import Item
-from src.app.application.dto.common.items import ItemDTO
+from src.app.application.dto import ItemDTO, ItemWithRequirementsDTO, SkillRequirementsDTO, SkillShortDTO
 from typing import Sequence
 
 class ItemMapper:
@@ -18,3 +18,4 @@ class ItemMapper:
     @staticmethod
     def to_list_dto(domains: Sequence) -> list[ItemDTO]:
         return [ItemMapper.to_dto(domain) for domain in domains]
+    

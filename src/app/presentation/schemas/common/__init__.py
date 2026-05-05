@@ -1,5 +1,6 @@
 from .items import ItemSchemaRead, ItemSchemaCreate
-from .skills import SkillSchemaRead, SkillSchemaCreate, SkillSchemaUpdate
+from .skills import SkillSchemaRead, SkillSchemaCreate, SkillSchemaUpdate, \
+                    SkillShortSchema, SkillRequirementsSchema
 from .tasks import TaskSchemaRead, TaskSchemaCreate, TaskSortParams, \
                     TaskFilterParams, TaskSchemaReadable, TaskSchemaUpdate
 from .users import UserSchemaRead, UserSchemaCreate, UserSchemaCreateAuth, \
@@ -15,4 +16,5 @@ __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead",
            "TaskSortParams", "TaskFilterParams", "TaskSchemaReadable", 
            "TaskSchemaUpdate", "UpdateTaskCategorySchema", "UserSuccessAuthSchema", 
            "MessageSchema", "UserNewEmailSchema", "TaskCategoriesSchema", 
-           "CreateTaskCategorySchema", "SkillSchemaUpdate")
+           "CreateTaskCategorySchema", "SkillSchemaUpdate", "SkillShortSchema", 
+           "SkillRequirementsSchema")

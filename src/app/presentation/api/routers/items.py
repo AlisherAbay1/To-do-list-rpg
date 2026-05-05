@@ -6,9 +6,10 @@ from src.app.application.interactors import (CreateCurrentUserItemInteractor,
                                              DeleteItemInteractor,
                                              GetAllItemsInteractor,
                                              GetCurrentUserItemsInteractor,
-                                             GetItemInteractor)
+                                             GetItemInteractor, 
+                                             GetCurrentUserItemInteractor)
 from src.app.presentation.mappers import ItemSchemaMapper
-from src.app.presentation.schemas import ItemSchemaCreate, ItemSchemaRead
+from src.app.presentation.schemas import ItemSchemaCreate, ItemSchemaRead, ItemWithRequirementsSchema
 
 router = APIRouter(prefix="/item", route_class=DishkaRoute)
 
@@ -37,9 +38,9 @@ async def create_current_user_item(data: ItemSchemaCreate,
     dto = ItemSchemaMapper.to_create_dto(data)
     return await interactor(session_token, dto)
 
-@router.get("/me/{item_id}", response_model=ItemSchemaRead)
+@router.get("/me/{item_id}", response_model=ItemWithRequirementsSchema)
 async def get_current_user_item(item_id: UUID7, 
-                                interactor: FromDishka[], 
+                                interactor: FromDishka[GetCurrentUserItemInteractor], 
                                 session_token = Cookie(None)):
     return await interactor(item_id, session_token)
 

@@ -2,7 +2,7 @@ from dishka import Provider, provide, Scope
 from src.app.application.interfaces.repositories_interfaces import ItemRepositoryProtocol
 from src.app.infrastructure.database.repositories import ItemRepository
 from src.app.application.interactors import GetAllItemsInteractor, GetCurrentUserItemsInteractor, CreateCurrentUserItemInteractor, \
-                                    GetItemInteractor, DeleteItemInteractor
+                                    GetItemInteractor, DeleteItemInteractor, GetCurrentUserItemInteractor
 
 
 class ItemProvider(Provider):
@@ -13,3 +13,4 @@ class ItemProvider(Provider):
     get_item = provide(GetItemInteractor)
     create_item = provide(CreateCurrentUserItemInteractor)
     delete_item = provide(DeleteItemInteractor)
+    get_current_user_item = provide(GetCurrentUserItemInteractor)

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from uuid import UUID
 from typing import Optional
 from datetime import datetime
-from src.app.application.dto import TaskDTO
+from src.app.application.dto.common import TaskDTO, SkillShortDTO
 
 @dataclass(slots=True)
 class SkillWithTasksAndNextLvlXpDTO:
@@ -19,3 +19,4 @@ class SkillWithTasksAndNextLvlXpDTO:
     xp_for_next_lvl: int
 
     tasks: list[TaskDTO]
+

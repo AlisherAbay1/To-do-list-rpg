@@ -2,9 +2,10 @@ from typing import Optional, Sequence
 from uuid import UUID
 
 from sqlalchemy import delete, select, and_
+from sqlalchemy.orm import selectinload, joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.app.domain import Item, Task
+from src.app.domain import Item, Task, ItemRequirements, Skill
 
 class ItemRepository:
     __slots__ = ("_session",)
@@ -40,6 +41,17 @@ class ItemRepository:
         items = select(Item).join(Task.items).where(Task.id == task_id)
         result = await self._session.scalars(items)
         return result.all()
+    
+    async def get_item_by_id_with_requirements_contains_skill(self, item_id: UUID) -> Optional[Item]: 
+        item = select(
+            Item
+        ).where(
+            Item.id == item_id
+            ).options(
+                selectinload(Item.requirements).joinedload(ItemRequirements.skill)
+            )
+        result = await self._session.scalar(item)
+        return result
 
     async def delete(self, item_id: UUID):
         item = delete(Item).where(Item.id == item_id)

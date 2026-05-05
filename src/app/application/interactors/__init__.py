@@ -1,6 +1,6 @@
 from .items import (CreateCurrentUserItemInteractor, DeleteItemInteractor,
                     GetAllItemsInteractor, GetCurrentUserItemsInteractor,
-                    GetItemInteractor)
+                    GetItemInteractor, GetCurrentUserItemInteractor)
 from .skills import (ClearExpiredSkillsInteractor,
                      CreateCurrentUserSkillInteractor, DeleteSkillInteractor,
                      GetAllSkillsInteractor, GetCurrentUserSkillsInteractor,
@@ -44,4 +44,5 @@ __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteC
            "GetCurrentUserTaskCategoryById", "CreateCurrentUserTaskCategory", 
            "DeleteCurrentUserTaskCategoryById", "UpdateCurrentUserTaskCategory", 
            "GetCurrentUserSkillByIdInteractor", "DeleteCurrentUserSkillByIdInteractor", 
-           "ClearExpiredTasksInteractor", "UpdateCurrentUserSkillById")
+           "ClearExpiredTasksInteractor", "UpdateCurrentUserSkillById", 
+           "GetCurrentUserItemInteractor")

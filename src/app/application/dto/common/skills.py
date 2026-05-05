@@ -40,3 +40,8 @@ class SkillShortDTO:
     ico: Optional[str]
     lvl: int
     xp: int
+
+@dataclass
+class SkillRequirementsDTO:
+    skill: SkillShortDTO
+    required_lvl: int

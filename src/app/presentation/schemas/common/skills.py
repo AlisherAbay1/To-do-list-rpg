@@ -27,3 +27,15 @@ class SkillSchemaUpdate(BaseModel):
     ico: Optional[str] = None
     lvl: int | None = None
     xp: int | None = None
+
+class SkillShortSchema(BaseModel):
+    id: UUID
+    title: str
+    description: Optional[str]
+    ico: Optional[str]
+    lvl: int
+    xp: int
+
+class SkillRequirementsSchema(BaseModel):
+    skill: SkillShortSchema
+    required_lvl: int
