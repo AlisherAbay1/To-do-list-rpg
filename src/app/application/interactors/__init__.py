@@ -2,7 +2,7 @@ from .items import (CreateCurrentUserItemInteractor, DeleteItemInteractor,
                     GetAllItemsInteractor, GetCurrentUserItemsInteractor,
                     GetItemInteractor, GetCurrentUserItemInteractor, 
                     UpdateCurrentUserItemInteractor, DeleteCurrentUserItemInteractor,
-                    AddCurrentUserItemRequirementInteractor)
+                    AddCurrentUserItemRequirementInteractor, DeleteCurrentUserSkillRequirementInteractor)
 from .skills import (ClearExpiredSkillsInteractor,
                      CreateCurrentUserSkillInteractor, DeleteSkillInteractor,
                      GetAllSkillsInteractor, GetCurrentUserSkillsInteractor,
@@ -48,4 +48,5 @@ __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteC
            "GetCurrentUserSkillByIdInteractor", "DeleteCurrentUserSkillByIdInteractor", 
            "ClearExpiredTasksInteractor", "UpdateCurrentUserSkillById", 
            "GetCurrentUserItemInteractor", "UpdateCurrentUserItemInteractor", 
-           "DeleteCurrentUserItemInteractor", "AddCurrentUserItemRequirementInteractor")
+           "DeleteCurrentUserItemInteractor", "AddCurrentUserItemRequirementInteractor",
+           "DeleteCurrentUserSkillRequirementInteractor")

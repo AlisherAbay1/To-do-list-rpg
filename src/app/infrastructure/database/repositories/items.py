@@ -52,6 +52,10 @@ class ItemRepository:
             )
         result = await self._session.scalar(item)
         return result
+    
+    async def delete_requirement(self, item_id: UUID, skill_id: UUID) -> None:
+        stmt = delete(ItemRequirement).where(ItemRequirement.item_id == item_id, ItemRequirement.skill_id == skill_id)
+        await self._session.execute(stmt)
 
     async def delete(self, item_id: UUID):
         item = delete(Item).where(Item.id == item_id)

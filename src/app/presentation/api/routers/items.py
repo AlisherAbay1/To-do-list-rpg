@@ -10,7 +10,8 @@ from src.app.application.interactors import (CreateCurrentUserItemInteractor,
                                              GetCurrentUserItemInteractor, 
                                              UpdateCurrentUserItemInteractor, 
                                              DeleteCurrentUserItemInteractor,
-                                             AddCurrentUserItemRequirementInteractor)
+                                             AddCurrentUserItemRequirementInteractor, 
+                                             DeleteCurrentUserSkillRequirementInteractor)
 from src.app.presentation.mappers import ItemSchemaMapper
 from src.app.presentation.schemas import (ItemSchemaCreate, ItemSchemaRead, ItemWithRequirementsSchema, 
                                           ItemSchemaUpdate)
@@ -82,6 +83,15 @@ async def add_current_user_item_requirement(item_id: UUID7,
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
     return await interactor(item_id, skill_id, requirement_lvl, session_token)
+
+@router.delete("/me/{item_id}/requirements/{skill_id}", status_code=204)
+async def delete_current_user_item_requirement(item_id: UUID7,
+                                            skill_id: UUID7,
+                                            interactor: FromDishka[DeleteCurrentUserSkillRequirementInteractor], 
+                                            session_token = Cookie(None)):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(item_id, skill_id, session_token)
 
 @router.delete("/{item_id}", status_code=204)
 async def delete_item(item_id: UUID7,

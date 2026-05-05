@@ -5,7 +5,8 @@ from src.app.application.interactors import (
     GetAllItemsInteractor, GetCurrentUserItemsInteractor, CreateCurrentUserItemInteractor, 
     GetItemInteractor, DeleteItemInteractor, GetCurrentUserItemInteractor, 
     UpdateCurrentUserItemInteractor, DeleteCurrentUserItemInteractor, 
-    AddCurrentUserItemRequirementInteractor)
+    AddCurrentUserItemRequirementInteractor, DeleteCurrentUserSkillRequirementInteractor
+)
 
 
 class ItemProvider(Provider):
@@ -20,3 +21,4 @@ class ItemProvider(Provider):
     update_current_user_item = provide(UpdateCurrentUserItemInteractor)
     delete_current_user_item = provide(DeleteCurrentUserItemInteractor)
     add_current_user_item_requirement = provide(AddCurrentUserItemRequirementInteractor)
+    delete_current_user_skill_requirement = provide(DeleteCurrentUserSkillRequirementInteractor)
