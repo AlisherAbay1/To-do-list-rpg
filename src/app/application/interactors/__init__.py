@@ -36,7 +36,8 @@ from .stats import GetStatsOverviewInteractor
 from .shop import (GetCurrentUserShopListingsInteractor, 
                    CreateCurrentUserShopListingInteractor, 
                    UpdateCurrentUserShopListingInteractor, 
-                   DeleteCurrentUserShopListingInteractor)
+                   DeleteCurrentUserShopListingInteractor, 
+                   GetCurrentUserShopListingByIdInteractor)
 
 
 __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteCurrentUserInteractor", 
@@ -60,4 +61,4 @@ __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteC
            "DeleteCurrentUserItemInteractor", "AddCurrentUserItemRequirementInteractor",
            "DeleteCurrentUserSkillRequirementInteractor", "GetCurrentUserShopListingsInteractor", 
            "CreateCurrentUserShopListingInteractor", "UpdateCurrentUserShopListingInteractor", 
-           "DeleteCurrentUserShopListingInteractor")
+           "DeleteCurrentUserShopListingInteractor", "GetCurrentUserShopListingByIdInteractor")

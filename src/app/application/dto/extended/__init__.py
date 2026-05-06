@@ -3,6 +3,8 @@ from .task_categories import TaskCategoryWithTasksDTO
 from .tasks import TaskWithUserAndSkillsDTO, TaskWithSkillsAndItemsDTO
 from .shared import StatsOverviewDTO
 from .items import ItemWithRequirementsDTO
+from .shop import ShopListingShortWithFtRequiremenetsDTO
 
 __all__ = ("SkillWithTasksAndNextLvlXpDTO", "TaskCategoryWithTasksDTO", "TaskWithUserAndSkillsDTO", 
-           "TaskWithSkillsAndItemsDTO", "ItemWithRequirementsDTO", "StatsOverviewDTO")
+           "TaskWithSkillsAndItemsDTO", "ItemWithRequirementsDTO", "StatsOverviewDTO", 
+           "ShopListingShortWithFtRequiremenetsDTO")

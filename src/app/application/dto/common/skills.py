@@ -41,7 +41,13 @@ class SkillShortDTO:
     lvl: int
     xp: int
 
-@dataclass
+@dataclass(slots=True)
 class SkillRequirementsDTO:
     skill: SkillShortDTO
     required_lvl: int
+
+@dataclass(slots=True)
+class SkillRequirementsWithFitRequiremenetDTO:
+    skill: SkillShortDTO
+    required_lvl: int
+    fit_requirement: bool

@@ -5,7 +5,8 @@ from src.app.application.interactors import (
     GetCurrentUserShopListingsInteractor, 
     CreateCurrentUserShopListingInteractor, 
     UpdateCurrentUserShopListingInteractor, 
-    DeleteCurrentUserShopListingInteractor
+    DeleteCurrentUserShopListingInteractor, 
+    GetCurrentUserShopListingByIdInteractor
 )
 
 class ShopProvider(Provider):
@@ -15,3 +16,4 @@ class ShopProvider(Provider):
     create_current_user_shop_listing = provide(CreateCurrentUserShopListingInteractor)
     update_current_user_shop_listing = provide(UpdateCurrentUserShopListingInteractor)
     delete_current_user_shop_listing = provide(DeleteCurrentUserShopListingInteractor)
+    get_current_user_shop_listing_by_id = provide(GetCurrentUserShopListingByIdInteractor)

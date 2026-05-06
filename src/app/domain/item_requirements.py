@@ -17,3 +17,6 @@ class ItemRequirement(Base, kw_only=True):
     required_lvl: Mapped[int] = mapped_column(BigInteger)
 
     skill: Mapped[Skill] = relationship(lazy="noload", init=False)
+
+    def does_fit_requirement(self):
+        return self.required_lvl <= self.skill.lvl

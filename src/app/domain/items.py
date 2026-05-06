@@ -25,3 +25,6 @@ class Item(Base, kw_only=True):
     def delete(self) -> None:
         self.deleted = True
         self.deleted_at = datetime.now(tz=timezone.utc)
+
+    def does_fit_requirements(self) -> bool:
+        return all([requirement.does_fit_requirement() for requirement in self.requirements])

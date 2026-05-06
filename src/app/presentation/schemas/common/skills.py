@@ -39,3 +39,8 @@ class SkillShortSchema(BaseModel):
 class SkillRequirementsSchema(BaseModel):
     skill: SkillShortSchema
     required_lvl: int
+
+class SkillRequirementsWithFitRequiremenetSchema(BaseModel):
+    skill: SkillShortSchema
+    required_lvl: int
+    fit_requirement: bool
