@@ -3,7 +3,8 @@ from dishka.integrations.fastapi import DishkaRoute, FromDishka
 from src.app.application.interactors import (
     GetCurrentUserShopListingsInteractor, 
     CreateCurrentUserShopListingInteractor, 
-    UpdateCurrentUserShopListingInteractor)
+    UpdateCurrentUserShopListingInteractor, 
+    DeleteCurrentUserShopListingInteractor)
 from src.app.presentation.schemas import ShopListingShortSchemaRead, ShopListingSchemaCreate, ShopListingSchemaUpdate
 from src.app.presentation.mappers import ShopSchemaMapper
 from uuid import UUID
@@ -37,3 +38,11 @@ async def update_current_user_shop_listing(shop_listing_id: UUID,
         raise HTTPException(401, "Not authenticated")
     dto = ShopSchemaMapper.to_update_dto(schema)
     return await interactor(shop_listing_id, session_token, dto)
+
+@router.delete("/me/{shop_listing_id}", status_code=204)
+async def delete_current_user_shop_listing(shop_listing_id: UUID, 
+                                           interactor: FromDishka[DeleteCurrentUserShopListingInteractor], 
+                                           session_token = Cookie(None)):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(shop_listing_id, session_token)

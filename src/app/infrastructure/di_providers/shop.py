@@ -4,7 +4,8 @@ from src.app.infrastructure.database.repositories import ShopRepository
 from src.app.application.interactors import (
     GetCurrentUserShopListingsInteractor, 
     CreateCurrentUserShopListingInteractor, 
-    UpdateCurrentUserShopListingInteractor
+    UpdateCurrentUserShopListingInteractor, 
+    DeleteCurrentUserShopListingInteractor
 )
 
 class ShopProvider(Provider):
@@ -13,3 +14,4 @@ class ShopProvider(Provider):
     get_current_user_shop_listings = provide(GetCurrentUserShopListingsInteractor)
     create_current_user_shop_listing = provide(CreateCurrentUserShopListingInteractor)
     update_current_user_shop_listing = provide(UpdateCurrentUserShopListingInteractor)
+    delete_current_user_shop_listing = provide(DeleteCurrentUserShopListingInteractor)

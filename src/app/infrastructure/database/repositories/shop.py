@@ -2,7 +2,7 @@ from typing import Optional, Sequence
 from uuid import UUID
 from src.app.domain import Shop
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
 class ShopRepository:
     __slots__ = ("_session", )
@@ -18,3 +18,6 @@ class ShopRepository:
         shop_listing = select(Shop).where(Shop.id == shop_listing_id)
         result = await self._session.scalar(shop_listing)
         return result
+    
+    async def delete(self, shop_listing: Shop) -> None: 
+        await self._session.delete(shop_listing)
