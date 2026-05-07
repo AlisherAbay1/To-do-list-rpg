@@ -39,6 +39,8 @@ from .shop import (GetCurrentUserShopListingsInteractor,
                    DeleteCurrentUserShopListingInteractor, 
                    GetCurrentUserShopListingByIdInteractor)
 
+from .inventory import (GetCurrentUserInventoryItemByIdInteractor, GetCurrentUserInventoryItemsInteractor, 
+                        DeleteCurrentUserInventoryItemInteractor)
 
 __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteCurrentUserInteractor", 
            "GetUserInteractor", "GetAllTasksInteractor", "UncompleteTaskInteractor",
@@ -61,4 +63,6 @@ __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteC
            "DeleteCurrentUserItemInteractor", "AddCurrentUserItemRequirementInteractor",
            "DeleteCurrentUserSkillRequirementInteractor", "GetCurrentUserShopListingsInteractor", 
            "CreateCurrentUserShopListingInteractor", "UpdateCurrentUserShopListingInteractor", 
-           "DeleteCurrentUserShopListingInteractor", "GetCurrentUserShopListingByIdInteractor")
+           "DeleteCurrentUserShopListingInteractor", "GetCurrentUserShopListingByIdInteractor", 
+           "DeleteCurrentUserInventoryItemInteractor", "GetCurrentUserInventoryItemByIdInteractor", 
+           "GetCurrentUserInventoryItemsInteractor")

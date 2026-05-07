@@ -6,7 +6,8 @@ from .item import ItemProvider
 from .task_categories import TaskCategoriesProvider
 from .stats import StatsProvider
 from .shop import ShopProvider
+from .inventory import InventoryProvider
 
 __all__ = ("AppProvider", "UserProvider", "TaskProvider", 
            "SkillProvider", "ItemProvider", "TaskCategoriesProvider", 
-           "StatsProvider", "ShopProvider")
+           "StatsProvider", "ShopProvider", "InventoryProvider")

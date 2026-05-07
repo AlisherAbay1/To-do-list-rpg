@@ -4,6 +4,7 @@ from .task_categories import ExtendedTaskCategoriesMapper
 from .stats import StatsMapper
 from .items import ItemExtendedMapper
 from .shop import ExtendedShopMapper
+from .inventory import ExtendedInventoryMapper
 
 __all__ = ("ExtendedTaskCategoriesMapper", "ExtendedSkillMapper", "ExtendedTaskMapper", 
-           "StatsMapper", "ItemExtendedMapper", "ExtendedShopMapper")
+           "StatsMapper", "ItemExtendedMapper", "ExtendedShopMapper", "ExtendedInventoryMapper")

@@ -14,7 +14,7 @@ from src.app.core.taskiq import broker
 from contextlib import asynccontextmanager
 from src.app.infrastructure.di_providers import AppProvider, UserProvider, TaskProvider, \
                                                 SkillProvider, ItemProvider, TaskCategoriesProvider, \
-                                                StatsProvider, ShopProvider
+                                                StatsProvider, ShopProvider, InventoryProvider
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -39,5 +39,5 @@ register_exeptions(app)
 
 container = make_async_container(AppProvider(), UserProvider(), TaskProvider(), 
                                  SkillProvider(), ItemProvider(), TaskCategoriesProvider(), 
-                                 StatsProvider(), ShopProvider())
+                                 StatsProvider(), ShopProvider(), InventoryProvider())
 setup_dishka(container, app)

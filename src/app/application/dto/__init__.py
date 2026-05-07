@@ -6,10 +6,11 @@ from .common import (ItemDTO, ItemUpdateDTO, ItemCreateDTO,
            UserAuthDTO, UserDTO, SignInDTO, SkillShortDTO,
            UserEmailDTO, CreateUserDTO, UserPasswordDTO, ItemUpdateDTO,
            SkillUpdateDTO, TaskStatsDTO, UserStatsDTO, SkillRequirementsDTO, 
-           ShopListingDTO, ShopListingShortDTO, ShopListingCreateDTO, SkillRequirementsWithFitRequiremenetDTO)
+           ShopListingDTO, ShopListingShortDTO, ShopListingCreateDTO, SkillRequirementsWithFitRequiremenetDTO, 
+           InventoryDTO, InventoryCreateDTO, InventoryShortDTO, InventoryUpdateDTO)
 from .extended import (SkillWithTasksAndNextLvlXpDTO, TaskCategoryWithTasksDTO, 
                        TaskWithUserAndSkillsDTO, TaskWithSkillsAndItemsDTO, StatsOverviewDTO, 
-                       ItemWithRequirementsDTO, ShopListingShortWithFtRequiremenetsDTO)
+                       ItemWithRequirementsDTO, ShopListingShortWithFtRequiremenetsDTO, InventoryShortWithItemDTO)
 from .shared import MessageDTO
 
 __all__ = ("ItemDTO", "ItemUpdateDTO", "ItemCreateDTO", "UserStatsDTO",
@@ -22,4 +23,6 @@ __all__ = ("ItemDTO", "ItemUpdateDTO", "ItemCreateDTO", "UserStatsDTO",
            "SkillWithTasksAndNextLvlXpDTO", "TaskCategoryWithTasksDTO", "ItemUpdateDTO",
            "TaskWithUserAndSkillsDTO", "TaskWithSkillsAndItemsDTO", "ItemWithRequirementsDTO", 
            "ShopListingShortDTO", "ShopListingDTO", "ShopListingCreateDTO", 
-           "ShopListingUpdateDTO", "ShopListingShortWithFtRequiremenetsDTO", "SkillRequirementsWithFitRequiremenetDTO")
+           "ShopListingUpdateDTO", "ShopListingShortWithFtRequiremenetsDTO", "SkillRequirementsWithFitRequiremenetDTO", 
+           "InventoryDTO", "InventoryCreateDTO", "InventoryShortDTO", "InventoryUpdateDTO", 
+           "InventoryShortWithItemDTO")

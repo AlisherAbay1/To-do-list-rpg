@@ -10,6 +10,7 @@ from ..shared import MessageSchema
 from .task_categories import TaskCategoriesSchema, CreateTaskCategorySchema, UpdateTaskCategorySchema
 from .shop import ShopListingSchemaCreate, ShopListingShortSchemaRead, ShopListingSchemaRead, \
                   ShopListingSchemaUpdate
+from .inventory import InventorySchemaRead, InventoryShortSchemaRead
 
 __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead", 
            "SkillSchemaCreate", "TaskSchemaRead", "TaskSchemaCreate", 
@@ -21,4 +22,5 @@ __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead",
            "CreateTaskCategorySchema", "SkillSchemaUpdate", "SkillShortSchema", 
            "SkillRequirementsSchema", "ItemSchemaUpdate", "ShopListingSchemaCreate", 
            "ShopListingShortSchemaRead", "ShopListingSchemaRead", "ShopListingSchemaUpdate",
-           "SkillRequirementsWithFitRequiremenetSchema")
+           "SkillRequirementsWithFitRequiremenetSchema", "InventorySchemaRead", 
+           "InventoryShortSchemaRead")

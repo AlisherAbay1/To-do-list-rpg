@@ -8,11 +8,12 @@ from .common import (ItemSchemaRead, ItemSchemaCreate, SkillSchemaRead,
                     CreateTaskCategorySchema, SkillSchemaUpdate, SkillShortSchema, 
                     SkillRequirementsSchema, ItemSchemaUpdate, ShopListingSchemaCreate, 
                     ShopListingShortSchemaRead, ShopListingSchemaRead, ShopListingSchemaUpdate, 
-                    SkillRequirementsWithFitRequiremenetSchema)
+                    SkillRequirementsWithFitRequiremenetSchema, InventorySchemaRead, 
+                    InventoryShortSchemaRead)
 
 from .extended import (SkillWithTasksAndNextLvlXpSchemaRead, TaskWithSkillsAndItemsSchemaRead, 
                        TaskWithUserAndSkillsSchema, TaskCategoryWithTasksSchema, ItemWithRequirementsSchema, 
-                       ShopListingShortWithFitRequiremenetsSchema)
+                       ShopListingShortWithFitRequiremenetsSchema, InventoryShortWithItemSchemaRead)
 
 __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead",
             "SkillSchemaCreate", "TaskSchemaRead", "TaskSchemaCreate",
@@ -27,4 +28,5 @@ __all__ = ("ItemSchemaRead", "ItemSchemaCreate", "SkillSchemaRead",
             "SkillRequirementsSchema", "ItemWithRequirementsSchema", "ItemSchemaUpdate", 
             "ShopListingSchemaCreate", "ShopListingShortSchemaRead", "ShopListingSchemaRead", 
             "ShopListingSchemaUpdate", "SkillRequirementsWithFitRequiremenetSchema",
-            "ShopListingShortWithFitRequiremenetsSchema")
+            "ShopListingShortWithFitRequiremenetsSchema", "InventorySchemaRead", 
+           "InventoryShortSchemaRead", "InventoryShortWithItemSchemaRead")

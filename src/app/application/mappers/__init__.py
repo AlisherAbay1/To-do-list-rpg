@@ -1,10 +1,12 @@
 from .common import (TaskMapper, UserMapper, SkillMapper, 
-                     ItemMapper, TaskCategoriesMapper, ShopMapper)
+                     ItemMapper, TaskCategoriesMapper, ShopMapper, 
+                     InventoryMapper)
 from .extended import (ExtendedSkillMapper, ExtendedTaskCategoriesMapper, 
                        ExtendedTaskMapper, StatsMapper, ItemExtendedMapper,
-                       ExtendedShopMapper)
+                       ExtendedShopMapper, ExtendedInventoryMapper)
 
 __all__ = ("TaskMapper", "UserMapper", "SkillMapper",
            "ItemMapper", "TaskCategoriesMapper", "ExtendedTaskCategoriesMapper", 
            "ExtendedSkillMapper", "ExtendedTaskMapper", "StatsMapper", 
-           "ItemExtendedMapper", "ShopMapper", "ExtendedShopMapper")
+           "ItemExtendedMapper", "ShopMapper", "ExtendedShopMapper", 
+           "InventoryMapper", "ExtendedInventoryMapper")

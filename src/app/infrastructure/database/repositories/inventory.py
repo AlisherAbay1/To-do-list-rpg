@@ -1,7 +1,7 @@
-from typing import Sequence
+from typing import Sequence, Optional
 from uuid import UUID
 
-from sqlalchemy import delete, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.domain import Inventory
@@ -12,11 +12,15 @@ class InventoryRepository:
     def __init__(self, session: AsyncSession):
         self._session = session
 
-    async def get_items_in_inventory_by_user_id(self, user_id: str, offset: int, limit: int) -> Sequence[Inventory]:
-        inventory = select(Inventory).where(Inventory.user_id == user_id).offset(offset).limit(limit)
-        result = await self._session.scalars(inventory)
+    async def get_inventory_items_by_user_id(self, user_id: UUID, limit: int, offset: int) -> Sequence[Inventory]:
+        inventory_items = select(Inventory).where(Inventory.user_id == user_id).offset(offset).limit(limit)
+        result = await self._session.scalars(inventory_items)
         return result.all()
     
-    async def delete_item(self, item_id: UUID) -> None:
-        item = delete(Inventory).where(Inventory.item_id == item_id)
-        await self._session.execute(item)
+    async def get_inventory_item_by_id(self, inventory_item_id: UUID) -> Optional[Inventory]:
+        inventory_item = select(Inventory).where(Inventory.id == inventory_item_id)
+        result = await self._session.scalar(inventory_item)
+        return result
+    
+    async def delete(self, inventory_item: Inventory) -> None:
+        await self._session.delete(inventory_item)

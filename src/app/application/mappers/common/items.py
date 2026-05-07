@@ -1,5 +1,5 @@
 from src.app.domain import Item
-from src.app.application.dto import ItemDTO, ItemWithRequirementsDTO, SkillRequirementsDTO, SkillShortDTO
+from src.app.application.dto import ItemDTO
 from typing import Sequence
 
 class ItemMapper:

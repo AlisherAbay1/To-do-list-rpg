@@ -4,6 +4,7 @@ from .task_categories import TaskCategoryDTO, CreateTaskCategoryDTO, UpdateTaskC
 from .tasks import TaskCreateDTO, TaskDetailDTO, TaskFilterParamsDTO, TaskDTO, TaskUpdateDTO, TaskSortParamsDTO, TaskStatsDTO
 from .users import UserAuthDTO, UserDTO, SignInDTO, UserEmailDTO, CreateUserDTO, UserPasswordDTO, UserStatsDTO
 from .shop import ShopListingShortDTO, ShopListingDTO, ShopListingCreateDTO, ShopListingUpdateDTO
+from .inventory import InventoryDTO, InventoryCreateDTO, InventoryShortDTO, InventoryUpdateDTO
 
 __all__ = ("ItemDTO", "ItemUpdateDTO", "ItemCreateDTO", 
            "SkillCreateDTO", "SkillDTO", "SkillUpdateDTO", 
@@ -15,4 +16,5 @@ __all__ = ("ItemDTO", "ItemUpdateDTO", "ItemCreateDTO",
            "UserStatsDTO", "TaskStatsDTO", "SkillShortDTO", 
            "ItemUpdateDTO", "ShopListingShortDTO", "ShopListingDTO", 
            "ShopListingCreateDTO", "ShopListingUpdateDTO", 
-           "SkillRequirementsWithFitRequiremenetDTO")
+           "SkillRequirementsWithFitRequiremenetDTO", "InventoryDTO", 
+           "InventoryCreateDTO", "InventoryShortDTO", "InventoryUpdateDTO")

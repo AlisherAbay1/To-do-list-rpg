@@ -4,14 +4,13 @@ from typing import Optional, Sequence
 
 class StatsMapper:
     @staticmethod
-    def to_dto(
-        user: User, 
-        total_completed: Optional[int], 
-        completed_today: Optional[int], 
-        completed_this_week: Optional[int], 
-        overdue_count: Optional[int],
-        skills: Sequence[Skill]
-               ) -> StatsOverviewDTO:
+    def to_dto(user: User, 
+               total_completed: Optional[int], 
+               completed_today: Optional[int], 
+               completed_this_week: Optional[int], 
+               overdue_count: Optional[int],
+               skills: Sequence[Skill]) -> StatsOverviewDTO:
+
         dto = StatsOverviewDTO(
             user=UserStatsDTO(
                     lvl=user.lvl,

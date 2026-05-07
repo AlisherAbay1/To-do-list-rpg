@@ -10,8 +10,8 @@ class ItemDTO:
     user_id: UUID
     title: str
     description: Optional[str]
-    deleted: bool = False
-    deleted_at: Optional[datetime] = None
+    deleted: bool
+    deleted_at: Optional[datetime]
 
 @dataclass(slots=True)
 class ItemCreateDTO:

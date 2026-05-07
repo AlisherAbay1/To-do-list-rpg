@@ -39,3 +39,6 @@ class TaskCategoryNotFoundError(Exception):
 
 class ShopListingNotFoundError(Exception):
     pass
+
+class InventoryItemNotFoundError(Exception):
+    pass
