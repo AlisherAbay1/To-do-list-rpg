@@ -48,3 +48,6 @@ class UserBalanceNotEnoughError(Exception):
 
 class UserDoesntFitSkillRequirementsError(Exception):
     pass
+
+class ShopListingAlreadyExistsError(Exception):
+    pass

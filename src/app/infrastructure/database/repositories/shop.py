@@ -19,5 +19,10 @@ class ShopRepository:
         result = await self._session.scalar(shop_listing)
         return result
     
+    async def get_shop_listing_by_item_id(self, item_id: UUID) -> Optional[Shop]:
+        shop_listing = select(Shop).where(Shop.item_id == item_id).with_for_update()
+        result = await self._session.scalar(shop_listing)
+        return result
+    
     async def delete(self, shop_listing: Shop) -> None: 
         await self._session.delete(shop_listing)

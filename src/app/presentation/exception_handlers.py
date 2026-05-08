@@ -3,7 +3,7 @@ from src.app.application.exceptions import UserNotFoundError, EmailAlreadyTakenE
                             ItemNotFoundError, UsernameAlreadyTakenError, SessionNotFoundError, \
                             AccessDeniedError, TaskExecutedTooEarlyError, TaskNotFoundInHistoryError, \
                             TaskCategoryNotFoundError, ShopListingNotFoundError, InventoryItemNotFoundError, \
-                            UserBalanceNotEnoughError, UserDoesntFitSkillRequirementsError
+                            UserBalanceNotEnoughError, UserDoesntFitSkillRequirementsError, ShopListingAlreadyExistsError
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
@@ -75,3 +75,7 @@ def register_exeptions(app: FastAPI):
     @app.exception_handler(UserDoesntFitSkillRequirementsError)
     async def user_doesnt_fit_requirements(request: Request, exc: UserDoesntFitSkillRequirementsError):
         return JSONResponse(status_code=403, content={"detail": "User doesnt fit skill requirements"})
+    
+    @app.exception_handler(ShopListingAlreadyExistsError)
+    async def shop_listing_already_exists(request: Request, exc: ShopListingAlreadyExistsError):
+        return JSONResponse(status_code=409, content={"detail": "Shop listing already exists"})
