@@ -27,7 +27,7 @@ class AddCurrentUserItemRequirementInteractor:
         )
         await self.transaction.save(item_requirement)
         await self.transaction.flush()
-        item = await self.repo.get_item_by_id_with_requirements_contains_skill(item_id)
+        item = await self.repo.get_item_by_id_with_requirements_contains_skill(item_id, user_id)
         if item is None:
             raise ItemNotFoundError()
         dto = ItemExtendedMapper.to_dto_with_requirements(item)

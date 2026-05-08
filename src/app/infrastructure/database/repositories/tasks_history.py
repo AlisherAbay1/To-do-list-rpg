@@ -27,7 +27,7 @@ class TaskHistoryRepository:
                         limit
                         ).options(
                             selectinload(TaskHistory.skills)
-                        )
+                        ).with_for_update()
         
         results = await self._session.scalars(task_history)
         return results.all()

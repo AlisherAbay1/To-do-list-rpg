@@ -19,17 +19,17 @@ class UserRepository:
         return users.all()
     
     async def get_user(self, user_id: UUID) -> Optional[User]:
-        stmt = select(User).where(User.id == user_id)
+        stmt = select(User).where(User.id == user_id).with_for_update()
         user = await self._session.scalar(stmt)
         return user
     
     async def get_user_by_username(self, username: str) -> Optional[User]:
-        stmt = select(User).where(User.username == username)
+        stmt = select(User).where(User.username == username).with_for_update()
         user = await self._session.scalar(stmt)
         return user
     
     async def get_user_by_email(self, email: str) -> Optional[User]:
-        stmt = select(User).where(User.email == email)
+        stmt = select(User).where(User.email == email).with_for_update()
         user = await self._session.scalar(stmt)
         return user
     

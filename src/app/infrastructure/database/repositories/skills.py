@@ -24,7 +24,7 @@ class SkillRepository:
         return result.all()
     
     async def get_skill_by_id(self, skill_id: UUID) -> Optional[Skill]:
-        skill = select(Skill).where(Skill.id == skill_id)
+        skill = select(Skill).where(Skill.id == skill_id).with_for_update()
         result = await self._session.scalar(skill)
         return result
     

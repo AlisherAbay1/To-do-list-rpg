@@ -2,7 +2,8 @@ from src.app.application.exceptions import UserNotFoundError, EmailAlreadyTakenE
                             TaskNotFoundError, TaskAlreadyDoneError, SkillNotFoundError, \
                             ItemNotFoundError, UsernameAlreadyTakenError, SessionNotFoundError, \
                             AccessDeniedError, TaskExecutedTooEarlyError, TaskNotFoundInHistoryError, \
-                            TaskCategoryNotFoundError, ShopListingNotFoundError, InventoryItemNotFoundError
+                            TaskCategoryNotFoundError, ShopListingNotFoundError, InventoryItemNotFoundError, \
+                            UserBalanceNotEnoughError, UserDoesntFitSkillRequirementsError
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
@@ -66,3 +67,11 @@ def register_exeptions(app: FastAPI):
     @app.exception_handler(InventoryItemNotFoundError)
     async def inventory_item_not_found(request: Request, exc: InventoryItemNotFoundError):
         return JSONResponse(status_code=404, content={"detail": "Inventory item not found"})
+    
+    @app.exception_handler(UserBalanceNotEnoughError)
+    async def user_balance_not_enough(request: Request, exc: UserBalanceNotEnoughError):
+        return JSONResponse(status_code=402, content={"detail": "Balance not enough"})
+    
+    @app.exception_handler(UserDoesntFitSkillRequirementsError)
+    async def user_doesnt_fit_requirements(request: Request, exc: UserDoesntFitSkillRequirementsError):
+        return JSONResponse(status_code=403, content={"detail": "User doesnt fit skill requirements"})

@@ -33,7 +33,7 @@ class ItemRepository:
         return result.all()
 
     async def get_item_by_id(self, item_id: UUID) -> Optional[Item]:
-        item = select(Item).where(Item.id == item_id)
+        item = select(Item).where(Item.id == item_id).with_for_update()
         result = await self._session.scalar(item)
         return result
     
@@ -42,14 +42,15 @@ class ItemRepository:
         result = await self._session.scalars(items)
         return result.all()
     
-    async def get_item_by_id_with_requirements_contains_skill(self, item_id: UUID) -> Optional[Item]: 
+    async def get_item_by_id_with_requirements_contains_skill(self, item_id: UUID, user_id: UUID) -> Optional[Item]: 
         item = select(
             Item
         ).where(
-            Item.id == item_id
+            Item.id == item_id,
+            Item.user_id == user_id
             ).options(
                 selectinload(Item.requirements).joinedload(ItemRequirement.skill)
-            )
+            ).with_for_update()
         result = await self._session.scalar(item)
         return result
     

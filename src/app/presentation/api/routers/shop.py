@@ -5,9 +5,14 @@ from src.app.application.interactors import (
     CreateCurrentUserShopListingInteractor, 
     UpdateCurrentUserShopListingInteractor, 
     DeleteCurrentUserShopListingInteractor, 
-    GetCurrentUserShopListingByIdInteractor
+    GetCurrentUserShopListingByIdInteractor, 
+    BuyCurrentUserShopListingInteractor
     )
-from src.app.presentation.schemas import ShopListingShortSchemaRead, ShopListingSchemaCreate, ShopListingSchemaUpdate, ShopListingShortWithFitRequiremenetsSchema
+from src.app.presentation.schemas import (ShopListingShortSchemaRead, 
+                                          ShopListingSchemaCreate, 
+                                          ShopListingSchemaUpdate, 
+                                          ShopListingShortWithFitRequiremenetsSchema, 
+                                          ShopListingShortWithShortInventoryItemSchema)
 from src.app.presentation.mappers import ShopSchemaMapper
 from uuid import UUID
 
@@ -38,6 +43,14 @@ async def create_current_user_shop_listing(interactor: FromDishka[CreateCurrentU
         raise HTTPException(401, "Not authenticated")
     dto = ShopSchemaMapper.to_create_dto(schema)
     return await interactor(session_token, dto)
+
+@router.post("/me/{shop_listing_id}/buy", response_model=ShopListingShortWithShortInventoryItemSchema)
+async def buy_current_user_shop_listing(interactor: FromDishka[BuyCurrentUserShopListingInteractor], 
+                                        shop_listing_id: UUID,
+                                        session_token = Cookie(None)):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(session_token, shop_listing_id)
 
 @router.patch("/me/{shop_listing_id}", response_model=ShopListingShortSchemaRead)
 async def update_current_user_shop_listing(shop_listing_id: UUID, 

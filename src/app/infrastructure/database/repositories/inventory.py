@@ -22,5 +22,10 @@ class InventoryRepository:
         result = await self._session.scalar(inventory_item)
         return result
     
+    async def get_inventory_item_by_item_id(self, item_id: UUID, user_id: UUID) -> Optional[Inventory]: 
+        inventory_item = select(Inventory).where(Inventory.item_id == item_id, Inventory.user_id == user_id).with_for_update()
+        result = await self._session.scalar(inventory_item)
+        return result
+    
     async def delete(self, inventory_item: Inventory) -> None:
         await self._session.delete(inventory_item)

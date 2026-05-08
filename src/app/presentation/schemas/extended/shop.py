@@ -1,4 +1,4 @@
-from src.app.presentation.schemas import SkillRequirementsWithFitRequiremenetSchema
+from src.app.presentation.schemas.common import SkillRequirementsWithFitRequiremenetSchema, ShopListingShortSchemaRead, InventoryShortSchemaRead
 from pydantic import BaseModel
 from uuid import UUID
 
@@ -9,3 +9,8 @@ class ShopListingShortWithFitRequiremenetsSchema(BaseModel):
     quantity: int
     fit_requirements: bool
     skill_requirements: list[SkillRequirementsWithFitRequiremenetSchema]
+
+class ShopListingShortWithShortInventoryItemSchema(BaseModel):
+    shop_listing: ShopListingShortSchemaRead
+    inventory_item: InventoryShortSchemaRead
+    balance: int

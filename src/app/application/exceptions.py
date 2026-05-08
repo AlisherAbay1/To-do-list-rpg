@@ -42,3 +42,9 @@ class ShopListingNotFoundError(Exception):
 
 class InventoryItemNotFoundError(Exception):
     pass
+
+class UserBalanceNotEnoughError(Exception):
+    pass
+
+class UserDoesntFitSkillRequirementsError(Exception):
+    pass

@@ -1,4 +1,4 @@
-from src.app.application.dto.common import SkillRequirementsWithFitRequiremenetDTO
+from src.app.application.dto.common import SkillRequirementsWithFitRequiremenetDTO, ShopListingShortDTO, InventoryShortDTO
 from dataclasses import dataclass
 from uuid import UUID
 
@@ -10,3 +10,9 @@ class ShopListingShortWithFtRequiremenetsDTO:
     quantity: int
     fit_requirements: bool
     skill_requirements: list[SkillRequirementsWithFitRequiremenetDTO]
+
+@dataclass(slots=True)
+class ShopListingShortWithShortInventoryItemDTO:
+    shop_listing: ShopListingShortDTO
+    inventory_item: InventoryShortDTO
+    balance: int

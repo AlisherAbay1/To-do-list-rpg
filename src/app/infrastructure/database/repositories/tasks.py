@@ -83,7 +83,7 @@ class TaskRepository:
         return result.all()
     
     async def get_task_by_id(self, task_id: UUID) -> Optional[Task]:
-        task = select(Task).where(Task.id == task_id)
+        task = select(Task).where(Task.id == task_id).with_for_update()
         result = await self._session.scalar(task)
         return result
     

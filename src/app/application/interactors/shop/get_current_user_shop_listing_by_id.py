@@ -19,12 +19,12 @@ class GetCurrentUserShopListingByIdInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        shop_listing = await self.shop_repo.get_shop_listings_by_id(shop_listing_id)
+        shop_listing = await self.shop_repo.get_shop_listing_by_id(shop_listing_id)
         if shop_listing is None:
             raise ShopListingNotFoundError()
         if shop_listing.user_id != user_id:
             raise AccessDeniedError()
-        item = await self.item_repo.get_item_by_id_with_requirements_contains_skill(shop_listing.item_id)
+        item = await self.item_repo.get_item_by_id_with_requirements_contains_skill(shop_listing.item_id, user_id)
         if item is None:
             raise ItemNotFoundError()
         dto = ExtendedShopMapper.to_shop_listing_with_fit_requirement(shop_listing, item) 
