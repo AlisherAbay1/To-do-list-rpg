@@ -9,7 +9,7 @@ from src.app.infrastructure.database.models.base import Base
 
 class Shop(Base, kw_only=True):
     __tablename__ = "shop"
-    __table_args__ = (UniqueConstraint("user_id", "item_id", name="unique_user_item"), )
+    __table_args__ = (UniqueConstraint("user_id", "item_id", name="unique_user_item_for_shop"), )
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default_factory=uuid7)
     user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
