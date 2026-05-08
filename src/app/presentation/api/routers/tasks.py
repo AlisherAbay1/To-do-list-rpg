@@ -4,10 +4,10 @@ from pydantic import UUID7
 
 from src.app.application.interactors import (
     CompleteTaskInteractor, CreateCurrentUserTaskInteractor,
-    DeleteTaskInteractor, GetAllTasksInteractor, GetCurentUserTasksInteractor,
+    DeleteCurrentUserTaskInteractor, GetAllTasksInteractor, GetCurentUserTasksInteractor,
     GetDailyTasksBySessionTokenInteractor,
     GetDeletedTasksBySessionTokenInteractor, GetOverdueTasksInteractor,
-    GetTaskInteractor, UncompleteTaskInteractor, UpdateCurrentUserTaskInteractor, 
+    GetCurrentUserTaskInteractor, UncompleteTaskInteractor, UpdateCurrentUserTaskInteractor, 
     GetTodaysDeadlineInteractor)
 from src.app.presentation.mappers import TaskSchemaMapper
 from src.app.presentation.schemas import (TaskFilterParams, TaskSchemaCreate,
@@ -40,30 +40,41 @@ async def get_current_user_tasks(interactor: FromDishka[GetCurentUserTasksIntera
 
 @router.get("/me/archived")
 async def get_deleted_tasks_by_session_token(interactor: FromDishka[GetDeletedTasksBySessionTokenInteractor], 
-                                       session_token = Cookie(None)):
+                                             session_token = Cookie(None)):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
     return await interactor(session_token)
 
 @router.get("/me/daily")
 async def get_daily_tasks_by_session_token(interactor: FromDishka[GetDailyTasksBySessionTokenInteractor], 
-                                       session_token = Cookie(None)):
+                                           session_token = Cookie(None)):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
     return await interactor(session_token)
 
 @router.get("/me/today")
 async def get_todays_deadline_tasks_by_session_token(interactor: FromDishka[GetTodaysDeadlineInteractor], 
-                                       session_token = Cookie(None)):
+                                                     session_token = Cookie(None)):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
     return await interactor(session_token)
 
 @router.get("/me/overdue")
 async def get_overdue_tasks_by_session_token(interactor: FromDishka[GetOverdueTasksInteractor], 
-                                       session_token = Cookie(None)):
+                                             session_token = Cookie(None)):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
     return await interactor(session_token)
 
 @router.get("/{task_id}", response_model=TaskWithSkillsAndItemsSchemaRead)
-async def get_task(task_id: UUID7, 
-                   get_related_skills: bool, 
-                   get_related_items: bool,
-                   interactor: FromDishka[GetTaskInteractor]):
-    return await interactor(task_id, get_related_skills, get_related_items)
+async def get_current_user_task(task_id: UUID7, 
+                                get_related_skills: bool, 
+                                get_related_items: bool,
+                                interactor: FromDishka[GetCurrentUserTaskInteractor], 
+                                session_token = Cookie(None)):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(session_token, task_id, get_related_skills, get_related_items)
 
 @router.post("/me", response_model=TaskSchemaReadable)
 async def create_current_user_task(interactor: FromDishka[CreateCurrentUserTaskInteractor], 
@@ -102,6 +113,9 @@ async def patch_task(interactor: FromDishka[UpdateCurrentUserTaskInteractor],
     return await interactor(task_id, dto, session_token)
 
 @router.delete("/{task_id}", status_code=204)
-async def delete_task(task_id: UUID7,
-                      interactor: FromDishka[DeleteTaskInteractor]):
-    await interactor(task_id)
+async def delete_current_user_task(task_id: UUID7,
+                      interactor: FromDishka[DeleteCurrentUserTaskInteractor], 
+                      session_token = Cookie(None)):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    await interactor(session_token, task_id)

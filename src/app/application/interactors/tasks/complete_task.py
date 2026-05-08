@@ -2,7 +2,6 @@ from uuid import UUID
 
 from src.app.application.mappers import ExtendedTaskMapper
 from src.app.application.exceptions import (SessionNotFoundError,
-                                            AccessDeniedError,
                                             TaskNotFoundError,
                                             UserNotFoundError)
 from src.app.application.interfaces.cash_interfaces import \
@@ -30,14 +29,12 @@ class CompleteTaskInteractor:
         self.transaction = transaction
 
     async def __call__(self, task_id: UUID, session_token: str):
-        task = await self.task_repo.get_task_by_id(task_id)
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
+        task = await self.task_repo.get_task_by_id(task_id, user_id)
         if task is None:
             raise TaskNotFoundError()
-        if task.user_id != user_id:
-            raise AccessDeniedError()
         
         user = await self.user_repo.get_user(user_id)
         skills = await self.skill_repo.get_skills_by_task_id(task_id)

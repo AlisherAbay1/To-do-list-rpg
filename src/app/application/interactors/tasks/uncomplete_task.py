@@ -30,17 +30,15 @@ class UncompleteTaskInteractor:
         self.transaction = transaction
 
     async def __call__(self, task_id: UUID, session_token: str):
-        task = await self.task_repo.get_task_by_id(task_id)
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         tasks_history = await self.task_history_repo.get_recent_history_with_skills(task_id, 2)
         if user_id is None:
             raise SessionNotFoundError()
+        task = await self.task_repo.get_task_by_id(task_id, user_id)
         if task is None:
             raise TaskNotFoundError()
         if not tasks_history:
             raise TaskNotFoundError()
-        if task.user_id != user_id:
-            raise AccessDeniedError()
         if task.repeat_limit is not None:
             task.repeat_limit += 1
         

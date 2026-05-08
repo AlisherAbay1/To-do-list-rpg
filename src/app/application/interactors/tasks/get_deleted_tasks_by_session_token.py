@@ -2,7 +2,7 @@ from src.app.application.exceptions import SessionNotFoundError
 from src.app.application.interfaces.cash_interfaces import \
     RedisRepositoryProtocol
 from src.app.application.interfaces.repositories_interfaces import \
-    TaskRepositoryProtocol
+    TaskRepositoryProtocol 
 from src.app.application.mappers.common import TaskMapper
 
 class GetDeletedTasksBySessionTokenInteractor:

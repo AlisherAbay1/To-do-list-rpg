@@ -24,7 +24,7 @@ class GetCurrentUserTaskCategoryById:
         if task_category.user_id != user_id:
             raise AccessDeniedError()
         if get_tasks:
-            tasks = await self.task_repo.get_tasks_by_category_id(task_category_id)
+            tasks = await self.task_repo.get_tasks_by_category_id(task_category_id, user_id)
         else:
             tasks = []
         dto = ExtendedTaskCategoriesMapper.to_dto_with_tasks(task_category, tasks)

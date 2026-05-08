@@ -82,8 +82,8 @@ class TaskRepository:
         result = await self._session.scalars(tasks)
         return result.all()
     
-    async def get_task_by_id(self, task_id: UUID) -> Optional[Task]:
-        task = select(Task).where(Task.id == task_id).with_for_update()
+    async def get_task_by_id(self, task_id: UUID, user_id: UUID) -> Optional[Task]:
+        task = select(Task).where(Task.id == task_id, Task.user_id == user_id).with_for_update()
         result = await self._session.scalar(task)
         return result
     
@@ -116,19 +116,15 @@ class TaskRepository:
         result = await self._session.scalars(tasks)
         return result.all()
     
-    async def get_tasks_by_category_id(self, task_category: UUID) -> Sequence[Task]:
-        tasks = select(Task).where(Task.category_id == task_category)
+    async def get_tasks_by_category_id(self, task_category: UUID, user_id: UUID) -> Sequence[Task]:
+        tasks = select(Task).where(Task.category_id == task_category, Task.user_id == user_id)
         result = await self._session.scalars(tasks)
         return result.all()
     
-    async def get_tasks_by_skill_id(self, skill_id: UUID) -> Sequence[Task]:
-        tasks = select(Task).filter(Task.skills.any(Skill.id == skill_id))
+    async def get_tasks_by_skill_id(self, skill_id: UUID, user_id: UUID) -> Sequence[Task]:
+        tasks = select(Task).where(Task.user_id == user_id).filter(Task.skills.any(Skill.id == skill_id))
         result = await self._session.scalars(tasks)
         return result.all()
-
-    async def delete(self, task_id: UUID) -> None:
-        task = delete(Task).where(Task.id == task_id)
-        await self._session.execute(task)
 
     async def delete_all_tasks_deleted_more_than_year(self) -> None:
         year_ago = datetime.now(tz=timezone.utc) - timedelta(days=365)

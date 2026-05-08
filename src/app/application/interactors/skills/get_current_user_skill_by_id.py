@@ -25,7 +25,7 @@ class GetCurrentUserSkillByIdInteractor:
             raise AccessDeniedError()
         
         if get_related_tasks:
-            tasks = await self.task_repo.get_tasks_by_skill_id(skill_id)
+            tasks = await self.task_repo.get_tasks_by_skill_id(skill_id, user_id)
         else: 
             tasks = []
         dto = ExtendedSkillMapper.to_with_tasks_and_next_lvl_xp_dto(skill, tasks)

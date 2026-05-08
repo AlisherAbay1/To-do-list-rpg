@@ -11,10 +11,10 @@ from .skills import (ClearExpiredSkillsInteractor,
                      GetCurrentUserSkillByIdInteractor, UpdateCurrentUserSkillById)
 
 from .tasks import (CompleteTaskInteractor, CreateCurrentUserTaskInteractor,
-                    DeleteTaskInteractor, GetAllTasksInteractor,
+                    DeleteCurrentUserTaskInteractor, GetAllTasksInteractor,
                     GetCurentUserTasksInteractor,
                     GetDailyTasksBySessionTokenInteractor,
-                    GetDeletedTasksBySessionTokenInteractor, GetTaskInteractor,
+                    GetDeletedTasksBySessionTokenInteractor, GetCurrentUserTaskInteractor,
                     UncompleteTaskInteractor, UpdateCurrentUserTaskInteractor, 
                     GetOverdueTasksInteractor, GetTodaysDeadlineInteractor, 
                     ClearExpiredTasksInteractor)
@@ -45,8 +45,8 @@ from .inventory import (GetCurrentUserInventoryItemByIdInteractor, GetCurrentUse
 
 __all__ = ("GetAllUsersInteractor", "UpdateCurrentUserEmailInteractor", "DeleteCurrentUserInteractor", 
            "GetUserInteractor", "GetAllTasksInteractor", "UncompleteTaskInteractor",
-           "CreateCurrentUserTaskInteractor", "GetCurentUserTasksInteractor", "GetTaskInteractor", 
-           "DeleteTaskInteractor", "CompleteTaskInteractor", "UpdateCurrentUserPasswordInteractor", 
+           "CreateCurrentUserTaskInteractor", "GetCurentUserTasksInteractor", "GetCurrentUserTaskInteractor", 
+           "DeleteCurrentUserTaskInteractor", "CompleteTaskInteractor", "UpdateCurrentUserPasswordInteractor", 
            "GetAllSkillsInteractor", "GetCurrentUserSkillsInteractor", "UpdateCurrentUserTaskInteractor",
            "CreateCurrentUserSkillInteractor", "GetSkillInteractor", "DeleteSkillInteractor", 
            "GetAllItemsInteractor", "GetCurrentUserItemsInteractor", "CreateCurrentUserItemInteractor", 
