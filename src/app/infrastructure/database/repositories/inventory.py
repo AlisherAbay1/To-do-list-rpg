@@ -18,7 +18,7 @@ class InventoryRepository:
         return result.all()
     
     async def get_inventory_item_by_id(self, inventory_item_id: UUID) -> Optional[Inventory]:
-        inventory_item = select(Inventory).where(Inventory.id == inventory_item_id)
+        inventory_item = select(Inventory).where(Inventory.id == inventory_item_id).with_for_update()
         result = await self._session.scalar(inventory_item)
         return result
     
