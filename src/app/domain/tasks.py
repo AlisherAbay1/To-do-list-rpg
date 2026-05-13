@@ -44,7 +44,7 @@ class Task(Base, kw_only=True):
     def complete(self):
         current_time = datetime.now(timezone.utc)
         if self.repeat_limit is not None:
-            if self.repeat_limit == 0:
+            if self.repeat_limit <= 0:
                 raise TaskAlreadyDoneError()
             if self.repeat_limit > 0:
                 self.repeat_limit -= 1
