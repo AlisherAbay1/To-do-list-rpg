@@ -1,12 +1,15 @@
 from src.app.application.exceptions import SessionNotFoundError
-from src.app.application.interfaces.cash_interfaces import \
-    RedisRepositoryProtocol
-from src.app.application.interfaces.repositories_interfaces import \
-    TaskRepositoryProtocol
+from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    TaskRepositoryProtocol,
+)
 from src.app.application.mappers.common import TaskMapper
 
+
 class GetDailyTasksBySessionTokenInteractor:
-    def __init__(self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
+    def __init__(
+        self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol
+    ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
 

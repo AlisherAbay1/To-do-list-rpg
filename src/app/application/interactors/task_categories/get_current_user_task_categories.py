@@ -1,13 +1,16 @@
-from src.app.application.interfaces.repositories_interfaces import TaskCategoriesRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    TaskCategoriesRepositoryProtocol,
+)
 from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from src.app.application.mappers.common import TaskCategoriesMapper
 from src.app.application.dto import TaskCategoryDTO
 from src.app.application.exceptions import SessionNotFoundError
 
+
 class GetCurrentUserTaskCategories:
-    def __init__(self, 
-                 repo: TaskCategoriesRepositoryProtocol,
-                 cash_repo: RedisRepositoryProtocol):
+    def __init__(
+        self, repo: TaskCategoriesRepositoryProtocol, cash_repo: RedisRepositoryProtocol
+    ):
         self.repo = repo
         self.cash_repo = cash_repo
 

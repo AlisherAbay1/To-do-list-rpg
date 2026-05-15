@@ -1,11 +1,17 @@
 from pydantic import BaseModel
-from src.app.domain.enums import TaskRepeatFrequency, TaskDifficulty, TaskPriority, TaskType
+from src.app.domain.enums import (
+    TaskRepeatFrequency,
+    TaskDifficulty,
+    TaskPriority,
+    TaskType,
+)
 from src.app.presentation.schemas.common.items import ItemSchemaRead
 from src.app.presentation.schemas.common.skills import SkillSchemaRead
 from src.app.presentation.schemas.common.users import UserSchemaRead
 from typing import Optional
 from datetime import datetime
 from uuid import UUID
+
 
 class TaskWithSkillsAndItemsSchemaRead(BaseModel):
     id: UUID
@@ -23,11 +29,12 @@ class TaskWithSkillsAndItemsSchemaRead(BaseModel):
     priority: Optional[TaskPriority]
     custom_xp_reward: Optional[int]
     custom_gold_reward: Optional[int]
-    deleted: bool 
+    deleted: bool
     deleted_at: Optional[datetime]
 
     skills: list[SkillSchemaRead] = []
     items: list[ItemSchemaRead] = []
+
 
 class TaskWithUserAndSkillsSchema(BaseModel):
     id: UUID

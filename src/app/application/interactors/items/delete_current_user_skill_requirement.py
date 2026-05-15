@@ -1,18 +1,24 @@
 from uuid import UUID
 
-from src.app.application.interfaces.repositories_interfaces import \
-    ItemRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import \
-    TransactionProtocol
-from src.app.application.interfaces.cash_interfaces import \
-    RedisRepositoryProtocol
-from src.app.application.exceptions import SessionNotFoundError, ItemNotFoundError, AccessDeniedError
+from src.app.application.interfaces.repositories_interfaces import (
+    ItemRepositoryProtocol,
+)
+from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
+from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
+from src.app.application.exceptions import (
+    SessionNotFoundError,
+    ItemNotFoundError,
+    AccessDeniedError,
+)
+
 
 class DeleteCurrentUserSkillRequirementInteractor:
-    def __init__(self, 
-                 repo: ItemRepositoryProtocol, 
-                 cash_repo: RedisRepositoryProtocol,
-                 transaction: TransactionProtocol) -> None:
+    def __init__(
+        self,
+        repo: ItemRepositoryProtocol,
+        cash_repo: RedisRepositoryProtocol,
+        transaction: TransactionProtocol,
+    ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
         self.transaction = transaction
@@ -22,7 +28,7 @@ class DeleteCurrentUserSkillRequirementInteractor:
         if user_id is None:
             raise SessionNotFoundError()
         item = await self.repo.get_item_by_id(item_id)
-        if item is None: 
+        if item is None:
             raise ItemNotFoundError()
         if item.user_id != user_id:
             raise AccessDeniedError()

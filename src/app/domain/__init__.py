@@ -10,8 +10,16 @@ from .tasks_history import TaskHistory
 from .user_rank import UserRank
 from .users import User
 
-__all__ = ("Task", "Skill", "User", 
-           "Item", "Shop", "ItemHistory", 
-           "TaskCategory", "Inventory", "TaskHistory",
-           "UserRank", "ItemRequirement"
-           )
+__all__ = (
+    "Task",
+    "Skill",
+    "User",
+    "Item",
+    "Shop",
+    "ItemHistory",
+    "TaskCategory",
+    "Inventory",
+    "TaskHistory",
+    "UserRank",
+    "ItemRequirement",
+)

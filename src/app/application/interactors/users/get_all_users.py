@@ -1,7 +1,9 @@
-from src.app.application.interfaces.repositories_interfaces import \
-    UserRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    UserRepositoryProtocol,
+)
 from src.app.application.mappers.common import UserMapper
 from src.app.application.dto.common.users import UserDTO
+
 
 class GetAllUsersInteractor:
     def __init__(self, repo: UserRepositoryProtocol) -> None:

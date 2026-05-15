@@ -1,10 +1,15 @@
 from uuid import UUID
 from typing import Optional
-from src.app.domain.enums import (TaskDifficulty, TaskPriority,
-                                  TaskRepeatFrequency, TaskType)
+from src.app.domain.enums import (
+    TaskDifficulty,
+    TaskPriority,
+    TaskRepeatFrequency,
+    TaskType,
+)
 from datetime import datetime, timezone
 from src.app.domain import Task
-from  uuid6 import uuid7
+from uuid6 import uuid7
+
 
 def make_task(
     user_id: Optional[UUID] = None,

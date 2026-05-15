@@ -1,6 +1,8 @@
 from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
-from src.app.application.interfaces.repositories_interfaces import TaskCategoriesRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    TaskCategoriesRepositoryProtocol,
+)
 from src.app.application.exceptions import SessionNotFoundError
 from src.app.application.dto import UpdateTaskCategoryDTO, TaskCategoryDTO
 from uuid import UUID
@@ -8,16 +10,21 @@ from src.app.application.dto.sentinel_types import Unset
 from src.app.application.exceptions import AccessDeniedError, TaskCategoryNotFoundError
 from src.app.application.mappers.common import TaskCategoriesMapper
 
+
 class UpdateCurrentUserTaskCategory:
-    def  __init__(self, 
-                  repo: TaskCategoriesRepositoryProtocol,
-                  cash_repo: RedisRepositoryProtocol, 
-                  transaction: TransactionProtocol) -> None:
+    def __init__(
+        self,
+        repo: TaskCategoriesRepositoryProtocol,
+        cash_repo: RedisRepositoryProtocol,
+        transaction: TransactionProtocol,
+    ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
         self.transaction = transaction
 
-    async def __call__(self, task_category_id: UUID, dto: UpdateTaskCategoryDTO, session_token: str) -> TaskCategoryDTO:
+    async def __call__(
+        self, task_category_id: UUID, dto: UpdateTaskCategoryDTO, session_token: str
+    ) -> TaskCategoryDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

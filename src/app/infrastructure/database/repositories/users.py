@@ -9,7 +9,8 @@ from src.app.domain import User
 
 
 class UserRepository:
-    __slots__ = ("_session")
+    __slots__ = "_session"
+
     def __init__(self, session: AsyncSession):
         self._session = session
 
@@ -17,22 +18,22 @@ class UserRepository:
         stmt = select(User).limit(limit).offset(offset)
         users = await self._session.scalars(stmt)
         return users.all()
-    
+
     async def get_user(self, user_id: UUID) -> Optional[User]:
         stmt = select(User).where(User.id == user_id).with_for_update()
         user = await self._session.scalar(stmt)
         return user
-    
+
     async def get_user_by_username(self, username: str) -> Optional[User]:
         stmt = select(User).where(User.username == username).with_for_update()
         user = await self._session.scalar(stmt)
         return user
-    
+
     async def get_user_by_email(self, email: str) -> Optional[User]:
         stmt = select(User).where(User.email == email).with_for_update()
         user = await self._session.scalar(stmt)
         return user
-    
+
     def save(self, user: User) -> None:
         self._session.add(user)
 
@@ -44,16 +45,12 @@ class UserRepository:
 
     async def does_username_exists(self, username: str) -> Optional[bool]:
         does_exist = await self._session.scalar(
-            select(
-                exists().where(User.username == username)
-                )
-            )
+            select(exists().where(User.username == username))
+        )
         return does_exist
-    
+
     async def does_email_exists(self, email: str) -> Optional[bool]:
         does_exist = await self._session.scalar(
-            select(
-                exists().where(User.email == email)
-                )
-            )
+            select(exists().where(User.email == email))
+        )
         return does_exist

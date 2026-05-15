@@ -10,7 +10,16 @@ from .refresh_session_token import RefreshSessionTokenInteractor
 from .update_current_user_email import UpdateCurrentUserEmailInteractor
 from .update_current_user_password import UpdateCurrentUserPasswordInteractor
 
-__all__ = ("AuthenticateUserInteractor", "CreateUserInteractor", "DeleteCurrentUserInteractor",
-            "DeleteSessionInteractor", "GetCurrentUser", "GetSessionTimeInteractor",
-            "GetUserInteractor", "RefreshSessionTokenInteractor", "UpdateCurrentUserEmailInteractor",
-            "GetAllUsersInteractor", "UpdateCurrentUserPasswordInteractor")
+__all__ = (
+    "AuthenticateUserInteractor",
+    "CreateUserInteractor",
+    "DeleteCurrentUserInteractor",
+    "DeleteSessionInteractor",
+    "GetCurrentUser",
+    "GetSessionTimeInteractor",
+    "GetUserInteractor",
+    "RefreshSessionTokenInteractor",
+    "UpdateCurrentUserEmailInteractor",
+    "GetAllUsersInteractor",
+    "UpdateCurrentUserPasswordInteractor",
+)

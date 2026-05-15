@@ -6,7 +6,13 @@ from uuid import UUID
 from src.app.application.dto.common.items import ItemDTO
 from src.app.application.dto.common.skills import SkillDTO
 from src.app.application.dto.common.users import UserDTO
-from src.app.domain.enums.task_types import TaskDifficulty, TaskPriority, TaskRepeatFrequency, TaskType
+from src.app.domain.enums.task_types import (
+    TaskDifficulty,
+    TaskPriority,
+    TaskRepeatFrequency,
+    TaskType,
+)
+
 
 @dataclass(slots=True)
 class TaskWithUserAndSkillsDTO:
@@ -22,6 +28,7 @@ class TaskWithUserAndSkillsDTO:
 
     user: UserDTO
     skills: list[SkillDTO]
+
 
 @dataclass(slots=True)
 class TaskWithSkillsAndItemsDTO:
@@ -40,7 +47,7 @@ class TaskWithSkillsAndItemsDTO:
     priority: Optional[TaskPriority]
     custom_xp_reward: Optional[int]
     custom_gold_reward: Optional[int]
-    deleted: bool 
+    deleted: bool
     deleted_at: Optional[datetime]
 
     skills: list[SkillDTO]

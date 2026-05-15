@@ -7,9 +7,12 @@ from uuid6 import uuid7
 from src.app.domain.skills import Skill
 from src.app.infrastructure.database.models.base import Base
 
+
 class ItemRequirement(Base, kw_only=True):
     __tablename__ = "item_requirements"
-    __table_args__ = (UniqueConstraint("item_id", "skill_id", name="unique_item_skill"), )
+    __table_args__ = (
+        UniqueConstraint("item_id", "skill_id", name="unique_item_skill"),
+    )
 
     id: Mapped[UUID] = mapped_column(default_factory=uuid7, primary_key=True)
     item_id: Mapped[UUID] = mapped_column(ForeignKey("item.id", ondelete="CASCADE"))

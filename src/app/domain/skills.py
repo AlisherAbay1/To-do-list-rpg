@@ -8,6 +8,7 @@ from uuid6 import uuid7
 
 from src.app.infrastructure.database.models.base import Base
 
+
 class Skill(Base, kw_only=True):
     __tablename__ = "skill"
 
@@ -19,7 +20,9 @@ class Skill(Base, kw_only=True):
     lvl: Mapped[int] = mapped_column(default=1)
     xp: Mapped[int] = mapped_column(default=0)
     deleted: Mapped[bool] = mapped_column(default=False)
-    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=None)
+    deleted_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), default=None
+    )
 
     def apply_reward(self, xp: int):
         self.xp += xp
@@ -27,6 +30,6 @@ class Skill(Base, kw_only=True):
 
     def calculate_lvl(self, xp: int) -> int:
         return 1 + xp // 1000
-    
+
     def calculate_xp_for_next_lvl(self, xp: int) -> int:
         return 1000 - xp % 1000

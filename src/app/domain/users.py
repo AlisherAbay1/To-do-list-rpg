@@ -19,7 +19,9 @@ class User(Base, kw_only=True):
     lvl: Mapped[int] = mapped_column(BigInteger, default=1)
     xp: Mapped[int] = mapped_column(BigInteger, default=0)
     is_admin: Mapped[bool] = mapped_column(default=False)
-    current_rank_id: Mapped[Optional[UUID]] = mapped_column(ForeignKey("rank.id", use_alter=True), default=None)
+    current_rank_id: Mapped[Optional[UUID]] = mapped_column(
+        ForeignKey("rank.id", use_alter=True), default=None
+    )
     profile_picture: Mapped[Optional[str]] = mapped_column(default=None)
     gold: Mapped[int] = mapped_column(BigInteger, default=0)
     language: Mapped[str] = mapped_column(String(255), default="eng")
@@ -32,6 +34,6 @@ class User(Base, kw_only=True):
 
     def calculate_lvl(self, xp: int):
         return 1 + xp // 1000
-    
+
     def calculate_xp_for_next_lvl(self, xp: int) -> int:
         return 1000 - xp % 1000

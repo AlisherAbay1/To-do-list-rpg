@@ -1,14 +1,23 @@
-from src.app.application.interfaces.repositories_interfaces import InventoryRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    InventoryRepositoryProtocol,
+)
 from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
-from src.app.application.exceptions import SessionNotFoundError, InventoryItemNotFoundError, AccessDeniedError
+from src.app.application.exceptions import (
+    SessionNotFoundError,
+    InventoryItemNotFoundError,
+    AccessDeniedError,
+)
 from uuid import UUID
 
+
 class DeleteCurrentUserInventoryItemInteractor:
-    def __init__(self, 
-                 repo: InventoryRepositoryProtocol, 
-                 cash_repo: RedisRepositoryProtocol, 
-                 transaction: TransactionProtocol) -> None:
+    def __init__(
+        self,
+        repo: InventoryRepositoryProtocol,
+        cash_repo: RedisRepositoryProtocol,
+        transaction: TransactionProtocol,
+    ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
         self.transaction = transaction

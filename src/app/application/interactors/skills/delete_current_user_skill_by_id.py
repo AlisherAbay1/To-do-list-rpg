@@ -1,19 +1,25 @@
 from datetime import datetime, timezone
 
-from src.app.application.exceptions import SkillNotFoundError, SessionNotFoundError, AccessDeniedError
-from src.app.application.interfaces.repositories_interfaces import \
-    SkillRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import \
-    TransactionProtocol
+from src.app.application.exceptions import (
+    SkillNotFoundError,
+    SessionNotFoundError,
+    AccessDeniedError,
+)
+from src.app.application.interfaces.repositories_interfaces import (
+    SkillRepositoryProtocol,
+)
+from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
 from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from uuid import UUID
 
 
 class DeleteCurrentUserSkillByIdInteractor:
-    def __init__(self, 
-                 repo: SkillRepositoryProtocol, 
-                 transaction: TransactionProtocol,
-                 cash_repo: RedisRepositoryProtocol) -> None:
+    def __init__(
+        self,
+        repo: SkillRepositoryProtocol,
+        transaction: TransactionProtocol,
+        cash_repo: RedisRepositoryProtocol,
+    ) -> None:
         self.repo = repo
         self.transaction = transaction
         self.cash_repo = cash_repo

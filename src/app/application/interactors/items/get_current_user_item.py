@@ -1,14 +1,17 @@
 from src.app.application.exceptions import SessionNotFoundError
-from src.app.application.interfaces.cash_interfaces import \
-    RedisRepositoryProtocol
-from src.app.application.interfaces.repositories_interfaces import \
-    ItemRepositoryProtocol
+from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    ItemRepositoryProtocol,
+)
 from src.app.application.mappers import ItemExtendedMapper
 from uuid import UUID
 from src.app.application.exceptions import ItemNotFoundError, AccessDeniedError
 
+
 class GetCurrentUserItemInteractor:
-    def __init__(self, repo: ItemRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
+    def __init__(
+        self, repo: ItemRepositoryProtocol, cash_repo: RedisRepositoryProtocol
+    ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
 
@@ -16,7 +19,9 @@ class GetCurrentUserItemInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        item = await self.repo.get_item_by_id_with_requirements_contains_skill(task_id, user_id)
+        item = await self.repo.get_item_by_id_with_requirements_contains_skill(
+            task_id, user_id
+        )
         if item is None:
             raise ItemNotFoundError()
         if item.user_id != user_id:

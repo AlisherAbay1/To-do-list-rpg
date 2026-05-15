@@ -1,11 +1,13 @@
-from src.app.application.interfaces.repositories_interfaces import TaskRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import \
-    TransactionProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    TaskRepositoryProtocol,
+)
+from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
+
 
 class ClearExpiredTasksInteractor:
-    def __init__(self, 
-                 repo: TaskRepositoryProtocol, 
-                 transaction: TransactionProtocol) -> None:
+    def __init__(
+        self, repo: TaskRepositoryProtocol, transaction: TransactionProtocol
+    ) -> None:
         self.repo = repo
         self.transaction = transaction
 

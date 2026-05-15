@@ -1,12 +1,15 @@
 from src.app.application.exceptions import SessionNotFoundError
-from src.app.application.interfaces.cash_interfaces import \
-    RedisRepositoryProtocol
-from src.app.application.interfaces.repositories_interfaces import \
-    SkillRepositoryProtocol
+from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    SkillRepositoryProtocol,
+)
 from src.app.application.mappers.common import SkillMapper
 
+
 class GetCurrentUserSkillsInteractor:
-    def __init__(self, repo: SkillRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
+    def __init__(
+        self, repo: SkillRepositoryProtocol, cash_repo: RedisRepositoryProtocol
+    ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
 

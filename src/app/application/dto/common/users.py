@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 from uuid import UUID
 
+
 @dataclass(slots=True)
 class UserDTO:
     id: UUID
@@ -9,7 +10,7 @@ class UserDTO:
     email: str
     password: str
     lvl: int
-    xp: int 
+    xp: int
     gold: int
     timezone: str
     language: str
@@ -17,16 +18,19 @@ class UserDTO:
     current_rank_id: Optional[UUID] = None
     profile_picture: Optional[str] = None
 
+
 @dataclass(slots=True)
 class CreateUserDTO:
     username: str
     email: str
     password: str
 
+
 @dataclass(slots=True)
 class SignInDTO:
     username_or_email: str
     password: str
+
 
 @dataclass(slots=True)
 class UserAuthDTO:
@@ -34,15 +38,18 @@ class UserAuthDTO:
     email: str
     session_token: str
 
+
 @dataclass(slots=True)
 class UserEmailDTO:
     new_email: str
     password: str
 
+
 @dataclass(slots=True)
 class UserPasswordDTO:
     old_password: str
     new_password: str
+
 
 @dataclass(slots=True)
 class UserStatsDTO:

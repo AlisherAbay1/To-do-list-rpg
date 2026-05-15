@@ -7,14 +7,25 @@ from src.app.presentation.api.routers.skills import router as skills_router
 from src.app.presentation.api.routers.items import router as items_router
 from src.app.presentation.api.routers.inventory import router as inventory_router
 from src.app.presentation.api.routers.shop import router as shop_router
-from src.app.presentation.api.routers.task_categories import router as task_categories_router
+from src.app.presentation.api.routers.task_categories import (
+    router as task_categories_router,
+)
 from src.app.presentation.api.routers.stats import router as stats_router
 from src.app.presentation.exception_handlers import register_exeptions
 from src.app.core.taskiq import broker
 from contextlib import asynccontextmanager
-from src.app.infrastructure.di_providers import AppProvider, UserProvider, TaskProvider, \
-                                                SkillProvider, ItemProvider, TaskCategoriesProvider, \
-                                                StatsProvider, ShopProvider, InventoryProvider
+from src.app.infrastructure.di_providers import (
+    AppProvider,
+    UserProvider,
+    TaskProvider,
+    SkillProvider,
+    ItemProvider,
+    TaskCategoriesProvider,
+    StatsProvider,
+    ShopProvider,
+    InventoryProvider,
+)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -23,6 +34,7 @@ async def lifespan(app: FastAPI):
     yield
     if not broker.is_worker_process:
         await broker.shutdown()
+
 
 app = FastAPI(lifespan=lifespan)
 
@@ -37,7 +49,15 @@ app.include_router(router=stats_router, tags=["stats"])
 
 register_exeptions(app)
 
-container = make_async_container(AppProvider(), UserProvider(), TaskProvider(), 
-                                 SkillProvider(), ItemProvider(), TaskCategoriesProvider(), 
-                                 StatsProvider(), ShopProvider(), InventoryProvider())
+container = make_async_container(
+    AppProvider(),
+    UserProvider(),
+    TaskProvider(),
+    SkillProvider(),
+    ItemProvider(),
+    TaskCategoriesProvider(),
+    StatsProvider(),
+    ShopProvider(),
+    InventoryProvider(),
+)
 setup_dishka(container, app)

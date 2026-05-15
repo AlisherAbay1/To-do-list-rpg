@@ -1,14 +1,15 @@
 from src.app.application.mappers.common import UserMapper
-from src.app.application.exceptions import (SessionNotFoundError,
-                                            UserNotFoundError)
-from src.app.application.interfaces.cash_interfaces import \
-    RedisRepositoryProtocol
-from src.app.application.interfaces.repositories_interfaces import \
-    UserRepositoryProtocol
+from src.app.application.exceptions import SessionNotFoundError, UserNotFoundError
+from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    UserRepositoryProtocol,
+)
 
 
 class GetCurrentUser:
-    def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol) -> None:
+    def __init__(
+        self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol
+    ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
 

@@ -5,10 +5,11 @@ from src.app.domain import TaskCategory
 from src.app.application.dto import CreateTaskCategoryDTO
 from src.app.application.mappers.common import TaskCategoriesMapper
 
+
 class CreateCurrentUserTaskCategory:
-    def  __init__(self, 
-                  cash_repo: RedisRepositoryProtocol, 
-                  transaction: TransactionProtocol) -> None:
+    def __init__(
+        self, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol
+    ) -> None:
         self.cash_repo = cash_repo
         self.transaction = transaction
 
@@ -16,11 +17,7 @@ class CreateCurrentUserTaskCategory:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        task_category = TaskCategory(
-            user_id=user_id,
-            title=dto.title, 
-            color=dto.color 
-        )
+        task_category = TaskCategory(user_id=user_id, title=dto.title, color=dto.color)
         output_dto = TaskCategoriesMapper.to_dto(task_category)
         await self.transaction.save(task_category)
         await self.transaction.commit()

@@ -1,16 +1,35 @@
 from dishka import Provider, provide, Scope
-from src.app.infrastructure.database.repositories import TaskRepository, TaskHistoryRepository
-from src.app.application.interfaces.repositories_interfaces import TaskRepositoryProtocol, TaskHistoryRepositoryProtocol
-from src.app.application.interactors import GetAllTasksInteractor, CreateCurrentUserTaskInteractor, GetCurentUserTasksInteractor, \
-                                     GetCurrentUserTaskInteractor, DeleteCurrentUserTaskInteractor, CompleteTaskInteractor, \
-                                     UpdateCurrentUserTaskInteractor, UncompleteTaskInteractor, GetDeletedTasksBySessionTokenInteractor, \
-                                     GetDailyTasksBySessionTokenInteractor, GetOverdueTasksInteractor, GetTodaysDeadlineInteractor, \
-                                     ClearExpiredTasksInteractor
+from src.app.infrastructure.database.repositories import (
+    TaskRepository,
+    TaskHistoryRepository,
+)
+from src.app.application.interfaces.repositories_interfaces import (
+    TaskRepositoryProtocol,
+    TaskHistoryRepositoryProtocol,
+)
+from src.app.application.interactors import (
+    GetAllTasksInteractor,
+    CreateCurrentUserTaskInteractor,
+    GetCurentUserTasksInteractor,
+    GetCurrentUserTaskInteractor,
+    DeleteCurrentUserTaskInteractor,
+    CompleteTaskInteractor,
+    UpdateCurrentUserTaskInteractor,
+    UncompleteTaskInteractor,
+    GetDeletedTasksBySessionTokenInteractor,
+    GetDailyTasksBySessionTokenInteractor,
+    GetOverdueTasksInteractor,
+    GetTodaysDeadlineInteractor,
+    ClearExpiredTasksInteractor,
+)
+
 
 class TaskProvider(Provider):
     scope = Scope.REQUEST
     task_repository = provide(TaskRepository, provides=TaskRepositoryProtocol)
-    task_history_repository = provide(TaskHistoryRepository, provides=TaskHistoryRepositoryProtocol)
+    task_history_repository = provide(
+        TaskHistoryRepository, provides=TaskHistoryRepositoryProtocol
+    )
     get_all_tasks = provide(GetAllTasksInteractor)
     get_current_user_tasks = provide(GetCurentUserTasksInteractor)
     get_task = provide(GetCurrentUserTaskInteractor)

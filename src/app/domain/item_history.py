@@ -14,7 +14,10 @@ class ItemHistory(Base, kw_only=True):
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default_factory=uuid7)
     user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
-    item_id: Mapped[Optional[UUID]] = mapped_column(ForeignKey("item.id", ondelete="SET NULL"))
+    item_id: Mapped[Optional[UUID]] = mapped_column(
+        ForeignKey("item.id", ondelete="SET NULL")
+    )
     title: Mapped[str] = mapped_column(String(255))
-    used_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default_factory=lambda: datetime.now(tz=timezone.utc))
-
+    used_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default_factory=lambda: datetime.now(tz=timezone.utc)
+    )

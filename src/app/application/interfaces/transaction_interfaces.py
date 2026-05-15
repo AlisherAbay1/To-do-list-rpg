@@ -1,6 +1,7 @@
 from typing import Protocol
 from src.app.infrastructure.database.models import Base
 
+
 class TransactionProtocol(Protocol):
     async def commit(self) -> None: ...
     async def flush(self) -> None: ...

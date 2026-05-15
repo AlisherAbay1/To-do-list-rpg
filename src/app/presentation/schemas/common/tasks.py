@@ -1,10 +1,16 @@
 from pydantic import BaseModel
-from src.app.domain.enums import TaskRepeatFrequency, TaskDifficulty, TaskPriority, TaskType
+from src.app.domain.enums import (
+    TaskRepeatFrequency,
+    TaskDifficulty,
+    TaskPriority,
+    TaskType,
+)
 from typing import Optional, Literal
 from datetime import datetime
 from uuid import UUID
 
-class TaskSchemaRead(BaseModel):   
+
+class TaskSchemaRead(BaseModel):
     id: UUID
     user_id: UUID
     title: str
@@ -23,6 +29,7 @@ class TaskSchemaRead(BaseModel):
     deleted: bool
     deleted_at: Optional[datetime]
 
+
 class TaskSchemaReadable(BaseModel):
     id: UUID
     user_id: UUID
@@ -35,6 +42,7 @@ class TaskSchemaReadable(BaseModel):
     repeat_frequency: Optional[TaskRepeatFrequency]
     deadline: Optional[datetime]
 
+
 class TaskFilterParams(BaseModel):
     difficulty: Optional[TaskDifficulty] = None
     priority: Optional[TaskPriority] = None
@@ -42,11 +50,13 @@ class TaskFilterParams(BaseModel):
     repeat_frequency: Optional[TaskRepeatFrequency] = None
     deleted: Optional[bool] = None
 
+
 class TaskSortParams(BaseModel):
     sort_by: Literal["difficulty", "priority", "deadline", "created_at"] = "created_at"
     sort_order: Literal["asc", "desc"] = "asc"
 
-class TaskSchemaCreate(BaseModel): 
+
+class TaskSchemaCreate(BaseModel):
     title: str
     description: Optional[str] = None
     category_id: Optional[UUID] = None
@@ -61,6 +71,7 @@ class TaskSchemaCreate(BaseModel):
 
     related_skills: list[UUID] = []
     related_items: list[UUID] = []
+
 
 class TaskSchemaUpdate(BaseModel):
     title: str | None = None

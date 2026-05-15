@@ -1,18 +1,20 @@
 from uuid import UUID
 
 from src.app.application.exceptions import TaskNotFoundError, SessionNotFoundError
-from src.app.application.interfaces.repositories_interfaces import \
-    TaskRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import \
-    TransactionProtocol
-from src.app.application.interfaces.cash_interfaces import \
-    RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    TaskRepositoryProtocol,
+)
+from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
+from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
+
 
 class DeleteCurrentUserTaskInteractor:
-    def __init__(self, 
-                 repo: TaskRepositoryProtocol, 
-                 cash_repo: RedisRepositoryProtocol,
-                 transaction: TransactionProtocol) -> None:
+    def __init__(
+        self,
+        repo: TaskRepositoryProtocol,
+        cash_repo: RedisRepositoryProtocol,
+        transaction: TransactionProtocol,
+    ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
         self.transaction = transaction

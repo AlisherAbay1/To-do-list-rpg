@@ -1,14 +1,23 @@
-from src.app.application.interfaces.repositories_interfaces import ShopRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    ShopRepositoryProtocol,
+)
 from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
-from src.app.application.exceptions import SessionNotFoundError, ShopListingNotFoundError, AccessDeniedError
+from src.app.application.exceptions import (
+    SessionNotFoundError,
+    ShopListingNotFoundError,
+    AccessDeniedError,
+)
 from uuid import UUID
 
+
 class DeleteCurrentUserShopListingInteractor:
-    def __init__(self, 
-                 repo: ShopRepositoryProtocol, 
-                 cash_repo: RedisRepositoryProtocol, 
-                 transaction: TransactionProtocol) -> None:
+    def __init__(
+        self,
+        repo: ShopRepositoryProtocol,
+        cash_repo: RedisRepositoryProtocol,
+        transaction: TransactionProtocol,
+    ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
         self.transaction = transaction

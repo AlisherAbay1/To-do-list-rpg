@@ -4,6 +4,7 @@ from datetime import datetime
 from uuid import UUID
 from src.app.presentation.schemas import TaskSchemaReadable
 
+
 class SkillWithTasksAndNextLvlXpSchemaRead(BaseModel):
     id: UUID
     user_id: UUID

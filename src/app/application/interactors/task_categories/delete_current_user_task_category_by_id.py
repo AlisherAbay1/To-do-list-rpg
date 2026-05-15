@@ -1,14 +1,19 @@
-from src.app.application.interfaces.repositories_interfaces import TaskCategoriesRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    TaskCategoriesRepositoryProtocol,
+)
 from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
 from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from uuid import UUID
 from src.app.application.exceptions import SessionNotFoundError
 
+
 class DeleteCurrentUserTaskCategoryById:
-    def __init__(self, 
-                 repo: TaskCategoriesRepositoryProtocol, 
-                 cash_repo: RedisRepositoryProtocol, 
-                 transaction: TransactionProtocol) -> None:
+    def __init__(
+        self,
+        repo: TaskCategoriesRepositoryProtocol,
+        cash_repo: RedisRepositoryProtocol,
+        transaction: TransactionProtocol,
+    ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
         self.transaction = transaction

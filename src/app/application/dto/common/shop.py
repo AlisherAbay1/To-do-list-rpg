@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from uuid import UUID
 from src.app.application.dto.sentinel_types import Unset, UNSET
 
+
 @dataclass(slots=True)
 class ShopListingDTO:
     id: UUID
@@ -10,6 +11,7 @@ class ShopListingDTO:
     price: int
     quantity: int
 
+
 @dataclass(slots=True)
 class ShopListingShortDTO:
     id: UUID
@@ -17,11 +19,13 @@ class ShopListingShortDTO:
     price: int
     quantity: int
 
+
 @dataclass(slots=True)
 class ShopListingCreateDTO:
     item_id: UUID
     price: int
     quantity: int
+
 
 @dataclass(slots=True)
 class ShopListingUpdateDTO:

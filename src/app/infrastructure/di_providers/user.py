@@ -1,10 +1,21 @@
 from dishka import Provider, provide, Scope
-from src.app.application.interfaces.repositories_interfaces import UserRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    UserRepositoryProtocol,
+)
 from src.app.infrastructure.database.repositories import UserRepository
-from src.app.application.interactors import GetAllUsersInteractor, UpdateCurrentUserEmailInteractor, DeleteCurrentUserInteractor, \
-                                    GetUserInteractor, GetSessionTimeInteractor, UpdateCurrentUserPasswordInteractor, \
-                                    CreateUserInteractor, GetCurrentUser, AuthenticateUserInteractor, \
-                                    DeleteSessionInteractor, RefreshSessionTokenInteractor
+from src.app.application.interactors import (
+    GetAllUsersInteractor,
+    UpdateCurrentUserEmailInteractor,
+    DeleteCurrentUserInteractor,
+    GetUserInteractor,
+    GetSessionTimeInteractor,
+    UpdateCurrentUserPasswordInteractor,
+    CreateUserInteractor,
+    GetCurrentUser,
+    AuthenticateUserInteractor,
+    DeleteSessionInteractor,
+    RefreshSessionTokenInteractor,
+)
 
 
 class UserProvider(Provider):
@@ -15,7 +26,9 @@ class UserProvider(Provider):
     delete_current_user_interactor = provide(DeleteCurrentUserInteractor)
     get_user_interactor = provide(GetUserInteractor)
     get_session_time_interactor = provide(GetSessionTimeInteractor)
-    update_current_user_password_interactor = provide(UpdateCurrentUserPasswordInteractor)
+    update_current_user_password_interactor = provide(
+        UpdateCurrentUserPasswordInteractor
+    )
     create_user_interactor = provide(CreateUserInteractor)
     get_current_user = provide(GetCurrentUser)
     authenticate_user_interactor = provide(AuthenticateUserInteractor)

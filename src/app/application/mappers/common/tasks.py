@@ -3,6 +3,7 @@ from typing import Sequence
 from src.app.domain import Task
 from src.app.application.dto import TaskDTO, TaskDetailDTO
 
+
 class TaskMapper:
     @staticmethod
     def to_dto(domain: Task) -> TaskDTO:
@@ -20,7 +21,7 @@ class TaskMapper:
             deadline=domain.deadline,
         )
         return dto
-    
+
     @staticmethod
     def to_list_dto(domains: Sequence[Task]) -> list[TaskDTO]:
         return [TaskMapper.to_dto(domain) for domain in domains]
@@ -30,8 +31,8 @@ class TaskMapper:
         dto = TaskDetailDTO(
             id=domain.id,
             user_id=domain.user_id,
-            title=domain.title, 
-            description=domain.description, 
+            title=domain.title,
+            description=domain.description,
             category_id=domain.category_id,
             repeat_limit=domain.repeat_limit,
             repeat_frequency=domain.repeat_frequency,
@@ -42,12 +43,12 @@ class TaskMapper:
             difficulty=domain.difficulty,
             priority=domain.priority,
             custom_xp_reward=domain.custom_xp_reward,
-            custom_gold_reward=domain.custom_gold_reward, 
+            custom_gold_reward=domain.custom_gold_reward,
             deleted=domain.deleted,
-            deleted_at=domain.deleted_at
+            deleted_at=domain.deleted_at,
         )
         return dto
-    
+
     @staticmethod
     def to_list_detail_dto(domains: Sequence[Task]) -> list[TaskDetailDTO]:
         return [TaskMapper.to_detail_dto(domain) for domain in domains]

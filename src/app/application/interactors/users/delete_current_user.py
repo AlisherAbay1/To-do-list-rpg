@@ -1,14 +1,18 @@
 from src.app.application.exceptions import UserNotFoundError
-from src.app.application.interfaces.cash_interfaces import \
-    RedisRepositoryProtocol
-from src.app.application.interfaces.repositories_interfaces import \
-    UserRepositoryProtocol
-from src.app.application.interfaces.transaction_interfaces import \
-    TransactionProtocol
+from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
+from src.app.application.interfaces.repositories_interfaces import (
+    UserRepositoryProtocol,
+)
+from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
 
 
 class DeleteCurrentUserInteractor:
-    def __init__(self, repo: UserRepositoryProtocol, cash_repo: RedisRepositoryProtocol, transaction: TransactionProtocol) -> None:
+    def __init__(
+        self,
+        repo: UserRepositoryProtocol,
+        cash_repo: RedisRepositoryProtocol,
+        transaction: TransactionProtocol,
+    ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
         self.transaction = transaction

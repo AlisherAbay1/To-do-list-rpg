@@ -5,8 +5,12 @@ from src.app.core.database import get_new_session_maker
 from src.app.core.redis_config import redis_client
 from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
-from src.app.infrastructure.database.repositories import RedisRepository, TransactionAlchemyManager
+from src.app.infrastructure.database.repositories import (
+    RedisRepository,
+    TransactionAlchemyManager,
+)
 from collections.abc import AsyncGenerator
+
 
 class AppProvider(Provider):
     @provide(scope=Scope.APP)
@@ -14,7 +18,9 @@ class AppProvider(Provider):
         return get_new_session_maker()
 
     @provide(scope=Scope.REQUEST)
-    async def get_pgsql_session(self, session_maker: async_sessionmaker[AsyncSession]) -> AsyncGenerator[AsyncSession]:
+    async def get_pgsql_session(
+        self, session_maker: async_sessionmaker[AsyncSession]
+    ) -> AsyncGenerator[AsyncSession]:
         async with session_maker() as session:
             yield session
 
@@ -22,5 +28,9 @@ class AppProvider(Provider):
     async def get_redis_session(self) -> AsyncGenerator[Redis]:
         yield redis_client()
 
-    redis_session = provide(RedisRepository, scope=Scope.REQUEST, provides=RedisRepositoryProtocol)
-    transaction = provide(TransactionAlchemyManager, scope=Scope.REQUEST, provides=TransactionProtocol)
+    redis_session = provide(
+        RedisRepository, scope=Scope.REQUEST, provides=RedisRepositoryProtocol
+    )
+    transaction = provide(
+        TransactionAlchemyManager, scope=Scope.REQUEST, provides=TransactionProtocol
+    )

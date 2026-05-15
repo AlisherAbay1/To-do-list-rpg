@@ -6,6 +6,12 @@ from .task_categories import TaskCategoriesMapper
 from .shop import ShopMapper
 from .inventory import InventoryMapper
 
-__all__ = ("TaskMapper", "UserMapper", "SkillMapper",
-           "ItemMapper", "TaskCategoriesMapper", "ShopMapper", 
-           "InventoryMapper")
+__all__ = (
+    "TaskMapper",
+    "UserMapper",
+    "SkillMapper",
+    "ItemMapper",
+    "TaskCategoriesMapper",
+    "ShopMapper",
+    "InventoryMapper",
+)

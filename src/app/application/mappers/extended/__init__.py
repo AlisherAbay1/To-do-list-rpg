@@ -6,5 +6,12 @@ from .items import ItemExtendedMapper
 from .shop import ExtendedShopMapper
 from .inventory import ExtendedInventoryMapper
 
-__all__ = ("ExtendedTaskCategoriesMapper", "ExtendedSkillMapper", "ExtendedTaskMapper", 
-           "StatsMapper", "ItemExtendedMapper", "ExtendedShopMapper", "ExtendedInventoryMapper")
+__all__ = (
+    "ExtendedTaskCategoriesMapper",
+    "ExtendedSkillMapper",
+    "ExtendedTaskMapper",
+    "StatsMapper",
+    "ItemExtendedMapper",
+    "ExtendedShopMapper",
+    "ExtendedInventoryMapper",
+)

@@ -8,6 +8,14 @@ from .stats import StatsProvider
 from .shop import ShopProvider
 from .inventory import InventoryProvider
 
-__all__ = ("AppProvider", "UserProvider", "TaskProvider", 
-           "SkillProvider", "ItemProvider", "TaskCategoriesProvider", 
-           "StatsProvider", "ShopProvider", "InventoryProvider")
+__all__ = (
+    "AppProvider",
+    "UserProvider",
+    "TaskProvider",
+    "SkillProvider",
+    "ItemProvider",
+    "TaskCategoriesProvider",
+    "StatsProvider",
+    "ShopProvider",
+    "InventoryProvider",
+)

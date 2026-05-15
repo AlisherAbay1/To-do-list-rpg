@@ -1,5 +1,4 @@
-from src.app.application.interfaces.cash_interfaces import \
-    RedisRepositoryProtocol
+from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 
 
 class DeleteSessionInteractor:

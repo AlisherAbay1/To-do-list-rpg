@@ -1,9 +1,15 @@
 from dataclasses import dataclass, field
 from typing import Optional, Literal
 from uuid import UUID
-from src.app.domain.enums import TaskRepeatFrequency, TaskType, TaskDifficulty, TaskPriority
+from src.app.domain.enums import (
+    TaskRepeatFrequency,
+    TaskType,
+    TaskDifficulty,
+    TaskPriority,
+)
 from datetime import datetime
 from src.app.application.dto.sentinel_types import Unset, UNSET
+
 
 @dataclass(slots=True)
 class TaskFilterParamsDTO:
@@ -13,13 +19,15 @@ class TaskFilterParamsDTO:
     repeat_frequency: Optional[TaskRepeatFrequency] = None
     deleted: Optional[bool] = None
 
+
 @dataclass(slots=True)
 class TaskSortParamsDTO:
     sort_by: Literal["difficulty", "priority", "deadline", "created_at"] = "created_at"
     sort_order: Literal["asc", "desc"] = "asc"
 
+
 @dataclass(slots=True)
-class TaskUpdateDTO:   
+class TaskUpdateDTO:
     title: str | Unset = UNSET
     description: str | None | Unset = UNSET
     category_id: UUID | None | Unset = UNSET
@@ -32,6 +40,7 @@ class TaskUpdateDTO:
     custom_xp_reward: int | None | Unset = UNSET
     custom_gold_reward: int | None | Unset = UNSET
     deleted: bool | Unset = UNSET
+
 
 @dataclass(slots=True)
 class TaskDetailDTO:
@@ -53,6 +62,7 @@ class TaskDetailDTO:
     deleted: bool
     deleted_at: Optional[datetime]
 
+
 @dataclass(slots=True)
 class TaskDTO:
     id: UUID
@@ -65,6 +75,7 @@ class TaskDTO:
     repeat_limit: Optional[int]
     repeat_frequency: Optional[TaskRepeatFrequency]
     deadline: Optional[datetime]
+
 
 @dataclass(slots=True)
 class TaskCreateDTO:
@@ -82,6 +93,7 @@ class TaskCreateDTO:
 
     related_skills: list[UUID] = field(default_factory=list)
     related_items: list[UUID] = field(default_factory=list)
+
 
 @dataclass(slots=True)
 class TaskStatsDTO:

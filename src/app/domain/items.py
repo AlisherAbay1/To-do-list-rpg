@@ -18,13 +18,19 @@ class Item(Base, kw_only=True):
     title: Mapped[str] = mapped_column(String(255))
     description: Mapped[Optional[str]] = mapped_column(default=None)
     deleted: Mapped[bool] = mapped_column(default=False)
-    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=None)
+    deleted_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), default=None
+    )
 
-    requirements: Mapped[list["ItemRequirement"]] = relationship(lazy="noload", init=False, default_factory=list)
+    requirements: Mapped[list["ItemRequirement"]] = relationship(
+        lazy="noload", init=False, default_factory=list
+    )
 
     def delete(self) -> None:
         self.deleted = True
         self.deleted_at = datetime.now(tz=timezone.utc)
 
     def does_fit_requirements(self) -> bool:
-        return all([requirement.does_fit_requirement() for requirement in self.requirements])
+        return all(
+            [requirement.does_fit_requirement() for requirement in self.requirements]
+        )
