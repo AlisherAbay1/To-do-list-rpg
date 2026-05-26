@@ -1,0 +1,14 @@
+[fastapi]
+is_production=false
+
+[database]
+name="to-do-list-rpg"
+username="postgres"
+host="localhost"
+port=5432
+
+[redis]
+host="localhost"
+port=6379
+max_age=3600
+encoding="utf-8"

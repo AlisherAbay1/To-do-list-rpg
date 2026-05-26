@@ -16,7 +16,7 @@ from src.app.application.interactors import (
     UpdateCurrentUserEmailInteractor,
     UpdateCurrentUserPasswordInteractor,
 )
-from src.app.core.redis_config import MAX_AGE
+from src.app.infrastructure.config import config
 from src.app.core.security import IS_PRODUCTION
 from src.app.presentation.mappers import UserSchemaMapper
 from src.app.presentation.schemas import (
@@ -67,7 +67,7 @@ async def create_user(
         key="session_token",
         value=user_result.session_token,
         httponly=True,
-        max_age=MAX_AGE,
+        max_age=config.redis.max_age,
         samesite="lax",
         secure=IS_PRODUCTION,
     )
@@ -92,7 +92,7 @@ async def sign_in_account(
         key="session_token",
         value=user_result.session_token,
         httponly=True,
-        max_age=MAX_AGE,
+        max_age=config.redis.max_age,
         samesite="lax",
         secure=IS_PRODUCTION,
     )

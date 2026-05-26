@@ -1,8 +1,12 @@
 from dishka import Provider, provide, Scope
-from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
-from redis.asyncio import Redis
-from src.app.core.database import get_new_session_maker
-from src.app.core.redis_config import redis_client
+from sqlalchemy.ext.asyncio import (
+    async_sessionmaker,
+    AsyncSession,
+    create_async_engine,
+    AsyncEngine,
+)
+from sqlalchemy.engine import URL
+from redis.asyncio import Redis, ConnectionPool
 from src.app.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from src.app.application.interfaces.transaction_interfaces import TransactionProtocol
 from src.app.infrastructure.database.repositories import (
@@ -10,12 +14,25 @@ from src.app.infrastructure.database.repositories import (
     TransactionAlchemyManager,
 )
 from collections.abc import AsyncGenerator
+from src.app.infrastructure.config import config
 
 
 class AppProvider(Provider):
     @provide(scope=Scope.APP)
-    def get_session_maker(self) -> async_sessionmaker[AsyncSession]:
-        return get_new_session_maker()
+    def get_db_url(self) -> URL:
+        return config.database.db_url
+
+    @provide(scope=Scope.APP)
+    async def get_async_engine(self, url: URL) -> AsyncGenerator[AsyncEngine, None]:
+        engine = create_async_engine(url)
+        yield engine
+        await engine.dispose()
+
+    @provide(scope=Scope.APP)
+    def get_session_maker(
+        self, engine: AsyncEngine
+    ) -> async_sessionmaker[AsyncSession]:
+        return async_sessionmaker(bind=engine)
 
     @provide(scope=Scope.REQUEST)
     async def get_pgsql_session(
@@ -24,9 +41,21 @@ class AppProvider(Provider):
         async with session_maker() as session:
             yield session
 
-    @provide(scope=Scope.REQUEST)
-    async def get_redis_session(self) -> AsyncGenerator[Redis]:
-        yield redis_client()
+    @provide(scope=Scope.APP)
+    def get_redis_connection_pool(self) -> ConnectionPool:
+        pool = ConnectionPool(
+            host=config.redis.host,
+            port=config.redis.port,
+            encoding=config.redis.encoding,
+            decode_responses=True,
+        )
+        return pool
+
+    @provide(scope=Scope.APP)
+    async def get_redis_session(self, pool: ConnectionPool) -> AsyncGenerator[Redis]:
+        redis = Redis.from_pool(pool)
+        yield redis
+        await redis.aclose()
 
     redis_session = provide(
         RedisRepository, scope=Scope.REQUEST, provides=RedisRepositoryProtocol

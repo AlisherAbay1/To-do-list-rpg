@@ -26,6 +26,7 @@ dependencies = [
     "click-plugins==1.1.1.2",
     "click-repl==0.3.0",
     "colorama==0.4.6",
+    "dature[env,toml]>=0.18.0",
     "dishka==1.9.1",
     "distlib==0.4.0",
     "dnspython==2.8.0",

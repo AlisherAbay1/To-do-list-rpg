@@ -1,7 +1,7 @@
 from uuid import UUID
 from secrets import token_urlsafe
 from redis.asyncio import Redis
-from src.app.core.redis_config import MAX_AGE
+from src.app.infrastructure.config import config
 from typing import Optional
 
 
@@ -13,11 +13,13 @@ class RedisRepository:
 
     async def create_session(self, user_id: str) -> str:
         session_token = token_urlsafe(32)
-        await self._session.setex(f"session:{session_token}", MAX_AGE, user_id)
+        await self._session.setex(
+            f"session:{session_token}", config.redis.max_age, user_id
+        )
         return session_token
 
     async def extend_token_time(self, session_token: str) -> None:
-        await self._session.expire(f"session:{session_token}", MAX_AGE)
+        await self._session.expire(f"session:{session_token}", config.redis.max_age)
 
     async def delete_session(self, session_token: str) -> None:
         await self._session.delete(f"session:{session_token}")
