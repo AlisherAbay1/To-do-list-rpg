@@ -95,7 +95,7 @@ async def get_overdue_tasks_by_session_token(
     return await interactor(session_token)
 
 
-@router.get("/{task_id}", response_model=TaskWithSkillsAndItemsSchemaRead)
+@router.get("me/{task_id}", response_model=TaskWithSkillsAndItemsSchemaRead)
 async def get_current_user_task(
     task_id: UUID7,
     get_related_skills: bool,
@@ -158,7 +158,7 @@ async def patch_task(
     return await interactor(task_id, dto, session_token)
 
 
-@router.delete("/{task_id}", status_code=204)
+@router.delete("me/{task_id}", status_code=204)
 async def delete_current_user_task(
     task_id: UUID7,
     interactor: FromDishka[DeleteCurrentUserTaskInteractor],

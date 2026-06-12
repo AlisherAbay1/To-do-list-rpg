@@ -1,5 +1,5 @@
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.interfaces.repositories_interfaces import (
     TaskCategoriesRepositoryProtocol,
 )
@@ -16,11 +16,11 @@ class UpdateCurrentUserTaskCategory:
         self,
         repo: TaskCategoriesRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(
         self, task_category_id: UUID, dto: UpdateTaskCategoryDTO, session_token: str
@@ -33,10 +33,12 @@ class UpdateCurrentUserTaskCategory:
             raise TaskCategoryNotFoundError()
         if task_category.user_id != user_id:
             raise AccessDeniedError()
-        if not isinstance(dto.title, Unset):
+
+        if not isinstance(dto.title, Unset) and dto.title is not None:
             task_category.title = dto.title
-        if not isinstance(dto.color, Unset):
+        if not isinstance(dto.color, Unset) and dto.color is not None:
             task_category.color = dto.color
+
         output_dto = TaskCategoriesMapper.to_dto(task_category)
-        await self.transaction.commit()
+        await self.uow.commit()
         return output_dto

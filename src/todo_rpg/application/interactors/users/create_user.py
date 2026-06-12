@@ -7,7 +7,7 @@ from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProto
 from todo_rpg.application.interfaces.repositories_interfaces import (
     UserRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.core.security import hash_password
 from todo_rpg.domain import User
 from todo_rpg.application.mappers.common import UserMapper
@@ -18,11 +18,11 @@ class CreateUserInteractor:
         self,
         repo: UserRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(self, dto: CreateUserDTO) -> UserAuthDTO:
         if await self.repo.does_username_exists(dto.username):
@@ -40,5 +40,5 @@ class CreateUserInteractor:
         session_token = await self.cash_repo.create_session(str(user.id))
         user_result = UserMapper.to_auth_dto(domain=user, session_token=session_token)
 
-        await self.transaction.commit()
+        await self.uow.commit()
         return user_result

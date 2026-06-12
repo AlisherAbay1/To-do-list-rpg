@@ -6,7 +6,7 @@ from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProto
 from todo_rpg.application.interfaces.repositories_interfaces import (
     TaskRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.domain import Task
 from todo_rpg.infrastructure.database.models import Tasks_to_items, Tasks_to_skills
 from todo_rpg.application.mappers.common import TaskMapper
@@ -17,11 +17,11 @@ class CreateCurrentUserTaskInteractor:
         self,
         repo: TaskRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(self, session_token, dto: TaskCreateDTO):
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
@@ -43,19 +43,19 @@ class CreateCurrentUserTaskInteractor:
             custom_gold_reward=dto.custom_gold_reward,
         )
 
-        await self.transaction.save(task)
-        await self.transaction.flush()
+        await self.uow.add(task)
+        await self.uow.flush()
 
         for skill_id in dto.related_skills:
             skill_relationship = Tasks_to_skills(task_id=task_id, skill_id=skill_id)
-            await self.transaction.save(skill_relationship)
+            await self.uow.add(skill_relationship)
 
         for item_id in dto.related_items:
             item_relationship = Tasks_to_items(task_id=task_id, item_id=item_id)
-            await self.transaction.save(item_relationship)
+            await self.uow.add(item_relationship)
 
         output_dto = TaskMapper.to_dto(task)
 
-        await self.transaction.commit()
+        await self.uow.commit()
 
         return output_dto

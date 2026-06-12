@@ -2,7 +2,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
     InventoryRepositoryProtocol,
 )
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.exceptions import (
     SessionNotFoundError,
     InventoryItemNotFoundError,
@@ -16,11 +16,11 @@ class DeleteCurrentUserInventoryItemInteractor:
         self,
         repo: InventoryRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(self, inventory_item_id: UUID, session_token: str) -> None:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
@@ -32,4 +32,4 @@ class DeleteCurrentUserInventoryItemInteractor:
         if inventory_item.user_id != user_id:
             raise AccessDeniedError()
         await self.repo.delete(inventory_item)
-        await self.transaction.commit()
+        await self.uow.commit()

@@ -9,7 +9,7 @@ from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProto
 from todo_rpg.application.interfaces.repositories_interfaces import (
     UserRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.core.security import password_verify
 
 
@@ -18,11 +18,11 @@ class UpdateCurrentUserEmailInteractor:
         self,
         repo: UserRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(self, dto: UserEmailDTO, session_token: str):
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
@@ -36,5 +36,5 @@ class UpdateCurrentUserEmailInteractor:
         if await self.repo.get_user_by_email(dto.new_email):
             raise EmailAlreadyTakenError()
         user.email = dto.new_email
-        await self.transaction.commit()
+        await self.uow.commit()
         return dto.new_email

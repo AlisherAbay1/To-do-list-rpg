@@ -2,7 +2,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
     ShopRepositoryProtocol,
 )
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.exceptions import (
     SessionNotFoundError,
     ShopListingNotFoundError,
@@ -16,11 +16,11 @@ class DeleteCurrentUserShopListingInteractor:
         self,
         repo: ShopRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(self, shop_listing_id: UUID, session_token: str) -> None:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
@@ -32,4 +32,4 @@ class DeleteCurrentUserShopListingInteractor:
         if shop_listing.user_id != user_id:
             raise AccessDeniedError()
         await self.repo.delete(shop_listing)
-        await self.transaction.commit()
+        await self.uow.commit()

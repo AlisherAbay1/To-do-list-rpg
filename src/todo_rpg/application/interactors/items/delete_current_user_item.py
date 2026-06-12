@@ -3,7 +3,7 @@ from uuid import UUID
 from todo_rpg.application.interfaces.repositories_interfaces import (
     ItemRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from todo_rpg.application.exceptions import SessionNotFoundError, ItemNotFoundError
 
@@ -13,11 +13,11 @@ class DeleteCurrentUserItemInteractor:
         self,
         repo: ItemRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(self, item_id: UUID, session_token: str):
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
@@ -27,4 +27,4 @@ class DeleteCurrentUserItemInteractor:
         if item is None:
             raise ItemNotFoundError()
         item.delete()
-        await self.transaction.commit()
+        await self.uow.commit()

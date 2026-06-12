@@ -3,7 +3,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
     ItemRepositoryProtocol,
 )
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.mappers import ExtendedInventoryMapper
 from todo_rpg.application.dto import InventoryShortWithItemDTO
 from todo_rpg.application.exceptions import (
@@ -22,12 +22,12 @@ class UseCurrentUserInventoryItemInteractor:
         inventory_repo: InventoryRepositoryProtocol,
         item_repo: ItemRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.inventory_repo = inventory_repo
         self.item_repo = item_repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(
         self, session_token: str, inventory_item_id: UUID
@@ -57,10 +57,10 @@ class UseCurrentUserInventoryItemInteractor:
             user_id=user_id, item_id=inventory_item.item_id, title=item.title
         )
 
-        await self.transaction.save(item_usage_history)
+        await self.uow.add(item_usage_history)
 
         dto = ExtendedInventoryMapper.to_inventory_item_with_item(inventory_item, item)
 
-        await self.transaction.commit()
+        await self.uow.commit()
 
         return dto

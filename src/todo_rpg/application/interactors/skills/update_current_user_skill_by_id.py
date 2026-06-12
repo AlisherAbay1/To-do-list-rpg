@@ -1,4 +1,4 @@
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.interfaces.repositories_interfaces import (
     SkillRepositoryProtocol,
 )
@@ -19,11 +19,11 @@ class UpdateCurrentUserSkillById:
         self,
         repo: SkillRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(
         self, skill_id: UUID, dto: SkillUpdateDTO, session_token: str
@@ -37,17 +37,17 @@ class UpdateCurrentUserSkillById:
         if user_id != skill.user_id:
             raise AccessDeniedError()
 
-        if not isinstance(dto.title, Unset):
+        if not isinstance(dto.title, Unset) and dto.title is not None:
             skill.title = dto.title
         if not isinstance(dto.description, Unset):
             skill.description = dto.description
         if not isinstance(dto.ico, Unset):
             skill.ico = dto.ico
-        if not isinstance(dto.xp, Unset):
+        if not isinstance(dto.xp, Unset) and dto.xp is not None:
             skill.xp = dto.xp
-        if not isinstance(dto.lvl, Unset):
+        if not isinstance(dto.lvl, Unset) and dto.lvl is not None:
             skill.lvl = dto.lvl
 
         output_dto = SkillMapper.to_dto(skill)
-        await self.transaction.commit()
+        await self.uow.commit()
         return output_dto

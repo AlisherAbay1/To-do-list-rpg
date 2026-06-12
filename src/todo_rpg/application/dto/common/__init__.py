@@ -42,6 +42,7 @@ from .inventory import (
     InventoryShortDTO,
     InventoryUpdateDTO,
 )
+from .user_ranks import UserRankReadDTO, UserRankCreateDTO, UserRankUpdateDTO
 
 __all__ = (
     "ItemDTO",
@@ -79,4 +80,7 @@ __all__ = (
     "InventoryCreateDTO",
     "InventoryShortDTO",
     "InventoryUpdateDTO",
+    "UserRankCreateDTO",
+    "UserRankReadDTO",
+    "UserRankUpdateDTO",
 )

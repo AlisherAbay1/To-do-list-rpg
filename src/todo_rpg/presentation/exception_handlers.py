@@ -17,6 +17,7 @@ from todo_rpg.application.exceptions import (
     UserBalanceNotEnoughError,
     UserDoesntFitSkillRequirementsError,
     ShopListingAlreadyExistsError,
+    UserRankNotFoundError,
 )
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -100,6 +101,10 @@ def register_exeptions(app: FastAPI):
         return JSONResponse(
             status_code=404, content={"detail": "Inventory item not found"}
         )
+
+    @app.exception_handler(UserRankNotFoundError)
+    async def user_rank_not_found(request: Request, exc: UserRankNotFoundError):
+        return JSONResponse(status_code=404, content={"detail": "User rank not found"})
 
     @app.exception_handler(UserBalanceNotEnoughError)
     async def user_balance_not_enough(request: Request, exc: UserBalanceNotEnoughError):

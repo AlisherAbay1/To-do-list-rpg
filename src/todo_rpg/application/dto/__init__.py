@@ -33,6 +33,9 @@ from .common import (
     InventoryCreateDTO,
     InventoryShortDTO,
     InventoryUpdateDTO,
+    UserRankCreateDTO,
+    UserRankUpdateDTO,
+    UserRankReadDTO,
 )
 from .extended import (
     SkillWithTasksAndNextLvlXpDTO,
@@ -93,4 +96,7 @@ __all__ = (
     "InventoryUpdateDTO",
     "InventoryShortWithItemDTO",
     "ShopListingShortWithShortInventoryItemDTO",
+    "UserRankCreateDTO",
+    "UserRankReadDTO",
+    "UserRankUpdateDTO",
 )

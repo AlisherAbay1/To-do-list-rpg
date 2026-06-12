@@ -1,4 +1,4 @@
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.interfaces.repositories_interfaces import (
     ShopRepositoryProtocol,
 )
@@ -17,11 +17,11 @@ class CreateCurrentUserShopListingInteractor:
         self,
         repo: ShopRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(
         self, session_token: str, dto: ShopListingCreateDTO
@@ -36,7 +36,7 @@ class CreateCurrentUserShopListingInteractor:
         shop_listing = Shop(
             user_id=user_id, item_id=dto.item_id, price=dto.price, quantity=dto.quantity
         )
-        await self.transaction.save(shop_listing)
+        await self.uow.add(shop_listing)
         output_dto = ShopMapper.to_short_dto(shop_listing)
-        await self.transaction.commit()
+        await self.uow.commit()
         return output_dto

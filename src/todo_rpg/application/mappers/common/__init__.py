@@ -5,6 +5,7 @@ from .items import ItemMapper
 from .task_categories import TaskCategoriesMapper
 from .shop import ShopMapper
 from .inventory import InventoryMapper
+from .user_ranks import UserRankMapper
 
 __all__ = (
     "TaskMapper",
@@ -14,4 +15,5 @@ __all__ = (
     "TaskCategoriesMapper",
     "ShopMapper",
     "InventoryMapper",
+    "UserRankMapper",
 )

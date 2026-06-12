@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from todo_rpg.infrastructure.database.models.base import Base
 
 
-class TransactionAlchemyManager:
+class UoW:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
@@ -12,7 +12,7 @@ class TransactionAlchemyManager:
     async def flush(self) -> None:
         await self._session.flush()
 
-    async def save(self, model: Base) -> None:
+    async def add(self, model: Base) -> None:
         self._session.add(model)
 
     async def delete(self, model: Base) -> None:

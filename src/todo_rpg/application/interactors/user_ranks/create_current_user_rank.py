@@ -1,18 +1,18 @@
-from todo_rpg.application.dto.common.items import ItemCreateDTO
+from todo_rpg.application.dto import UserRankCreateDTO
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from todo_rpg.application.interfaces.repositories_interfaces import (
-    ItemRepositoryProtocol,
+    UserRankRepositoryProtocol,
 )
 from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
-from todo_rpg.domain import Item
+from todo_rpg.domain import UserRank
 from todo_rpg.application.exceptions import SessionNotFoundError
-from todo_rpg.application.mappers.common import ItemMapper
+from todo_rpg.application.mappers.common import UserRankMapper
 
 
-class CreateCurrentUserItemInteractor:
+class CreateCurrentUserRankInteractor:
     def __init__(
         self,
-        repo: ItemRepositoryProtocol,
+        repo: UserRankRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
@@ -20,12 +20,12 @@ class CreateCurrentUserItemInteractor:
         self.cash_repo = cash_repo
         self.uow = uow
 
-    async def __call__(self, session_token: str, dto: ItemCreateDTO):
+    async def __call__(self, session_token: str, dto: UserRankCreateDTO):
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        item = Item(user_id=user_id, title=dto.title, description=dto.description)
-        output_dto = ItemMapper.to_dto(item)
-        await self.uow.add(item)
+        user_rank = UserRank(user_id=user_id, title=dto.title)
+        output_dto = UserRankMapper.to_dto(user_rank)
+        await self.uow.add(user_rank)
         await self.uow.commit()
         return output_dto

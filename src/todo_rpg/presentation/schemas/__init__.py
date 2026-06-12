@@ -32,6 +32,9 @@ from .common import (
     SkillRequirementsWithFitRequiremenetSchema,
     InventorySchemaRead,
     InventoryShortSchemaRead,
+    UserRankSchemaRead,
+    UserRankSchemaCreate,
+    UserRankSchemaUpdate,
 )
 
 from .extended import (
@@ -87,4 +90,7 @@ __all__ = (
     "InventoryShortSchemaRead",
     "InventoryShortWithItemSchemaRead",
     "ShopListingShortWithShortInventoryItemSchema",
+    "UserRankSchemaRead",
+    "UserRankSchemaCreate",
+    "UserRankSchemaUpdate",
 )

@@ -4,7 +4,7 @@ from todo_rpg.application.exceptions import TaskNotFoundError, SessionNotFoundEr
 from todo_rpg.application.interfaces.repositories_interfaces import (
     TaskRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 
 
@@ -13,11 +13,11 @@ class DeleteCurrentUserTaskInteractor:
         self,
         repo: TaskRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(self, session_token: str, task_id: UUID):
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
@@ -27,4 +27,4 @@ class DeleteCurrentUserTaskInteractor:
         if task is None:
             raise TaskNotFoundError()
         task.delete()
-        await self.transaction.commit()
+        await self.uow.commit()

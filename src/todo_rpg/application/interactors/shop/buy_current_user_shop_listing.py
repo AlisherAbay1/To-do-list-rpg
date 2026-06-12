@@ -5,7 +5,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
     UserRepositoryProtocol,
 )
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from uuid import UUID
 from todo_rpg.application.exceptions import (
     SessionNotFoundError,
@@ -29,14 +29,14 @@ class BuyCurrentUserShopListingInteractor:
         item_repo: ItemRepositoryProtocol,
         user_repo: UserRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.shop_repo = shop_repo
         self.inventory_repo = inventory_repo
         self.item_repo = item_repo
         self.user_repo = user_repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(
         self, session_token: str, shop_listing_id: UUID
@@ -73,7 +73,7 @@ class BuyCurrentUserShopListingInteractor:
                 user_id=user_id, item_id=shop_listing.item_id, quantity=1
             )
 
-            await self.transaction.save(inventory)
+            await self.uow.add(inventory)
         else:
             inventory.quantity += 1
 
@@ -84,8 +84,8 @@ class BuyCurrentUserShopListingInteractor:
         )
 
         if shop_listing.quantity == 0:
-            await self.transaction.delete(shop_listing)
+            await self.uow.delete(shop_listing)
 
-        await self.transaction.commit()
+        await self.uow.commit()
 
         return dto

@@ -13,7 +13,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
     TaskRepositoryProtocol,
     UserRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 
 
 class CompleteTaskInteractor:
@@ -24,14 +24,14 @@ class CompleteTaskInteractor:
         skill_repo: SkillRepositoryProtocol,
         task_history_repo: TaskHistoryRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.task_repo = task_repo
         self.user_repo = user_repo
         self.skill_repo = skill_repo
         self.task_history_repo = task_history_repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(self, task_id: UUID, session_token: str):
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
@@ -58,5 +58,5 @@ class CompleteTaskInteractor:
 
         dto = ExtendedTaskMapper.to_dto_with_skills_and_user(task, user, skills)
 
-        await self.transaction.commit()
+        await self.uow.commit()
         return dto

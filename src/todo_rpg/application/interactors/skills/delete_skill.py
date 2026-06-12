@@ -4,15 +4,13 @@ from todo_rpg.application.exceptions import SkillNotFoundError
 from todo_rpg.application.interfaces.repositories_interfaces import (
     SkillRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 
 
 class DeleteSkillInteractor:
-    def __init__(
-        self, repo: SkillRepositoryProtocol, transaction: TransactionProtocol
-    ) -> None:
+    def __init__(self, repo: SkillRepositoryProtocol, uow: UoWProtocol) -> None:
         self.repo = repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(self, skill_id):
         skill = await self.repo.get_skill_by_id(skill_id)
@@ -20,4 +18,4 @@ class DeleteSkillInteractor:
             raise SkillNotFoundError()
         skill.deleted = True
         skill.deleted_at = datetime.now(tz=timezone.utc)
-        await self.transaction.commit()
+        await self.uow.commit()

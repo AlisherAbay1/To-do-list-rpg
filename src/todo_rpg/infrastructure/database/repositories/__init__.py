@@ -1,5 +1,5 @@
 from ...redis import RedisRepository
-from ..transaction import TransactionAlchemyManager
+from ..uow import UoW
 from .items import ItemRepository
 from .skills import SkillRepository
 from .tasks import TaskRepository
@@ -8,6 +8,7 @@ from .users import UserRepository
 from .task_categories import TaskCategoriesRepository
 from .shop import ShopRepository
 from .inventory import InventoryRepository
+from .user_ranks import UserRankRepository
 
 __all__ = (
     "UserRepository",
@@ -15,9 +16,10 @@ __all__ = (
     "TaskRepository",
     "ItemRepository",
     "RedisRepository",
-    "TransactionAlchemyManager",
+    "UoW",
     "TaskHistoryRepository",
     "TaskCategoriesRepository",
     "ShopRepository",
     "InventoryRepository",
+    "UserRankRepository",
 )

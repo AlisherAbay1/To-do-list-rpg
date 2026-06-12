@@ -2,7 +2,7 @@ from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProto
 from todo_rpg.application.interfaces.repositories_interfaces import (
     ItemRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.domain import ItemRequirement
 from todo_rpg.application.exceptions import SessionNotFoundError, ItemNotFoundError
 from todo_rpg.application.mappers import ItemExtendedMapper
@@ -14,11 +14,11 @@ class AddCurrentUserItemRequirementInteractor:
         self,
         repo: ItemRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
     ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
-        self.transaction = transaction
+        self.uow = uow
 
     async def __call__(
         self, item_id: UUID, skill_id: UUID, requirement_lvl: int, session_token: str
@@ -29,13 +29,13 @@ class AddCurrentUserItemRequirementInteractor:
         item_requirement = ItemRequirement(
             item_id=item_id, skill_id=skill_id, required_lvl=requirement_lvl
         )
-        await self.transaction.save(item_requirement)
-        await self.transaction.flush()
+        await self.uow.add(item_requirement)
+        await self.uow.flush()
         item = await self.repo.get_item_by_id_with_requirements_contains_skill(
             item_id, user_id
         )
         if item is None:
             raise ItemNotFoundError()
         dto = ItemExtendedMapper.to_dto_with_requirements(item)
-        await self.transaction.commit()
+        await self.uow.commit()
         return dto

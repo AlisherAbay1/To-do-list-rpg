@@ -6,6 +6,7 @@ from .common import (
     TaskCategoriesMapper,
     ShopMapper,
     InventoryMapper,
+    UserRankMapper,
 )
 from .extended import (
     ExtendedSkillMapper,
@@ -32,4 +33,5 @@ __all__ = (
     "ExtendedShopMapper",
     "InventoryMapper",
     "ExtendedInventoryMapper",
+    "UserRankMapper",
 )

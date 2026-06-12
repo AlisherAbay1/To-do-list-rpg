@@ -79,8 +79,18 @@ from .inventory import (
     DeleteCurrentUserInventoryItemInteractor,
     UseCurrentUserInventoryItemInteractor,
 )
+from .user_ranks import (
+    GetCurrentUserRanksInteractor,
+    GetCurrentUserRankInteractor,
+    CreateCurrentUserRankInteractor,
+    UpdateCurrentUserRankInteractor,
+    DeleteCurrentUserRankInteractor,
+)
 
 __all__ = (
+    "DeleteCurrentUserRankInteractor",
+    "UpdateCurrentUserRankInteractor",
+    "GetCurrentUserRanksInteractor",
     "GetAllUsersInteractor",
     "UpdateCurrentUserEmailInteractor",
     "DeleteCurrentUserInteractor",
@@ -141,4 +151,6 @@ __all__ = (
     "GetCurrentUserInventoryItemsInteractor",
     "UseCurrentUserInventoryItemInteractor",
     "BuyCurrentUserShopListingInteractor",
+    "GetCurrentUserRankInteractor",
+    "CreateCurrentUserRankInteractor",
 )

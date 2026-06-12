@@ -8,10 +8,10 @@ from sqlalchemy.ext.asyncio import (
 from sqlalchemy.engine import URL
 from redis.asyncio import Redis, ConnectionPool
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.infrastructure.database.repositories import (
     RedisRepository,
-    TransactionAlchemyManager,
+    UoW,
 )
 from collections.abc import AsyncGenerator
 from todo_rpg.infrastructure.config import config
@@ -60,6 +60,4 @@ class AppProvider(Provider):
     redis_session = provide(
         RedisRepository, scope=Scope.REQUEST, provides=RedisRepositoryProtocol
     )
-    transaction = provide(
-        TransactionAlchemyManager, scope=Scope.REQUEST, provides=TransactionProtocol
-    )
+    uow = provide(UoW, scope=Scope.REQUEST, provides=UoWProtocol)

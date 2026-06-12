@@ -38,6 +38,7 @@ from .shop import (
     ShopListingSchemaUpdate,
 )
 from .inventory import InventorySchemaRead, InventoryShortSchemaRead
+from .user_ranks import UserRankSchemaCreate, UserRankSchemaRead, UserRankSchemaUpdate
 
 __all__ = (
     "ItemSchemaRead",
@@ -73,4 +74,7 @@ __all__ = (
     "SkillRequirementsWithFitRequiremenetSchema",
     "InventorySchemaRead",
     "InventoryShortSchemaRead",
+    "UserRankSchemaCreate",
+    "UserRankSchemaRead",
+    "UserRankSchemaUpdate",
 )

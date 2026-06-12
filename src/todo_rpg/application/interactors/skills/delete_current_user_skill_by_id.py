@@ -8,7 +8,7 @@ from todo_rpg.application.exceptions import (
 from todo_rpg.application.interfaces.repositories_interfaces import (
     SkillRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import TransactionProtocol
+from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from uuid import UUID
 
@@ -17,11 +17,11 @@ class DeleteCurrentUserSkillByIdInteractor:
     def __init__(
         self,
         repo: SkillRepositoryProtocol,
-        transaction: TransactionProtocol,
+        uow: UoWProtocol,
         cash_repo: RedisRepositoryProtocol,
     ) -> None:
         self.repo = repo
-        self.transaction = transaction
+        self.uow = uow
         self.cash_repo = cash_repo
 
     async def __call__(self, skill_id: UUID, session_token: str):
@@ -35,4 +35,4 @@ class DeleteCurrentUserSkillByIdInteractor:
             raise AccessDeniedError()
         skill.deleted = True
         skill.deleted_at = datetime.now(tz=timezone.utc)
-        await self.transaction.commit()
+        await self.uow.commit()

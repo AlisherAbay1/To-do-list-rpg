@@ -7,6 +7,7 @@ from .task_categories import TaskCategoriesProvider
 from .stats import StatsProvider
 from .shop import ShopProvider
 from .inventory import InventoryProvider
+from .user_ranks import UserRankProvider
 
 __all__ = (
     "AppProvider",
@@ -18,4 +19,5 @@ __all__ = (
     "StatsProvider",
     "ShopProvider",
     "InventoryProvider",
+    "UserRankProvider",
 )

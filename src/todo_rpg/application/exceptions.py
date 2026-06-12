@@ -68,3 +68,7 @@ class UserDoesntFitSkillRequirementsError(Exception):
 
 class ShopListingAlreadyExistsError(Exception):
     pass
+
+
+class UserRankNotFoundError(Exception):
+    pass

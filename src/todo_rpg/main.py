@@ -11,6 +11,7 @@ from todo_rpg.presentation.api.routers.task_categories import (
     router as task_categories_router,
 )
 from todo_rpg.presentation.api.routers.stats import router as stats_router
+from todo_rpg.presentation.api.routers.user_ranks import router as user_ranks_router
 from todo_rpg.presentation.exception_handlers import register_exeptions
 from todo_rpg.core.taskiq import broker
 from contextlib import asynccontextmanager
@@ -24,6 +25,7 @@ from todo_rpg.infrastructure.di_providers import (
     StatsProvider,
     ShopProvider,
     InventoryProvider,
+    UserRankProvider,
 )
 
 
@@ -47,6 +49,7 @@ app.include_router(router=inventory_router, tags=["inventory"])
 app.include_router(router=shop_router, tags=["shop"])
 app.include_router(router=task_categories_router, tags=["task_categories"])
 app.include_router(router=stats_router, tags=["stats"])
+app.include_router(router=user_ranks_router, tags=["user_ranks"])
 
 register_exeptions(app)
 
@@ -60,5 +63,6 @@ container = make_async_container(
     StatsProvider(),
     ShopProvider(),
     InventoryProvider(),
+    UserRankProvider(),
 )
 setup_dishka(container, app)
