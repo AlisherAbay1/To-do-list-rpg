@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 from dotenv import dotenv_values
-from src.app.infrastructure.database.models import Base
+from todo_rpg.infrastructure.database.models import Base
 import src.app.domain 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

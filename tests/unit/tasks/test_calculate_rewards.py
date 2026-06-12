@@ -1,4 +1,4 @@
-from src.app.domain.enums import TaskDifficulty, TaskPriority, TaskType
+from todo_rpg.domain.enums import TaskDifficulty, TaskPriority, TaskType
 from tests.fabrics import make_task
 import pytest
 import pytest_check

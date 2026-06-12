@@ -1,0 +1,103 @@
+from dataclasses import dataclass, field
+from typing import Optional, Literal
+from uuid import UUID
+from todo_rpg.domain.enums import (
+    TaskRepeatFrequency,
+    TaskType,
+    TaskDifficulty,
+    TaskPriority,
+)
+from datetime import datetime
+from todo_rpg.application.dto.sentinel_types import Unset, UNSET
+
+
+@dataclass(slots=True)
+class TaskFilterParamsDTO:
+    difficulty: Optional[TaskDifficulty] = None
+    priority: Optional[TaskPriority] = None
+    type: Optional[TaskType] = None
+    repeat_frequency: Optional[TaskRepeatFrequency] = None
+    deleted: Optional[bool] = None
+
+
+@dataclass(slots=True)
+class TaskSortParamsDTO:
+    sort_by: Literal["difficulty", "priority", "deadline", "created_at"] = "created_at"
+    sort_order: Literal["asc", "desc"] = "asc"
+
+
+@dataclass(slots=True)
+class TaskUpdateDTO:
+    title: str | Unset = UNSET
+    description: str | None | Unset = UNSET
+    category_id: UUID | None | Unset = UNSET
+    repeat_limit: int | None | Unset = UNSET
+    repeat_frequency: TaskRepeatFrequency | None | Unset = UNSET
+    deadline: datetime | None | Unset = UNSET
+    type: TaskType | Unset = UNSET
+    difficulty: TaskDifficulty | None | Unset = UNSET
+    priority: TaskPriority | None | Unset = UNSET
+    custom_xp_reward: int | None | Unset = UNSET
+    custom_gold_reward: int | None | Unset = UNSET
+    deleted: bool | Unset = UNSET
+
+
+@dataclass(slots=True)
+class TaskDetailDTO:
+    id: UUID
+    user_id: UUID
+    title: str
+    description: Optional[str]
+    category_id: Optional[UUID]
+    repeat_limit: Optional[int]
+    repeat_frequency: Optional[TaskRepeatFrequency]
+    deadline: Optional[datetime]
+    last_completed_at: Optional[datetime]
+    created_at: datetime
+    type: Optional[TaskType]
+    difficulty: Optional[TaskDifficulty]
+    priority: Optional[TaskPriority]
+    custom_xp_reward: Optional[int]
+    custom_gold_reward: Optional[int]
+    deleted: bool
+    deleted_at: Optional[datetime]
+
+
+@dataclass(slots=True)
+class TaskDTO:
+    id: UUID
+    user_id: UUID
+    title: str
+    description: Optional[str]
+    category_id: Optional[UUID]
+    xp: int
+    gold: int
+    repeat_limit: Optional[int]
+    repeat_frequency: Optional[TaskRepeatFrequency]
+    deadline: Optional[datetime]
+
+
+@dataclass(slots=True)
+class TaskCreateDTO:
+    title: str
+    description: Optional[str]
+    category_id: Optional[UUID]
+    repeat_limit: Optional[int]
+    repeat_frequency: Optional[TaskRepeatFrequency]
+    deadline: Optional[datetime]
+    type: TaskType = TaskType.AUTO
+    difficulty: Optional[TaskDifficulty] = None
+    priority: Optional[TaskPriority] = None
+    custom_xp_reward: Optional[int] = None
+    custom_gold_reward: Optional[int] = None
+
+    related_skills: list[UUID] = field(default_factory=list)
+    related_items: list[UUID] = field(default_factory=list)
+
+
+@dataclass(slots=True)
+class TaskStatsDTO:
+    total_completed: int
+    completed_today: int
+    completed_this_week: int
+    overdue_count: int

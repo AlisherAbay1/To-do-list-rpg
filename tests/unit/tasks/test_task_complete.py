@@ -1,11 +1,11 @@
 import pytest
 from tests.fabrics import make_task
-from src.app.application.exceptions import (
+from todo_rpg.application.exceptions import (
     TaskAlreadyDoneError,
     TaskExecutedTooEarlyError,
 )
 from datetime import datetime, timezone
-from src.app.domain.enums import TaskRepeatFrequency
+from todo_rpg.domain.enums import TaskRepeatFrequency
 
 
 def test_repeat_limit():

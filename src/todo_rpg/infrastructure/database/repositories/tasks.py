@@ -1,0 +1,160 @@
+from typing import Optional, Sequence
+from uuid import UUID
+from datetime import datetime, timezone, timedelta
+
+from sqlalchemy import and_, delete, desc, select, func
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from todo_rpg.application.dto import TaskFilterParamsDTO, TaskSortParamsDTO
+from todo_rpg.domain import Task, Skill
+from todo_rpg.domain.enums import TaskRepeatFrequency
+
+
+class TaskRepository:
+    __slots__ = ("_session",)
+
+    def __init__(self, session: AsyncSession):
+        self._session = session
+
+    async def get_all_tasks(
+        self,
+        filters: TaskFilterParamsDTO,
+        sorting: TaskSortParamsDTO,
+        limit: int,
+        offset: int,
+    ) -> Sequence[Task]:
+        tasks = select(Task).limit(limit).offset(offset)
+        if filters.type is not None:
+            tasks = tasks.where(Task.type == filters.type)
+        if filters.priority is not None:
+            tasks = tasks.where(Task.priority == filters.priority)
+        if filters.difficulty is not None:
+            tasks = tasks.where(Task.difficulty == filters.difficulty)
+        if filters.repeat_frequency is not None:
+            tasks = tasks.where(Task.repeat_frequency == filters.repeat_frequency)
+        if filters.deleted is not None:
+            tasks = tasks.where(Task.deleted == filters.deleted)
+
+        if sorting.sort_order == "asc":
+            if sorting.sort_by == "difficulty":
+                tasks = tasks.order_by(Task.difficulty)
+            if sorting.sort_by == "priority":
+                tasks = tasks.order_by(Task.priority)
+            if sorting.sort_by == "deadline":
+                tasks = tasks.order_by(Task.deadline)
+            if sorting.sort_by == "created_at":
+                tasks = tasks.order_by(Task.created_at)
+        if sorting.sort_order == "desc":
+            if sorting.sort_by == "difficulty":
+                tasks = tasks.order_by(desc(Task.difficulty))
+            if sorting.sort_by == "priority":
+                tasks = tasks.order_by(desc(Task.priority))
+            if sorting.sort_by == "deadline":
+                tasks = tasks.order_by(desc(Task.deadline))
+            if sorting.sort_by == "created_at":
+                tasks = tasks.order_by(desc(Task.created_at))
+
+        result = await self._session.scalars(tasks)
+        return result.all()
+
+    async def get_deleted_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]:
+        tasks = select(Task).where(and_(Task.user_id == user_id, Task.deleted == True))
+        result = await self._session.scalars(tasks)
+        return result.all()
+
+    async def get_overdue_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]:
+        tasks = select(Task).where(
+            and_(
+                Task.user_id == user_id,
+                Task.deadline < datetime.now(tz=timezone.utc),
+                Task.deleted == False,
+            )
+        )
+        result = await self._session.scalars(tasks)
+        m = result.all()
+        return m
+
+    async def get_tasks_by_user_id(
+        self, user_id: UUID, limit: int, offset: int
+    ) -> Sequence[Task]:
+        tasks = select(Task).where(Task.user_id == user_id).limit(limit).offset(offset)
+        result = await self._session.scalars(tasks)
+        return result.all()
+
+    async def get_task_by_id(self, task_id: UUID, user_id: UUID) -> Optional[Task]:
+        task = (
+            select(Task)
+            .where(Task.id == task_id, Task.user_id == user_id)
+            .with_for_update()
+        )
+        result = await self._session.scalar(task)
+        return result
+
+    async def get_daily_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]:
+        tasks = select(Task).where(
+            and_(
+                Task.user_id == user_id,
+                Task.repeat_frequency == TaskRepeatFrequency.DAILY,
+                Task.deleted == False,
+            )
+        )
+        result = await self._session.scalars(tasks)
+        return result.all()
+
+    async def get_todays_deadline_tasks_by_user_id(
+        self, user_id: UUID
+    ) -> Sequence[Task]:
+        today = datetime.now(tz=timezone.utc).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+        next_day = today + timedelta(days=1)
+        tasks = select(Task).where(
+            and_(
+                Task.user_id == user_id,
+                Task.deadline >= today,
+                Task.deadline < next_day,
+                Task.deleted == False,
+            )
+        )
+        result = await self._session.scalars(tasks)
+        return result.all()
+
+    async def get_tasks_by_category_id(
+        self, task_category: UUID, user_id: UUID
+    ) -> Sequence[Task]:
+        tasks = select(Task).where(
+            Task.category_id == task_category, Task.user_id == user_id
+        )
+        result = await self._session.scalars(tasks)
+        return result.all()
+
+    async def get_tasks_by_skill_id(
+        self, skill_id: UUID, user_id: UUID
+    ) -> Sequence[Task]:
+        tasks = (
+            select(Task)
+            .where(Task.user_id == user_id)
+            .filter(Task.skills.any(Skill.id == skill_id))
+        )
+        result = await self._session.scalars(tasks)
+        return result.all()
+
+    async def delete_all_tasks_deleted_more_than_year(self) -> None:
+        year_ago = datetime.now(tz=timezone.utc) - timedelta(days=365)
+        stmt = delete(Task).where(Task.deleted_at < year_ago)
+        await self._session.delete(stmt)
+
+    async def get_amount_of_overdue_tasks(self, user_id: UUID) -> Optional[int]:
+        tasks = (
+            select(func.count())
+            .select_from(Task)
+            .where(
+                and_(
+                    Task.user_id == user_id,
+                    Task.deadline < datetime.now(tz=timezone.utc),
+                    Task.deleted == False,
+                )
+            )
+        )
+        result = await self._session.scalar(tasks)
+        return result
