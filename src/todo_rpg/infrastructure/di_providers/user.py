@@ -15,6 +15,7 @@ from todo_rpg.application.interactors import (
     AuthenticateUserInteractor,
     DeleteSessionInteractor,
     RefreshSessionTokenInteractor,
+    ChangeCurrentUserRankInteractor,
 )
 
 
@@ -34,3 +35,4 @@ class UserProvider(Provider):
     authenticate_user_interactor = provide(AuthenticateUserInteractor)
     delete_session_interactor = provide(DeleteSessionInteractor)
     refresh_session_token_interactor = provide(RefreshSessionTokenInteractor)
+    change_current_user_rank = provide(ChangeCurrentUserRankInteractor)

@@ -9,6 +9,7 @@ from .get_user import GetUserInteractor
 from .refresh_session_token import RefreshSessionTokenInteractor
 from .update_current_user_email import UpdateCurrentUserEmailInteractor
 from .update_current_user_password import UpdateCurrentUserPasswordInteractor
+from .change_current_user_rank import ChangeCurrentUserRankInteractor
 
 __all__ = (
     "AuthenticateUserInteractor",
@@ -22,4 +23,5 @@ __all__ = (
     "UpdateCurrentUserEmailInteractor",
     "GetAllUsersInteractor",
     "UpdateCurrentUserPasswordInteractor",
+    "ChangeCurrentUserRankInteractor",
 )

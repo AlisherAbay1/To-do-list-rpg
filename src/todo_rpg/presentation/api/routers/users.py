@@ -15,6 +15,7 @@ from todo_rpg.application.interactors import (
     RefreshSessionTokenInteractor,
     UpdateCurrentUserEmailInteractor,
     UpdateCurrentUserPasswordInteractor,
+    ChangeCurrentUserRankInteractor,
 )
 from todo_rpg.infrastructure.config import config
 from todo_rpg.core.security import IS_PRODUCTION
@@ -169,3 +170,17 @@ async def delete_current_user(
         raise HTTPException(401, "Not authenticated")
 
     await interactor(session_token)
+
+
+@router.get("/me/change-rank/")
+async def change_rank(
+    interactor: FromDishka[ChangeCurrentUserRankInteractor],
+    rank_id: UUID7,
+    session_token=Cookie(None),
+):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+
+    user_rank_title = await interactor(session_token, rank_id)
+
+    return {"message": f"Your new rank is {user_rank_title}"}

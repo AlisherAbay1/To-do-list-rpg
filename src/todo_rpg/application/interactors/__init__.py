@@ -51,6 +51,7 @@ from .users import (
     RefreshSessionTokenInteractor,
     UpdateCurrentUserEmailInteractor,
     UpdateCurrentUserPasswordInteractor,
+    ChangeCurrentUserRankInteractor,
 )
 
 from .task_categories import (
@@ -88,6 +89,7 @@ from .user_ranks import (
 )
 
 __all__ = (
+    "ChangeCurrentUserRankInteractor",
     "DeleteCurrentUserRankInteractor",
     "UpdateCurrentUserRankInteractor",
     "GetCurrentUserRanksInteractor",
