@@ -9,13 +9,15 @@ from alembic import context
 
 from dotenv import dotenv_values
 from todo_rpg.infrastructure.database.models import Base
-import src.app.domain 
+import todo_rpg.domain 
+from todo_rpg.infrastructure.config import config as my_config
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-db_connection = f"postgresql+asyncpg://postgres:{dotenv_values(r".env")["DB_PASSWORD"]}@localhost:5432/to-do-list-rpg"
-config.set_main_option("sqlalchemy.url", db_connection)
+db = my_config.database
+db_url = f"postgresql+asyncpg://{db.username}:{db.password.get_secret_value()}@{db.host}:{db.port}/{db.name}"
+config.set_main_option("sqlalchemy.url", db_url)
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

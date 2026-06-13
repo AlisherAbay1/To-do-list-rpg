@@ -9,6 +9,7 @@ from .tasks import Task
 from .tasks_history import TaskHistory
 from .user_rank import UserRank
 from .users import User
+from .shop_transaction import ShopTransaction
 
 __all__ = (
     "Task",
@@ -22,4 +23,5 @@ __all__ = (
     "TaskHistory",
     "UserRank",
     "ItemRequirement",
+    "ShopTransaction",
 )
