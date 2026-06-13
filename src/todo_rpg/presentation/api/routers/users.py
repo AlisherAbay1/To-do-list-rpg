@@ -172,7 +172,7 @@ async def delete_current_user(
     await interactor(session_token)
 
 
-@router.get("/me/change-rank/")
+@router.patch("/me/change-rank/")
 async def change_rank(
     interactor: FromDishka[ChangeCurrentUserRankInteractor],
     rank_id: UUID7,
