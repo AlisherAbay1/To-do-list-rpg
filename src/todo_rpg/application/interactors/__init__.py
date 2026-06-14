@@ -55,12 +55,12 @@ from .users import (
 )
 
 from .task_categories import (
-    GetAllTaskCategories,
-    GetCurrentUserTaskCategories,
-    GetCurrentUserTaskCategoryById,
-    CreateCurrentUserTaskCategory,
-    DeleteCurrentUserTaskCategoryById,
-    UpdateCurrentUserTaskCategory,
+    GetAllTaskCategoriesInteractor,
+    GetCurrentUserTaskCategoriesInteractor,
+    GetCurrentUserTaskCategoryByIdInteractor,
+    CreateCurrentUserTaskCategoryInteractor,
+    DeleteCurrentUserTaskCategoryByIdInteractor,
+    UpdateCurrentUserTaskCategoryInteractor,
 )
 
 from .stats import GetStatsOverviewInteractor
@@ -134,13 +134,13 @@ __all__ = (
     "GetCurrentUserDailyTasksInteractor",
     "GetOverdueTasksInteractor",
     "GetTodaysDeadlineInteractor",
-    "GetAllTaskCategories",
-    "GetCurrentUserTaskCategories",
+    "GetAllTaskCategoriesInteractor",
+    "GetCurrentUserTaskCategoriesInteractor",
     "GetStatsOverviewInteractor",
-    "GetCurrentUserTaskCategoryById",
-    "CreateCurrentUserTaskCategory",
-    "DeleteCurrentUserTaskCategoryById",
-    "UpdateCurrentUserTaskCategory",
+    "GetCurrentUserTaskCategoryByIdInteractor",
+    "CreateCurrentUserTaskCategoryInteractor",
+    "DeleteCurrentUserTaskCategoryByIdInteractor",
+    "UpdateCurrentUserTaskCategoryInteractor",
     "GetCurrentUserSkillByIdInteractor",
     "DeleteCurrentUserSkillByIdInteractor",
     "ClearExpiredTasksInteractor",

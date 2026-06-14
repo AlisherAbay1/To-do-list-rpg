@@ -7,7 +7,7 @@ from uuid import UUID
 from todo_rpg.application.exceptions import SessionNotFoundError
 
 
-class DeleteCurrentUserTaskCategoryById:
+class DeleteCurrentUserTaskCategoryByIdInteractor:
     def __init__(
         self,
         repo: TaskCategoriesRepositoryProtocol,
@@ -22,5 +22,7 @@ class DeleteCurrentUserTaskCategoryById:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_id)
         if user_id is None:
             raise SessionNotFoundError()
-        await self.repo.delete_current_user_task_category_by_id(task_category_id)
+        await self.repo.delete_current_user_task_category_by_id(
+            task_category_id, user_id
+        )
         await self.uow.commit()

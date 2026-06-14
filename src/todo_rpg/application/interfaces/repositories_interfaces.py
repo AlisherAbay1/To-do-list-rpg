@@ -60,7 +60,9 @@ class TaskRepositoryProtocol(Protocol):
 
 
 class TaskCategoriesRepositoryProtocol(Protocol):
-    async def get_all_task_categories(self) -> Sequence[TaskCategory]: ...
+    async def get_all_task_categories(
+        self, limit: int, offset: int
+    ) -> Sequence[TaskCategory]: ...
     async def get_current_user_task_categories(
         self, user_id: UUID
     ) -> Sequence[TaskCategory]: ...
@@ -68,7 +70,7 @@ class TaskCategoriesRepositoryProtocol(Protocol):
         self, task_category_id: UUID
     ) -> Optional[TaskCategory]: ...
     async def delete_current_user_task_category_by_id(
-        self, task_category_id: UUID
+        self, task_category_id: UUID, user_id: UUID
     ) -> None: ...
 
 

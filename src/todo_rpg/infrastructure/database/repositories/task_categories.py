@@ -11,8 +11,10 @@ class TaskCategoriesRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def get_all_task_categories(self) -> Sequence[TaskCategory]:
-        task_categories = select(TaskCategory)
+    async def get_all_task_categories(
+        self, limit: int, offset: int
+    ) -> Sequence[TaskCategory]:
+        task_categories = select(TaskCategory).limit(limit).offset(offset)
         result = await self._session.scalars(task_categories)
         return result.all()
 
@@ -35,7 +37,9 @@ class TaskCategoriesRepository:
         return result
 
     async def delete_current_user_task_category_by_id(
-        self, task_category_id: UUID
+        self, task_category_id: UUID, user_id: UUID
     ) -> None:
-        task_category = delete(TaskCategory).where(TaskCategory.id == task_category_id)
+        task_category = delete(TaskCategory).where(
+            TaskCategory.id == task_category_id, TaskCategory.user_id == user_id
+        )
         await self._session.execute(task_category)

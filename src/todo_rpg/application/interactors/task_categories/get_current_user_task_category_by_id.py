@@ -13,7 +13,7 @@ from todo_rpg.application.mappers import ExtendedTaskCategoriesMapper
 from todo_rpg.application.dto import TaskCategoryWithTasksDTO
 
 
-class GetCurrentUserTaskCategoryById:
+class GetCurrentUserTaskCategoryByIdInteractor:
     def __init__(
         self,
         task_category_repo: TaskCategoriesRepositoryProtocol,

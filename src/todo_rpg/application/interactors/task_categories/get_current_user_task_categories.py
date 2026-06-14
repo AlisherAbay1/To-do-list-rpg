@@ -7,7 +7,7 @@ from todo_rpg.application.dto import TaskCategoryDTO
 from todo_rpg.application.exceptions import SessionNotFoundError
 
 
-class GetCurrentUserTaskCategories:
+class GetCurrentUserTaskCategoriesInteractor:
     def __init__(
         self, repo: TaskCategoriesRepositoryProtocol, cash_repo: RedisRepositoryProtocol
     ):

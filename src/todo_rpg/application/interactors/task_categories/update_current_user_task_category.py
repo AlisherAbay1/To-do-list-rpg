@@ -11,7 +11,7 @@ from todo_rpg.application.exceptions import AccessDeniedError, TaskCategoryNotFo
 from todo_rpg.application.mappers.common import TaskCategoriesMapper
 
 
-class UpdateCurrentUserTaskCategory:
+class UpdateCurrentUserTaskCategoryInteractor:
     def __init__(
         self,
         repo: TaskCategoriesRepositoryProtocol,

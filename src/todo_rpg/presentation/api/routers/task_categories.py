@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Cookie, HTTPException
 from dishka.integrations.fastapi import DishkaRoute, FromDishka
 from todo_rpg.application.interactors.task_categories import (
-    GetAllTaskCategories,
-    GetCurrentUserTaskCategories,
-    CreateCurrentUserTaskCategory,
-    UpdateCurrentUserTaskCategory,
-    GetCurrentUserTaskCategoryById,
-    DeleteCurrentUserTaskCategoryById,
+    GetAllTaskCategoriesInteractor,
+    GetCurrentUserTaskCategoriesInteractor,
+    CreateCurrentUserTaskCategoryInteractor,
+    UpdateCurrentUserTaskCategoryInteractor,
+    GetCurrentUserTaskCategoryByIdInteractor,
+    DeleteCurrentUserTaskCategoryByIdInteractor,
 )
 from todo_rpg.presentation.schemas import (
     TaskCategoriesSchema,
@@ -21,13 +21,19 @@ router = APIRouter(prefix="/task_categories", route_class=DishkaRoute)
 
 
 @router.get("", response_model=list[TaskCategoriesSchema])
-async def get_all_task_categories(intercator: FromDishka[GetAllTaskCategories]):
-    return await intercator()
+async def get_all_task_categories(
+    intercator: FromDishka[GetAllTaskCategoriesInteractor],
+    limit: int,
+    offset: int,
+    session_token=Cookie(None),
+):
+    return await intercator(session_token, limit, offset)
 
 
 @router.get("/me", response_model=list[TaskCategoriesSchema])
 async def get_current_user_task_catigories(
-    interactor: FromDishka[GetCurrentUserTaskCategories], session_token=Cookie(None)
+    interactor: FromDishka[GetCurrentUserTaskCategoriesInteractor],
+    session_token=Cookie(None),
 ):
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
@@ -36,7 +42,7 @@ async def get_current_user_task_catigories(
 
 @router.get("/me/{task_category_id}", response_model=TaskCategoryWithTasksSchema)
 async def get_current_user_task_catigory_by_id(
-    interactor: FromDishka[GetCurrentUserTaskCategoryById],
+    interactor: FromDishka[GetCurrentUserTaskCategoryByIdInteractor],
     task_category_id: UUID,
     get_tasks: bool,
     session_token=Cookie(None),
@@ -49,7 +55,7 @@ async def get_current_user_task_catigory_by_id(
 @router.post("/me", response_model=TaskCategoriesSchema)
 async def create_current_user_task_category(
     schema: CreateTaskCategorySchema,
-    interactor: FromDishka[CreateCurrentUserTaskCategory],
+    interactor: FromDishka[CreateCurrentUserTaskCategoryInteractor],
     session_token=Cookie(None),
 ):
     if session_token is None:
@@ -62,7 +68,7 @@ async def create_current_user_task_category(
 async def update_current_user_task_category(
     task_category_id: UUID,
     schema: UpdateTaskCategorySchema,
-    interactor: FromDishka[UpdateCurrentUserTaskCategory],
+    interactor: FromDishka[UpdateCurrentUserTaskCategoryInteractor],
     session_token=Cookie(None),
 ):
     if session_token is None:
@@ -73,7 +79,7 @@ async def update_current_user_task_category(
 
 @router.delete("/me/{task_category_id}", status_code=204)
 async def delete_current_user_task_catigory_by_id(
-    interactor: FromDishka[DeleteCurrentUserTaskCategoryById],
+    interactor: FromDishka[DeleteCurrentUserTaskCategoryByIdInteractor],
     task_category_id: UUID,
     session_token=Cookie(None),
 ):

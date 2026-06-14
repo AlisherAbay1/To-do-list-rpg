@@ -6,7 +6,7 @@ from todo_rpg.application.dto import CreateTaskCategoryDTO, TaskCategoryDTO
 from todo_rpg.application.mappers.common import TaskCategoriesMapper
 
 
-class CreateCurrentUserTaskCategory:
+class CreateCurrentUserTaskCategoryInteractor:
     def __init__(self, cash_repo: RedisRepositoryProtocol, uow: UoWProtocol) -> None:
         self.cash_repo = cash_repo
         self.uow = uow
