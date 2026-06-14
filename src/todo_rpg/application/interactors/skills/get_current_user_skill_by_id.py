@@ -10,6 +10,7 @@ from todo_rpg.application.exceptions import (
     SessionNotFoundError,
     AccessDeniedError,
 )
+from todo_rpg.application.dto import SkillWithTasksAndNextLvlXpDTO
 
 
 class GetCurrentUserSkillByIdInteractor:
@@ -25,7 +26,7 @@ class GetCurrentUserSkillByIdInteractor:
 
     async def __call__(
         self, skill_id: UUID, session_token: str, get_related_tasks: bool
-    ):
+    ) -> SkillWithTasksAndNextLvlXpDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

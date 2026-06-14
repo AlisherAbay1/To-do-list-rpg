@@ -4,6 +4,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
     SkillRepositoryProtocol,
 )
 from todo_rpg.application.mappers.common import SkillMapper
+from todo_rpg.application.dto import SkillDTO
 
 
 class GetCurrentUserSkillsInteractor:
@@ -13,7 +14,9 @@ class GetCurrentUserSkillsInteractor:
         self.repo = repo
         self.cash_repo = cash_repo
 
-    async def __call__(self, session_token: str, limit: int, offset: int):
+    async def __call__(
+        self, session_token: str, limit: int, offset: int
+    ) -> list[SkillDTO]:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
