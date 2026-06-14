@@ -4,7 +4,7 @@ from todo_rpg.application.dto.sentinel_types import Unset
 
 
 @dataclass
-class UserRankReadDTO:
+class UserRankDTO:
     id: UUID
     user_id: UUID
     title: str

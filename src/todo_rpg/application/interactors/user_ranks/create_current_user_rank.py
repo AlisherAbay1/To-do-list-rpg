@@ -7,6 +7,7 @@ from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.domain import UserRank
 from todo_rpg.application.exceptions import SessionNotFoundError
 from todo_rpg.application.mappers.common import UserRankMapper
+from todo_rpg.application.dto import UserRankDTO
 
 
 class CreateCurrentUserRankInteractor:
@@ -20,7 +21,7 @@ class CreateCurrentUserRankInteractor:
         self.cash_repo = cash_repo
         self.uow = uow
 
-    async def __call__(self, session_token: str, dto: UserRankCreateDTO):
+    async def __call__(self, session_token: str, dto: UserRankCreateDTO) -> UserRankDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

@@ -9,6 +9,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
 )
 from todo_rpg.application.mappers import UserRankMapper
 from uuid import UUID
+from todo_rpg.application.dto import UserRankDTO
 
 
 class GetCurrentUserRankInteractor:
@@ -18,7 +19,7 @@ class GetCurrentUserRankInteractor:
         self.repo = repo
         self.cash_repo = cash_repo
 
-    async def __call__(self, user_rank_id: UUID, session_token: str):
+    async def __call__(self, user_rank_id: UUID, session_token: str) -> UserRankDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

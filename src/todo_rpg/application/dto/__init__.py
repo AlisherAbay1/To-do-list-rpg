@@ -35,7 +35,7 @@ from .common import (
     InventoryUpdateDTO,
     UserRankCreateDTO,
     UserRankUpdateDTO,
-    UserRankReadDTO,
+    UserRankDTO,
     ShopTransactionDTO,
     ShopTransactionFiltersDTO,
 )
@@ -101,6 +101,6 @@ __all__ = (
     "InventoryShortWithItemDTO",
     "ShopListingShortWithShortInventoryItemDTO",
     "UserRankCreateDTO",
-    "UserRankReadDTO",
+    "UserRankDTO",
     "UserRankUpdateDTO",
 )

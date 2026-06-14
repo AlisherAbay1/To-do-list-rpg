@@ -12,6 +12,7 @@ from todo_rpg.application.mappers import UserRankMapper
 from uuid import UUID
 from todo_rpg.application.dto import UserRankUpdateDTO
 from todo_rpg.application.dto.sentinel_types import Unset
+from todo_rpg.application.dto import UserRankDTO
 
 
 class UpdateCurrentUserRankInteractor:
@@ -27,7 +28,7 @@ class UpdateCurrentUserRankInteractor:
 
     async def __call__(
         self, user_rank_id: UUID, session_token: str, dto: UserRankUpdateDTO
-    ):
+    ) -> UserRankDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
