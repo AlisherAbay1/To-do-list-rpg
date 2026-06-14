@@ -59,3 +59,8 @@ class ItemRepository:
     async def delete(self, item_id: UUID):
         item = delete(Item).where(Item.id == item_id)
         await self._session.execute(item)
+
+    async def get_items_by_ids(self, ids: list[UUID]) -> Sequence[Item]:
+        stmt = select(Item).where(Item.id.in_(ids))
+        items = await self._session.scalars(stmt)
+        return items.all()

@@ -49,3 +49,8 @@ class SkillRepository:
         )
         result = await self._session.scalars(skills)
         return result.all()
+
+    async def get_skills_by_ids(self, ids: list[UUID]) -> Sequence[Skill]:
+        stmt = select(Skill).where(Skill.id.in_(ids))
+        skills = await self._session.scalars(stmt)
+        return skills.all()

@@ -1,14 +1,17 @@
-from uuid6 import uuid7
-
 from todo_rpg.application.dto import TaskCreateDTO
-from todo_rpg.application.exceptions import SessionNotFoundError
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.exceptions import (
+    SessionNotFoundError,
+    TaskCategoryNotFoundError,
+)
+from todo_rpg.application.interfaces import (
+    RedisRepositoryProtocol,
     TaskRepositoryProtocol,
+    SkillRepositoryProtocol,
+    ItemRepositoryProtocol,
+    TaskCategoriesRepositoryProtocol,
 )
 from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.domain import Task
-from todo_rpg.infrastructure.database.models import Tasks_to_items, Tasks_to_skills
 from todo_rpg.application.mappers.common import TaskMapper
 from todo_rpg.application.dto import TaskDTO
 
@@ -16,11 +19,17 @@ from todo_rpg.application.dto import TaskDTO
 class CreateCurrentUserTaskInteractor:
     def __init__(
         self,
-        repo: TaskRepositoryProtocol,
+        task_repo: TaskRepositoryProtocol,
+        task_category_repo: TaskCategoriesRepositoryProtocol,
+        skill_repo: SkillRepositoryProtocol,
+        item_repo: ItemRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
-        self.repo = repo
+        self.task_repo = task_repo
+        self.task_category_repo = task_category_repo
+        self.skill_repo = skill_repo
+        self.item_repo = item_repo
         self.cash_repo = cash_repo
         self.uow = uow
 
@@ -28,7 +37,13 @@ class CreateCurrentUserTaskInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        task_id = uuid7()
+        if dto.category_id is not None:
+            task_category = await self.task_category_repo.get_task_category_by_id(
+                dto.category_id
+            )
+            if task_category is None:
+                raise TaskCategoryNotFoundError()
+
         task = Task(
             user_id=user_id,
             title=dto.title,
@@ -47,13 +62,11 @@ class CreateCurrentUserTaskInteractor:
         await self.uow.add(task)
         await self.uow.flush()
 
-        for skill_id in dto.related_skills:
-            skill_relationship = Tasks_to_skills(task_id=task_id, skill_id=skill_id)
-            await self.uow.add(skill_relationship)
+        skills = await self.skill_repo.get_skills_by_ids(dto.related_skills)
+        items = await self.item_repo.get_items_by_ids(dto.related_items)
 
-        for item_id in dto.related_items:
-            item_relationship = Tasks_to_items(task_id=task_id, item_id=item_id)
-            await self.uow.add(item_relationship)
+        task.skills = list(skills)
+        task.items = list(items)
 
         output_dto = TaskMapper.to_dto(task)
 
