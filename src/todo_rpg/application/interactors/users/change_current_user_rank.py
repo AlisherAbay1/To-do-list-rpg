@@ -26,7 +26,7 @@ class ChangeCurrentUserRankInteractor:
         self.cash_repo = cash_repo
         self.uow = uow
 
-    async def __call__(self, session_token: str, rank_id: UUID):
+    async def __call__(self, session_token: str, rank_id: UUID) -> str:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

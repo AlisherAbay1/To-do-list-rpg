@@ -24,7 +24,7 @@ class UpdateCurrentUserEmailInteractor:
         self.cash_repo = cash_repo
         self.uow = uow
 
-    async def __call__(self, dto: UserEmailDTO, session_token: str):
+    async def __call__(self, dto: UserEmailDTO, session_token: str) -> str:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

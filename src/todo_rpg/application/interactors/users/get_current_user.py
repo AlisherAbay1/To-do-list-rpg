@@ -4,6 +4,7 @@ from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProto
 from todo_rpg.application.interfaces.repositories_interfaces import (
     UserRepositoryProtocol,
 )
+from todo_rpg.application.dto import UserDTO
 
 
 class GetCurrentUser:
@@ -13,7 +14,7 @@ class GetCurrentUser:
         self.repo = repo
         self.cash_repo = cash_repo
 
-    async def __call__(self, session_token):
+    async def __call__(self, session_token) -> UserDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
