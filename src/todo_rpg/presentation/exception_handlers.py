@@ -18,12 +18,21 @@ from todo_rpg.application.exceptions import (
     UserDoesntFitSkillRequirementsError,
     ShopListingAlreadyExistsError,
     UserRankNotFoundError,
+    ShopListingAmountIsZeroError,
 )
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 
 def register_exeptions(app: FastAPI):
+    @app.exception_handler(ShopListingAmountIsZeroError)
+    async def shop_listing_amount_is_zero(
+        request: Request, exc: ShopListingAmountIsZeroError
+    ):
+        return JSONResponse(
+            status_code=404, content={"detail": "Shop listing amount is zero"}
+        )
+
     @app.exception_handler(UserNotFoundError)
     async def user_not_found(request: Request, exc: UserNotFoundError):
         return JSONResponse(status_code=404, content={"detail": "User not found"})

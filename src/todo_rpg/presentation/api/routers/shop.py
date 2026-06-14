@@ -58,7 +58,7 @@ async def create_current_user_shop_listing(
     return await interactor(session_token, dto)
 
 
-@router.post(
+@router.patch(
     "/me/{shop_listing_id}/buy",
     response_model=ShopListingShortWithShortInventoryItemSchema,
 )

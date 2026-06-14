@@ -70,5 +70,9 @@ class ShopListingAlreadyExistsError(Exception):
     pass
 
 
+class ShopListingAmountIsZeroError(Exception):
+    pass
+
+
 class UserRankNotFoundError(Exception):
     pass
