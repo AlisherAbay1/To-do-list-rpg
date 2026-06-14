@@ -54,6 +54,10 @@ class ShopListingNotFoundError(Exception):
     pass
 
 
+class ShopTransactionNotFoundError(Exception):
+    pass
+
+
 class InventoryItemNotFoundError(Exception):
     pass
 

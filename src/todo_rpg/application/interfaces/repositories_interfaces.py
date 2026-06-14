@@ -141,6 +141,9 @@ class ShopTransactionRepositoryProtocol(Protocol):
     async def get_shop_transactions_by_user_id(
         self, user_id: UUID, limit: int, offset: int, filters: ShopTransactionFiltersDTO
     ) -> Sequence[ShopTransaction]: ...
+    async def get_shop_transaction_by_id(
+        self, shop_transaction_id: UUID
+    ) -> Optional[ShopTransaction]: ...
 
 
 class UserRankRepositoryProtocol(Protocol):

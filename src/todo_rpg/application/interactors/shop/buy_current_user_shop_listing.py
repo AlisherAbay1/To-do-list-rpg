@@ -39,6 +39,7 @@ class BuyCurrentUserShopListingInteractor:
         self.cash_repo = cash_repo
         self.uow = uow
 
+    # тут, по идее, можно поправить и проверить, является ли item принадлежащим юзеру
     async def __call__(
         self, session_token: str, shop_listing_id: UUID
     ) -> ShopListingShortWithShortInventoryItemDTO:

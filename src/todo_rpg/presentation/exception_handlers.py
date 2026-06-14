@@ -19,6 +19,7 @@ from todo_rpg.application.exceptions import (
     ShopListingAlreadyExistsError,
     UserRankNotFoundError,
     ShopListingAmountIsZeroError,
+    ShopTransactionNotFoundError,
 )
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -101,6 +102,14 @@ def register_exeptions(app: FastAPI):
     async def shop_listing_not_found(request: Request, exc: ShopListingNotFoundError):
         return JSONResponse(
             status_code=404, content={"detail": "Shop listing not found"}
+        )
+
+    @app.exception_handler(ShopTransactionNotFoundError)
+    async def shop_transaction_not_found(
+        request: Request, exc: ShopTransactionNotFoundError
+    ):
+        return JSONResponse(
+            status_code=404, content={"detail": "Shop transaction not found"}
         )
 
     @app.exception_handler(InventoryItemNotFoundError)

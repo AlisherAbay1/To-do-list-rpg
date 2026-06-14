@@ -90,9 +90,11 @@ from .user_ranks import (
 
 from .shop_transactions import (
     GetShopTransactionsInteractor,
+    CancelTransactionInteractor,
 )
 
 __all__ = (
+    "CancelTransactionInteractor",
     "GetShopTransactionsInteractor",
     "ChangeCurrentUserRankInteractor",
     "DeleteCurrentUserRankInteractor",

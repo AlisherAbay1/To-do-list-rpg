@@ -1,4 +1,4 @@
-from typing import Sequence
+from typing import Sequence, Optional
 from uuid import UUID
 from todo_rpg.domain import ShopTransaction
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -33,3 +33,10 @@ class ShopTransactionRepository:
 
         shop_transactions = await self._session.scalars(stmt)
         return shop_transactions.all()
+
+    async def get_shop_transaction_by_id(
+        self, shop_transaction_id: UUID
+    ) -> Optional[ShopTransaction]:
+        stmt = select(ShopTransaction).where(ShopTransaction.id == shop_transaction_id)
+        shop_transaction = await self._session.scalar(stmt)
+        return shop_transaction

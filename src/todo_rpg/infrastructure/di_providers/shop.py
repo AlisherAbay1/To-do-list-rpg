@@ -15,6 +15,7 @@ from todo_rpg.application.interactors import (
     GetCurrentUserShopListingByIdInteractor,
     BuyCurrentUserShopListingInteractor,
     GetShopTransactionsInteractor,
+    CancelTransactionInteractor,
 )
 
 
@@ -33,3 +34,4 @@ class ShopProvider(Provider):
     )
     buy_current_user_shop_listing = provide(BuyCurrentUserShopListingInteractor)
     get_shop_transactions = provide(GetShopTransactionsInteractor)
+    cancel_transaction = provide(CancelTransactionInteractor)
