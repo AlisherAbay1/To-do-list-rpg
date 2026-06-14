@@ -8,6 +8,7 @@ from .repositories_interfaces import (
     TaskHistoryRepositoryProtocol,
     TaskCategoriesRepositoryProtocol,
     UserRankRepositoryProtocol,
+    ShopTransactionRepositoryProtocol,
 )
 from .cash_interfaces import RedisRepositoryProtocol
 from .transaction_interfaces import UoWProtocol
@@ -24,4 +25,5 @@ __all__ = (
     "RedisRepositoryProtocol",
     "UoWProtocol",
     "UserRankRepositoryProtocol",
+    "ShopTransactionRepositoryProtocol",
 )

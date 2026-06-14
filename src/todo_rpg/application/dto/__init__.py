@@ -36,6 +36,8 @@ from .common import (
     UserRankCreateDTO,
     UserRankUpdateDTO,
     UserRankReadDTO,
+    ShopTransactionDTO,
+    ShopTransactionFiltersDTO,
 )
 from .extended import (
     SkillWithTasksAndNextLvlXpDTO,
@@ -51,6 +53,8 @@ from .extended import (
 from .shared import MessageDTO
 
 __all__ = (
+    "ShopTransactionFiltersDTO",
+    "ShopTransactionDTO",
     "ItemDTO",
     "ItemUpdateDTO",
     "ItemCreateDTO",

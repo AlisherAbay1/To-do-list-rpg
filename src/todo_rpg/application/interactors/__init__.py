@@ -88,7 +88,12 @@ from .user_ranks import (
     DeleteCurrentUserRankInteractor,
 )
 
+from .shop_transactions import (
+    GetShopTransactionsInteractor,
+)
+
 __all__ = (
+    "GetShopTransactionsInteractor",
     "ChangeCurrentUserRankInteractor",
     "DeleteCurrentUserRankInteractor",
     "UpdateCurrentUserRankInteractor",

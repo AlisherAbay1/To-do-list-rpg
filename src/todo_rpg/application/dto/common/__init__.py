@@ -43,8 +43,11 @@ from .inventory import (
     InventoryUpdateDTO,
 )
 from .user_ranks import UserRankReadDTO, UserRankCreateDTO, UserRankUpdateDTO
+from .shop_transactions import ShopTransactionDTO, ShopTransactionFiltersDTO
 
 __all__ = (
+    "ShopTransactionFiltersDTO",
+    "ShopTransactionDTO",
     "ItemDTO",
     "ItemUpdateDTO",
     "ItemCreateDTO",

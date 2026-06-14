@@ -16,7 +16,7 @@ from todo_rpg.application.exceptions import (
     UserBalanceNotEnoughError,
     UserDoesntFitSkillRequirementsError,
 )
-from todo_rpg.domain import Inventory
+from todo_rpg.domain import Inventory, ShopTransaction
 from todo_rpg.application.mappers import ExtendedShopMapper
 from todo_rpg.application.dto import ShopListingShortWithShortInventoryItemDTO
 
@@ -86,6 +86,14 @@ class BuyCurrentUserShopListingInteractor:
         if shop_listing.quantity == 0:
             await self.uow.delete(shop_listing)
 
+        shop_transaction = ShopTransaction(
+            user_id=user_id,
+            shop_listing_id=shop_listing.id,
+            item_id=item.id,
+            item_title=item.title,
+            price=shop_listing.price,
+        )
+        await self.uow.add(shop_transaction)
         await self.uow.commit()
 
         return dto

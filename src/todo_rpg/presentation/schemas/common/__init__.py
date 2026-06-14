@@ -39,8 +39,11 @@ from .shop import (
 )
 from .inventory import InventorySchemaRead, InventoryShortSchemaRead
 from .user_ranks import UserRankSchemaCreate, UserRankSchemaRead, UserRankSchemaUpdate
+from .shop_transactions import ShopTransactionSchemaRead, ShopTransactionFilters
 
 __all__ = (
+    "ShopTransactionFilters",
+    "ShopTransactionSchemaRead",
     "ItemSchemaRead",
     "ItemSchemaCreate",
     "SkillSchemaRead",

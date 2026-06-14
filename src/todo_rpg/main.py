@@ -12,6 +12,9 @@ from todo_rpg.presentation.api.routers.task_categories import (
 )
 from todo_rpg.presentation.api.routers.stats import router as stats_router
 from todo_rpg.presentation.api.routers.user_ranks import router as user_ranks_router
+from todo_rpg.presentation.api.routers.shop_transaction import (
+    router as shop_transactions_router,
+)
 from todo_rpg.presentation.exception_handlers import register_exeptions
 from todo_rpg.core.taskiq import broker
 from contextlib import asynccontextmanager
@@ -50,6 +53,8 @@ app.include_router(router=shop_router, tags=["shop"])
 app.include_router(router=task_categories_router, tags=["task_categories"])
 app.include_router(router=stats_router, tags=["stats"])
 app.include_router(router=user_ranks_router, tags=["user_ranks"])
+app.include_router(router=shop_transactions_router, tags=["shop_transactions"])
+
 
 register_exeptions(app)
 

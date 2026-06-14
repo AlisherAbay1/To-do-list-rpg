@@ -1,4 +1,5 @@
 from uuid import UUID
+from typing import Optional
 
 from sqlalchemy import ForeignKey, String, BigInteger, DateTime
 from sqlalchemy.orm import Mapped, mapped_column
@@ -13,10 +14,12 @@ class ShopTransaction(Base, kw_only=True):
 
     id: Mapped[UUID] = mapped_column(default_factory=uuid7, primary_key=True)
     user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
-    shop_listing_id: Mapped[UUID] = mapped_column(
+    shop_listing_id: Mapped[Optional[UUID]] = mapped_column(
         ForeignKey("shop.id", ondelete="SET NULL")
     )
-    item_id: Mapped[UUID] = mapped_column(ForeignKey("item.id", ondelete="SET NULL"))
+    item_id: Mapped[Optional[UUID]] = mapped_column(
+        ForeignKey("item.id", ondelete="SET NULL")
+    )
     item_title: Mapped[str] = mapped_column(String(255))
     price: Mapped[int] = mapped_column(BigInteger)
     date: Mapped[datetime] = mapped_column(

@@ -9,9 +9,14 @@ from todo_rpg.domain import (
     TaskCategory,
     Shop,
     UserRank,
+    ShopTransaction,
 )
 from uuid import UUID
-from todo_rpg.application.dto import TaskFilterParamsDTO, TaskSortParamsDTO
+from todo_rpg.application.dto import (
+    TaskFilterParamsDTO,
+    TaskSortParamsDTO,
+    ShopTransactionFiltersDTO,
+)
 from todo_rpg.domain.value_objects import TaskReward
 
 
@@ -130,6 +135,12 @@ class ShopRepositoryProtocol(Protocol):
     async def get_shop_listing_by_id(self, shop_listing_id: UUID) -> Optional[Shop]: ...
     async def get_shop_listing_by_item_id(self, item_id: UUID) -> Optional[Shop]: ...
     async def delete(self, shop_listing: Shop) -> None: ...
+
+
+class ShopTransactionRepositoryProtocol(Protocol):
+    async def get_shop_transactions_by_user_id(
+        self, user_id: UUID, limit: int, offset: int, filters: ShopTransactionFiltersDTO
+    ) -> Sequence[ShopTransaction]: ...
 
 
 class UserRankRepositoryProtocol(Protocol):
