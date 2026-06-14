@@ -20,6 +20,7 @@ from todo_rpg.application.exceptions import (
     UserRankNotFoundError,
     ShopListingAmountIsZeroError,
     ShopTransactionNotFoundError,
+    TaskHistoryNotFoundError,
 )
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -118,6 +119,12 @@ def register_exeptions(app: FastAPI):
     ):
         return JSONResponse(
             status_code=404, content={"detail": "Inventory item not found"}
+        )
+
+    @app.exception_handler(TaskHistoryNotFoundError)
+    async def task_history_not_found(request: Request, exc: TaskHistoryNotFoundError):
+        return JSONResponse(
+            status_code=404, content={"detail": "Task history not found"}
         )
 
     @app.exception_handler(UserRankNotFoundError)

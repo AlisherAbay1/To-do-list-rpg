@@ -18,6 +18,10 @@ class TaskNotFoundInHistoryError(Exception):
     pass
 
 
+class TaskHistoryNotFoundError(Exception):
+    pass
+
+
 class TaskAlreadyDoneError(Exception):
     pass
 

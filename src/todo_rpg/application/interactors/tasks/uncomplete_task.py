@@ -4,6 +4,7 @@ from todo_rpg.application.exceptions import (
     SessionNotFoundError,
     TaskNotFoundError,
     UserNotFoundError,
+    TaskHistoryNotFoundError,
 )
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from todo_rpg.application.interfaces.repositories_interfaces import (
@@ -12,6 +13,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
     TaskRepositoryProtocol,
     UserRepositoryProtocol,
 )
+from todo_rpg.application.dto import TaskWithUserAndSkillsDTO
 from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.mappers import ExtendedTaskMapper
 
@@ -33,37 +35,42 @@ class UncompleteTaskInteractor:
         self.cash_repo = cash_repo
         self.uow = uow
 
-    async def __call__(self, task_id: UUID, session_token: str):
+    async def __call__(
+        self, task_id: UUID, session_token: str
+    ) -> TaskWithUserAndSkillsDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        if user_id is None:
+            raise SessionNotFoundError()
+
         tasks_history = await self.task_history_repo.get_recent_history_with_skills(
             task_id, 2
         )
-        if user_id is None:
-            raise SessionNotFoundError()
-        task = await self.task_repo.get_task_by_id(task_id, user_id)
-        if task is None:
-            raise TaskNotFoundError()
         if not tasks_history:
             raise TaskNotFoundError()
+
+        task = await self.task_repo.get_task_by_id(task_id, user_id)
+        if task is None:
+            raise TaskHistoryNotFoundError()
+
         if task.repeat_limit is not None:
             task.repeat_limit += 1
-
-        before_previous, previous = tasks_history[-1], tasks_history[0]
-        user = await self.user_repo.get_user(user_id)
-        skills = await self.skill_repo.get_skills_by_task_id(task_id)
-
-        if user is None:
-            raise UserNotFoundError()
 
         if len(tasks_history) < 2:
             task.last_completed_at = None
         else:
+            before_previous = tasks_history[-1]
             task.last_completed_at = before_previous.completed_at
-        user.xp -= previous.xp_earned
-        user.lvl = 1 + user.xp // 1000
-        user.gold -= previous.gold_earned
+        previous = tasks_history[0]
+
+        user = await self.user_repo.get_user(user_id)
+        if user is None:
+            raise UserNotFoundError()
+
+        skills = await self.skill_repo.get_skills_by_task_id(task_id)
+
+        user.cancel_rewards(previous.xp_earned, previous.gold_earned)
         for skill in previous.skills:
-            skill.xp -= previous.xp_earned
+            skill.cancel_reward(previous.xp_earned)
 
         dto = ExtendedTaskMapper.to_dto_with_skills_and_user(task, user, skills)
 

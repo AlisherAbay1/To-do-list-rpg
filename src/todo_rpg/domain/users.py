@@ -32,6 +32,11 @@ class User(Base, kw_only=True):
         self.lvl = self.calculate_lvl(rewards.xp)
         self.gold += rewards.gold
 
+    def cancel_rewards(self, xp_earned: int, gold_earned: int):
+        self.xp -= xp_earned
+        self.lvl = self.calculate_lvl(xp_earned)
+        self.gold -= gold_earned
+
     def calculate_lvl(self, xp: int):
         return 1 + xp // 1000
 
