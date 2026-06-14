@@ -34,7 +34,7 @@ class CancelTransactionInteractor:
         self.cash_repo = cash_repo
         self.uow = uow
 
-    async def __call__(self, session_token: str, shop_transaction_id: UUID):
+    async def __call__(self, session_token: str, shop_transaction_id: UUID) -> None:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
