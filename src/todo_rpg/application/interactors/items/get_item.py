@@ -3,13 +3,14 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
     ItemRepositoryProtocol,
 )
 from todo_rpg.application.mappers.common import ItemMapper
+from todo_rpg.application.dto import ItemDTO
 
 
 class GetItemInteractor:
     def __init__(self, repo: ItemRepositoryProtocol) -> None:
         self.repo = repo
 
-    async def __call__(self, item_id):
+    async def __call__(self, item_id) -> ItemDTO:
         item = await self.repo.get_item_by_id(item_id)
         if item is None:
             raise ItemNotFoundError()

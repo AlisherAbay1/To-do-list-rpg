@@ -9,6 +9,7 @@ from uuid import UUID
 from todo_rpg.application.dto import ItemUpdateDTO
 from todo_rpg.application.exceptions import ItemNotFoundError, AccessDeniedError
 from todo_rpg.application.dto.sentinel_types import Unset
+from todo_rpg.application.dto import ItemDTO
 
 
 class UpdateCurrentUserItemInteractor:
@@ -22,7 +23,9 @@ class UpdateCurrentUserItemInteractor:
         self.cash_repo = cash_repo
         self.uow = uow
 
-    async def __call__(self, item_id: UUID, session_token: str, dto: ItemUpdateDTO):
+    async def __call__(
+        self, item_id: UUID, session_token: str, dto: ItemUpdateDTO
+    ) -> ItemDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

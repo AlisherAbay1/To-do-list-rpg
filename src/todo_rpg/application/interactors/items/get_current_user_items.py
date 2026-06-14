@@ -4,6 +4,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
     ItemRepositoryProtocol,
 )
 from todo_rpg.application.mappers.common import ItemMapper
+from todo_rpg.application.dto import ItemDTO
 
 
 class GetCurrentUserItemsInteractor:
@@ -15,7 +16,7 @@ class GetCurrentUserItemsInteractor:
 
     async def __call__(
         self, session_token: str, limit: int, offset: int, get_deleted: bool
-    ):
+    ) -> list[ItemDTO]:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

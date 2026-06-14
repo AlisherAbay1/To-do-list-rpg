@@ -11,6 +11,6 @@ class DeleteItemInteractor:
         self.repo = repo
         self.uow = uow
 
-    async def __call__(self, item_id: UUID):
+    async def __call__(self, item_id: UUID) -> None:
         await self.repo.delete(item_id)
         await self.uow.commit()
