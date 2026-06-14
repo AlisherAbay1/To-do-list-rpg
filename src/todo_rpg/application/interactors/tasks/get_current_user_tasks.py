@@ -7,7 +7,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
 )
 
 
-class GetCurentUserTasksInteractor:
+class GetCurrentUserTasksInteractor:
     def __init__(
         self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol
     ) -> None:

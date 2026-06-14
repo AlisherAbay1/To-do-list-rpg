@@ -7,7 +7,7 @@ from todo_rpg.application.mappers.common import TaskMapper
 from todo_rpg.application.dto import TaskDTO
 
 
-class GetDeletedTasksBySessionTokenInteractor:
+class GetCurrentUserDailyTasksInteractor:
     def __init__(
         self, repo: TaskRepositoryProtocol, cash_repo: RedisRepositoryProtocol
     ) -> None:
@@ -18,5 +18,5 @@ class GetDeletedTasksBySessionTokenInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        tasks = await self.repo.get_deleted_tasks_by_user_id(user_id)
+        tasks = await self.repo.get_daily_tasks_by_user_id(user_id)
         return TaskMapper.to_list_dto(tasks)

@@ -7,9 +7,9 @@ from todo_rpg.application.interactors import (
     CreateCurrentUserTaskInteractor,
     DeleteCurrentUserTaskInteractor,
     GetAllTasksInteractor,
-    GetCurentUserTasksInteractor,
-    GetDailyTasksBySessionTokenInteractor,
-    GetDeletedTasksBySessionTokenInteractor,
+    GetCurrentUserTasksInteractor,
+    GetCurrentUserDailyTasksInteractor,
+    GetCurrentUserDeletedTasksInteractor,
     GetOverdueTasksInteractor,
     GetCurrentUserTaskInteractor,
     UncompleteTaskInteractor,
@@ -31,10 +31,10 @@ from todo_rpg.presentation.schemas import (
 router = APIRouter(prefix="/tasks", route_class=DishkaRoute)
 
 
-# admin
 @router.get("", response_model=list[TaskSchemaRead])
 async def get_all_tasks(
     interactor: FromDishka[GetAllTasksInteractor],
+    session_token=Cookie(None),
     filters: TaskFilterParams = Depends(),
     sorting: TaskSortParams = Depends(),
     limit: int = 20,
@@ -42,12 +42,12 @@ async def get_all_tasks(
 ):
     filters_dto = TaskSchemaMapper.to_filter_params_dto(filters)
     sorting_dto = TaskSchemaMapper.to_sorting_params_dto(sorting)
-    return await interactor(filters_dto, sorting_dto, limit, offset)
+    return await interactor(session_token, filters_dto, sorting_dto, limit, offset)
 
 
 @router.get("/me", response_model=list[TaskSchemaRead])
 async def get_current_user_tasks(
-    interactor: FromDishka[GetCurentUserTasksInteractor],
+    interactor: FromDishka[GetCurrentUserTasksInteractor],
     session_token=Cookie(None),
     limit: int = 20,
     offset: int = 0,
@@ -58,8 +58,8 @@ async def get_current_user_tasks(
 
 
 @router.get("/me/archived")
-async def get_deleted_tasks_by_session_token(
-    interactor: FromDishka[GetDeletedTasksBySessionTokenInteractor],
+async def get_current_user_deleted_tasks(
+    interactor: FromDishka[GetCurrentUserDeletedTasksInteractor],
     session_token=Cookie(None),
 ):
     if session_token is None:
@@ -68,8 +68,8 @@ async def get_deleted_tasks_by_session_token(
 
 
 @router.get("/me/daily")
-async def get_daily_tasks_by_session_token(
-    interactor: FromDishka[GetDailyTasksBySessionTokenInteractor],
+async def get_current_user_daily_tasks(
+    interactor: FromDishka[GetCurrentUserDailyTasksInteractor],
     session_token=Cookie(None),
 ):
     if session_token is None:
@@ -78,7 +78,7 @@ async def get_daily_tasks_by_session_token(
 
 
 @router.get("/me/today")
-async def get_todays_deadline_tasks_by_session_token(
+async def get_current_user_todays_deadline_tasks(
     interactor: FromDishka[GetTodaysDeadlineInteractor], session_token=Cookie(None)
 ):
     if session_token is None:
@@ -87,7 +87,7 @@ async def get_todays_deadline_tasks_by_session_token(
 
 
 @router.get("/me/overdue")
-async def get_overdue_tasks_by_session_token(
+async def get_current_user_overdue_tasks(
     interactor: FromDishka[GetOverdueTasksInteractor], session_token=Cookie(None)
 ):
     if session_token is None:

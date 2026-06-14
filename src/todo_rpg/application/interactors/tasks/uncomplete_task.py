@@ -46,11 +46,11 @@ class UncompleteTaskInteractor:
             task_id, 2
         )
         if not tasks_history:
-            raise TaskNotFoundError()
+            raise TaskHistoryNotFoundError()
 
         task = await self.task_repo.get_task_by_id(task_id, user_id)
         if task is None:
-            raise TaskHistoryNotFoundError()
+            raise TaskNotFoundError()
 
         if task.repeat_limit is not None:
             task.repeat_limit += 1

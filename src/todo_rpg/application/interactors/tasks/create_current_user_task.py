@@ -59,9 +59,6 @@ class CreateCurrentUserTaskInteractor:
             custom_gold_reward=dto.custom_gold_reward,
         )
 
-        await self.uow.add(task)
-        await self.uow.flush()
-
         skills = await self.skill_repo.get_skills_by_ids(dto.related_skills)
         items = await self.item_repo.get_items_by_ids(dto.related_items)
 
@@ -70,6 +67,7 @@ class CreateCurrentUserTaskInteractor:
 
         output_dto = TaskMapper.to_dto(task)
 
+        await self.uow.add(task)
         await self.uow.commit()
 
         return output_dto
