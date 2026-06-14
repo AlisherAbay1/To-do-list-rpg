@@ -8,6 +8,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
     TaskRepositoryProtocol,
 )
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
+from todo_rpg.application.dto import TaskWithSkillsAndItemsDTO
 
 
 class GetCurrentUserTaskInteractor:
@@ -29,7 +30,7 @@ class GetCurrentUserTaskInteractor:
         task_id: UUID,
         get_related_skills: bool,
         get_related_items: bool,
-    ):
+    ) -> TaskWithSkillsAndItemsDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

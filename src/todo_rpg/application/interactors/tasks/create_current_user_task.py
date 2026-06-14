@@ -10,6 +10,7 @@ from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.domain import Task
 from todo_rpg.infrastructure.database.models import Tasks_to_items, Tasks_to_skills
 from todo_rpg.application.mappers.common import TaskMapper
+from todo_rpg.application.dto import TaskDTO
 
 
 class CreateCurrentUserTaskInteractor:
@@ -23,7 +24,7 @@ class CreateCurrentUserTaskInteractor:
         self.cash_repo = cash_repo
         self.uow = uow
 
-    async def __call__(self, session_token, dto: TaskCreateDTO):
+    async def __call__(self, session_token, dto: TaskCreateDTO) -> TaskDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

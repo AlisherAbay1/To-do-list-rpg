@@ -14,6 +14,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
     UserRepositoryProtocol,
 )
 from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
+from todo_rpg.application.dto import TaskWithUserAndSkillsDTO
 
 
 class CompleteTaskInteractor:
@@ -33,7 +34,9 @@ class CompleteTaskInteractor:
         self.cash_repo = cash_repo
         self.uow = uow
 
-    async def __call__(self, task_id: UUID, session_token: str):
+    async def __call__(
+        self, task_id: UUID, session_token: str
+    ) -> TaskWithUserAndSkillsDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

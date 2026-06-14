@@ -4,6 +4,7 @@ from todo_rpg.application.interfaces.repositories_interfaces import (
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from todo_rpg.application.exceptions import SessionNotFoundError
 from todo_rpg.application.mappers.common import TaskMapper
+from todo_rpg.application.dto import TaskDTO
 
 
 class GetOverdueTasksInteractor:
@@ -13,7 +14,7 @@ class GetOverdueTasksInteractor:
         self.repo = repo
         self.cash_repo = cash_repo
 
-    async def __call__(self, session_token: str):
+    async def __call__(self, session_token: str) -> list[TaskDTO]:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()

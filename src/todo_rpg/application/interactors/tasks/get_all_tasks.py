@@ -2,6 +2,8 @@ from todo_rpg.application.dto import TaskFilterParamsDTO, TaskSortParamsDTO
 from todo_rpg.application.interfaces.repositories_interfaces import (
     TaskRepositoryProtocol,
 )
+from todo_rpg.application.mappers import TaskMapper
+from todo_rpg.application.dto import TaskDetailDTO
 
 
 class GetAllTasksInteractor:
@@ -14,6 +16,7 @@ class GetAllTasksInteractor:
         sorting: TaskSortParamsDTO,
         limit: int,
         offset: int,
-    ):
+    ) -> list[TaskDetailDTO]:
         tasks = await self.repo.get_all_tasks(filters, sorting, limit, offset)
-        return list(tasks)
+        dtos = TaskMapper.to_list_detail_dto(tasks)
+        return dtos
