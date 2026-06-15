@@ -20,14 +20,12 @@ class GetCurrentUserItemInteractor:
         self.cash_repo = cash_repo
 
     async def __call__(
-        self, task_id: UUID, session_token: str
+        self, item_id: UUID, session_token: str
     ) -> ItemWithRequirementsDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        item = await self.repo.get_item_by_id_with_requirements_contains_skill(
-            task_id, user_id
-        )
+        item = await self.repo.get_item_by_id(item_id)
         if item is None:
             raise ItemNotFoundError()
         if item.user_id != user_id:

@@ -21,12 +21,21 @@ from todo_rpg.application.exceptions import (
     ShopListingAmountIsZeroError,
     ShopTransactionNotFoundError,
     TaskHistoryNotFoundError,
+    SkillIsAlreadyInRequirementsError,
 )
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 
 def register_exeptions(app: FastAPI):
+    @app.exception_handler(SkillIsAlreadyInRequirementsError)
+    async def skill_is_already_in_requirements(
+        request: Request, exc: SkillIsAlreadyInRequirementsError
+    ):
+        return JSONResponse(
+            status_code=404, content={"detail": "Skill is already in requirements"}
+        )
+
     @app.exception_handler(ShopListingAmountIsZeroError)
     async def shop_listing_amount_is_zero(
         request: Request, exc: ShopListingAmountIsZeroError

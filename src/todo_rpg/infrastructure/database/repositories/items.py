@@ -2,7 +2,6 @@ from typing import Optional, Sequence
 from uuid import UUID
 
 from sqlalchemy import delete, select
-from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from todo_rpg.domain import Item, Task, ItemRequirement
@@ -37,18 +36,6 @@ class ItemRepository:
         items = select(Item).join(Task.items).where(Task.id == task_id)
         result = await self._session.scalars(items)
         return result.all()
-
-    async def get_item_by_id_with_requirements_contains_skill(
-        self, item_id: UUID, user_id: UUID
-    ) -> Optional[Item]:
-        item = (
-            select(Item)
-            .where(Item.id == item_id, Item.user_id == user_id)
-            .options(selectinload(Item.requirements).joinedload(ItemRequirement.skill))
-            .with_for_update()
-        )
-        result = await self._session.scalar(item)
-        return result
 
     async def delete_requirement(self, item_id: UUID, skill_id: UUID) -> None:
         stmt = delete(ItemRequirement).where(

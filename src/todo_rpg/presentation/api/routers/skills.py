@@ -35,28 +35,6 @@ async def get_all_skills(
     return await interactor(session_token, limit, offset)
 
 
-@router.get("/{skill_id}", response_model=SkillSchemaRead)
-async def get_skill(
-    skill_id: UUID7,
-    interactor: FromDishka[GetSkillInteractor],
-    session_token=Cookie(None),
-):
-    if session_token is None:
-        raise HTTPException(401, "Not authenticated")
-    return await interactor(session_token, skill_id)
-
-
-@router.delete("/{skill_id}", status_code=204)
-async def delete_skill(
-    skill_id: UUID7,
-    interactor: FromDishka[DeleteSkillInteractor],
-    session_token=Cookie(None),
-):
-    if session_token is None:
-        raise HTTPException(401, "Not authenticated")
-    await interactor(session_token, skill_id)
-
-
 @router.get("/me", response_model=list[SkillSchemaRead])
 async def get_current_user_skills(
     interactor: FromDishka[GetCurrentUserSkillsInteractor],
@@ -111,3 +89,25 @@ async def update_current_user_skill_by_id(
 ):
     dto = SkillSchemaMapper.to_update_dto(data)
     return await interactor(skill_id, dto, session_token)
+
+
+@router.get("/{skill_id}", response_model=SkillSchemaRead)
+async def get_skill(
+    skill_id: UUID7,
+    interactor: FromDishka[GetSkillInteractor],
+    session_token=Cookie(None),
+):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(session_token, skill_id)
+
+
+@router.delete("/{skill_id}", status_code=204)
+async def delete_skill(
+    skill_id: UUID7,
+    interactor: FromDishka[DeleteSkillInteractor],
+    session_token=Cookie(None),
+):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    await interactor(session_token, skill_id)

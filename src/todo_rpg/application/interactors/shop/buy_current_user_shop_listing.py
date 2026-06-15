@@ -56,9 +56,7 @@ class BuyCurrentUserShopListingInteractor:
         if user is None:
             raise UserNotFoundError()
 
-        item = await self.item_repo.get_item_by_id_with_requirements_contains_skill(
-            shop_listing.item_id, user_id
-        )
+        item = await self.item_repo.get_item_by_id(shop_listing.item_id)
         if item is None:
             raise ItemNotFoundError()
 
@@ -85,12 +83,6 @@ class BuyCurrentUserShopListingInteractor:
         else:
             inventory.quantity += 1
 
-        dto = ExtendedShopMapper.to_shop_listing_with_short_inventory_item(
-            shop_listing_domain=shop_listing,
-            inventory_item_domain=inventory,
-            balance=user.gold,
-        )
-
         shop_transaction = ShopTransaction(
             user_id=user_id,
             shop_listing_id=shop_listing.id,
@@ -98,7 +90,15 @@ class BuyCurrentUserShopListingInteractor:
             item_title=item.title,
             price=shop_listing.price,
         )
+
         await self.uow.add(shop_transaction)
+
+        dto = ExtendedShopMapper.to_shop_listing_with_short_inventory_item(
+            shop_listing_domain=shop_listing,
+            inventory_item_domain=inventory,
+            balance=user.gold,
+        )
+
         await self.uow.commit()
 
         return dto

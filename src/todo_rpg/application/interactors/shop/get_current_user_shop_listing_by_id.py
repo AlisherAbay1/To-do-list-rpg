@@ -38,9 +38,7 @@ class GetCurrentUserShopListingByIdInteractor:
         if shop_listing.user_id != user_id:
             raise AccessDeniedError()
 
-        item = await self.item_repo.get_item_by_id_with_requirements_contains_skill(
-            shop_listing.item_id, user_id
-        )
+        item = await self.item_repo.get_item_by_id(shop_listing.item_id)
         if item is None:
             raise ItemNotFoundError()
 

@@ -23,7 +23,7 @@ class Item(Base, kw_only=True):
     )
 
     requirements: Mapped[list["ItemRequirement"]] = relationship(
-        lazy="noload", init=False, default_factory=list
+        lazy="selectin", init=False, default_factory=list
     )
 
     def delete(self) -> None:

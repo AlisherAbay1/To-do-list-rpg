@@ -19,7 +19,7 @@ class ItemRequirement(Base, kw_only=True):
     skill_id: Mapped[UUID] = mapped_column(ForeignKey("skill.id", ondelete="CASCADE"))
     required_lvl: Mapped[int] = mapped_column(BigInteger)
 
-    skill: Mapped[Skill] = relationship(lazy="noload", init=False)
+    skill: Mapped[Skill] = relationship(lazy="joined", init=False)
 
     def does_fit_requirement(self):
         return self.required_lvl <= self.skill.lvl

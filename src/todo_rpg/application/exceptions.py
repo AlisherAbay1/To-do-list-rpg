@@ -84,3 +84,7 @@ class ShopListingAmountIsZeroError(Exception):
 
 class UserRankNotFoundError(Exception):
     pass
+
+
+class SkillIsAlreadyInRequirementsError(Exception):
+    pass
