@@ -10,9 +10,9 @@ from todo_rpg.application.interactors import (
     GetSkillInteractor,
     DeleteSkillInteractor,
     ClearExpiredSkillsInteractor,
-    DeleteCurrentUserSkillByIdInteractor,
-    GetCurrentUserSkillByIdInteractor,
-    UpdateCurrentUserSkillById,
+    DeleteCurrentUserSkillInteractor,
+    GetCurrentUserSkillInteractor,
+    UpdateCurrentUserSkillInteractor,
 )
 
 
@@ -20,11 +20,11 @@ class SkillProvider(Provider):
     scope = Scope.REQUEST
     skill_repository = provide(SkillRepository, provides=SkillRepositoryProtocol)
     get_all_skills = provide(GetAllSkillsInteractor)
-    get_current_user_skills = provide(GetCurrentUserSkillsInteractor)
     get_skill = provide(GetSkillInteractor)
-    create_skill = provide(CreateCurrentUserSkillInteractor)
     delete_skill = provide(DeleteSkillInteractor)
+    get_current_user_skills = provide(GetCurrentUserSkillsInteractor)
+    create_current_user_skill = provide(CreateCurrentUserSkillInteractor)
     clear_expired_skills = provide(ClearExpiredSkillsInteractor)
-    delete_current_user_skill_by_id = provide(DeleteCurrentUserSkillByIdInteractor)
-    get_current_user_skill_by_id = provide(GetCurrentUserSkillByIdInteractor)
-    update_current_user_skill_by_id = provide(UpdateCurrentUserSkillById)
+    delete_current_user_skill_by_id = provide(DeleteCurrentUserSkillInteractor)
+    get_current_user_skill = provide(GetCurrentUserSkillInteractor)
+    update_current_user_skill = provide(UpdateCurrentUserSkillInteractor)

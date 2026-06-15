@@ -14,7 +14,7 @@ from todo_rpg.application.exceptions import (
 from todo_rpg.application.dto.sentinel_types import Unset
 
 
-class UpdateCurrentUserSkillById:
+class UpdateCurrentUserSkillInteractor:
     def __init__(
         self,
         repo: SkillRepositoryProtocol,

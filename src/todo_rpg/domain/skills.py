@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from uuid import UUID
 
@@ -37,3 +37,7 @@ class Skill(Base, kw_only=True):
 
     def calculate_xp_for_next_lvl(self, xp: int) -> int:
         return 1000 - xp % 1000
+
+    def delete(self):
+        self.deleted = True
+        self.deleted_at = datetime.now(tz=timezone.utc)

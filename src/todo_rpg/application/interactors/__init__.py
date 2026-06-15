@@ -18,9 +18,9 @@ from .skills import (
     GetAllSkillsInteractor,
     GetCurrentUserSkillsInteractor,
     GetSkillInteractor,
-    DeleteCurrentUserSkillByIdInteractor,
-    GetCurrentUserSkillByIdInteractor,
-    UpdateCurrentUserSkillById,
+    DeleteCurrentUserSkillInteractor,
+    GetCurrentUserSkillInteractor,
+    UpdateCurrentUserSkillInteractor,
 )
 
 from .tasks import (
@@ -141,10 +141,10 @@ __all__ = (
     "CreateCurrentUserTaskCategoryInteractor",
     "DeleteCurrentUserTaskCategoryByIdInteractor",
     "UpdateCurrentUserTaskCategoryInteractor",
-    "GetCurrentUserSkillByIdInteractor",
-    "DeleteCurrentUserSkillByIdInteractor",
+    "GetCurrentUserSkillInteractor",
+    "DeleteCurrentUserSkillInteractor",
     "ClearExpiredTasksInteractor",
-    "UpdateCurrentUserSkillById",
+    "UpdateCurrentUserSkillInteractor",
     "GetCurrentUserItemInteractor",
     "UpdateCurrentUserItemInteractor",
     "DeleteCurrentUserItemInteractor",

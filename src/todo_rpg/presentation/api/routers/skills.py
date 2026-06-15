@@ -8,9 +8,9 @@ from todo_rpg.application.interactors import (
     GetAllSkillsInteractor,
     GetCurrentUserSkillsInteractor,
     GetSkillInteractor,
-    DeleteCurrentUserSkillByIdInteractor,
-    GetCurrentUserSkillByIdInteractor,
-    UpdateCurrentUserSkillById,
+    DeleteCurrentUserSkillInteractor,
+    GetCurrentUserSkillInteractor,
+    UpdateCurrentUserSkillInteractor,
 )
 from todo_rpg.presentation.mappers import SkillSchemaMapper
 from todo_rpg.presentation.schemas import (
@@ -25,9 +25,36 @@ router = APIRouter(prefix="/skill", route_class=DishkaRoute)
 
 @router.get("", response_model=list[SkillSchemaRead])
 async def get_all_skills(
-    interactor: FromDishka[GetAllSkillsInteractor], limit: int = 20, offset: int = 0
+    interactor: FromDishka[GetAllSkillsInteractor],
+    session_token=Cookie(None),
+    limit: int = 20,
+    offset: int = 0,
 ):
-    return await interactor(limit, offset)
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(session_token, limit, offset)
+
+
+@router.get("/{skill_id}", response_model=SkillSchemaRead)
+async def get_skill(
+    skill_id: UUID7,
+    interactor: FromDishka[GetSkillInteractor],
+    session_token=Cookie(None),
+):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(session_token, skill_id)
+
+
+@router.delete("/{skill_id}", status_code=204)
+async def delete_skill(
+    skill_id: UUID7,
+    interactor: FromDishka[DeleteSkillInteractor],
+    session_token=Cookie(None),
+):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    await interactor(session_token, skill_id)
 
 
 @router.get("/me", response_model=list[SkillSchemaRead])
@@ -57,7 +84,7 @@ async def create_current_user_skill(
 @router.delete("/me/{skill_id}", status_code=204)
 async def delete_current_user_skill(
     skill_id: UUID7,
-    interactor: FromDishka[DeleteCurrentUserSkillByIdInteractor],
+    interactor: FromDishka[DeleteCurrentUserSkillInteractor],
     session_token=Cookie(None),
 ):
     await interactor(skill_id, session_token)
@@ -66,7 +93,7 @@ async def delete_current_user_skill(
 @router.get("/me/{skill_id}", response_model=SkillWithTasksAndNextLvlXpSchemaRead)
 async def get_current_user_skill_by_id(
     skill_id: UUID7,
-    interactor: FromDishka[GetCurrentUserSkillByIdInteractor],
+    interactor: FromDishka[GetCurrentUserSkillInteractor],
     get_related_tasks: bool,
     session_token=Cookie(None),
 ):
@@ -79,21 +106,8 @@ async def get_current_user_skill_by_id(
 async def update_current_user_skill_by_id(
     skill_id: UUID7,
     data: SkillSchemaUpdate,
-    interactor: FromDishka[UpdateCurrentUserSkillById],
+    interactor: FromDishka[UpdateCurrentUserSkillInteractor],
     session_token=Cookie(None),
 ):
     dto = SkillSchemaMapper.to_update_dto(data)
     return await interactor(skill_id, dto, session_token)
-
-
-@router.get("/{skill_id}", response_model=SkillSchemaRead)
-async def get_skill(
-    skill_id: UUID7,
-    interactor: FromDishka[GetSkillInteractor],
-):
-    return await interactor(skill_id)
-
-
-@router.delete("/{skill_id}", status_code=204)
-async def delete_skill(skill_id: UUID7, interactor: FromDishka[DeleteSkillInteractor]):
-    await interactor(skill_id)

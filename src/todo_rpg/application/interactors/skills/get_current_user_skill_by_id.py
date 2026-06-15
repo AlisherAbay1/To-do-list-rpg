@@ -13,7 +13,7 @@ from todo_rpg.application.exceptions import (
 from todo_rpg.application.dto import SkillWithTasksAndNextLvlXpDTO
 
 
-class GetCurrentUserSkillByIdInteractor:
+class GetCurrentUserSkillInteractor:
     def __init__(
         self,
         skill_repo: SkillRepositoryProtocol,

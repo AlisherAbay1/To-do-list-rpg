@@ -13,7 +13,7 @@ from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProto
 from uuid import UUID
 
 
-class DeleteCurrentUserSkillByIdInteractor:
+class DeleteCurrentUserSkillInteractor:
     def __init__(
         self,
         repo: SkillRepositoryProtocol,
