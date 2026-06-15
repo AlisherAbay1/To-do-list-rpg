@@ -46,7 +46,7 @@ from .extended import (
     TaskWithSkillsAndItemsDTO,
     StatsOverviewDTO,
     ItemWithRequirementsDTO,
-    ShopListingShortWithFtRequiremenetsDTO,
+    ShopListingShortWithFitRequirementsDTO,
     InventoryShortWithItemDTO,
     ShopListingShortWithShortInventoryItemDTO,
 )
@@ -92,7 +92,7 @@ __all__ = (
     "ShopListingDTO",
     "ShopListingCreateDTO",
     "ShopListingUpdateDTO",
-    "ShopListingShortWithFtRequiremenetsDTO",
+    "ShopListingShortWithFitRequirementsDTO",
     "SkillRequirementsWithFitRequiremenetDTO",
     "InventoryDTO",
     "InventoryCreateDTO",

@@ -4,7 +4,7 @@ from .tasks import TaskWithUserAndSkillsDTO, TaskWithSkillsAndItemsDTO
 from .shared import StatsOverviewDTO
 from .items import ItemWithRequirementsDTO
 from .shop import (
-    ShopListingShortWithFtRequiremenetsDTO,
+    ShopListingShortWithFitRequirementsDTO,
     ShopListingShortWithShortInventoryItemDTO,
 )
 from .inventory import InventoryShortWithItemDTO
@@ -16,7 +16,7 @@ __all__ = (
     "TaskWithSkillsAndItemsDTO",
     "ItemWithRequirementsDTO",
     "StatsOverviewDTO",
-    "ShopListingShortWithFtRequiremenetsDTO",
+    "ShopListingShortWithFitRequirementsDTO",
     "InventoryShortWithItemDTO",
     "ShopListingShortWithShortInventoryItemDTO",
 )

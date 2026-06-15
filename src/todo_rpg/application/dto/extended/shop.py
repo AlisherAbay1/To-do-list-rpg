@@ -8,7 +8,7 @@ from uuid import UUID
 
 
 @dataclass(slots=True)
-class ShopListingShortWithFtRequiremenetsDTO:
+class ShopListingShortWithFitRequirementsDTO:
     id: UUID
     item_id: UUID
     price: int

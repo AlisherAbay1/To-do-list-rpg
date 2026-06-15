@@ -39,27 +39,26 @@ class BuyCurrentUserShopListingInteractor:
         self.cash_repo = cash_repo
         self.uow = uow
 
-    # тут, по идее, можно поправить и проверить, является ли item принадлежащим юзеру
     async def __call__(
         self, session_token: str, shop_listing_id: UUID
     ) -> ShopListingShortWithShortInventoryItemDTO:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
+
         shop_listing = await self.shop_repo.get_shop_listing_by_id(shop_listing_id)
         if shop_listing is None:
             raise ShopListingNotFoundError()
         if shop_listing.user_id != user_id:
             raise AccessDeniedError()
+
         user = await self.user_repo.get_user(user_id)
-        inventory = await self.inventory_repo.get_inventory_item_by_item_id(
-            shop_listing.item_id, user_id
-        )
+        if user is None:
+            raise UserNotFoundError()
+
         item = await self.item_repo.get_item_by_id_with_requirements_contains_skill(
             shop_listing.item_id, user_id
         )
-        if user is None:
-            raise UserNotFoundError()
         if item is None:
             raise ItemNotFoundError()
 
@@ -69,8 +68,13 @@ class BuyCurrentUserShopListingInteractor:
             raise UserDoesntFitSkillRequirementsError()
         if shop_listing.quantity == 0:
             raise ShopListingAmountIsZeroError()
+
         user.gold -= shop_listing.price
         shop_listing.quantity -= 1
+
+        inventory = await self.inventory_repo.get_inventory_item_by_item_id(
+            shop_listing.item_id, user_id
+        )
 
         if inventory is None:
             inventory = Inventory(

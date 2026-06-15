@@ -1,6 +1,6 @@
 from todo_rpg.domain import Shop, Item, Inventory
 from todo_rpg.application.dto import (
-    ShopListingShortWithFtRequiremenetsDTO,
+    ShopListingShortWithFitRequirementsDTO,
     SkillRequirementsWithFitRequiremenetDTO,
     ShopListingShortWithShortInventoryItemDTO,
 )
@@ -9,8 +9,8 @@ from todo_rpg.application.mappers import SkillMapper, ShopMapper, InventoryMappe
 
 class ExtendedShopMapper:
     @staticmethod
-    def to_shop_listing_with_fit_requirement(shop_domain: Shop, item_domain: Item):
-        dto = ShopListingShortWithFtRequiremenetsDTO(
+    def to_shop_listing_with_fit_requirements(shop_domain: Shop, item_domain: Item):
+        dto = ShopListingShortWithFitRequirementsDTO(
             id=shop_domain.id,
             item_id=shop_domain.item_id,
             price=shop_domain.price,

@@ -20,8 +20,10 @@ class GetCurrentUserShopListingsInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
+
         shop_listings = await self.repo.get_shop_listings_by_user_id(
             user_id, limit, offset
         )
+
         dtos = ShopMapper.to_short_list_dto(shop_listings)
         return dtos

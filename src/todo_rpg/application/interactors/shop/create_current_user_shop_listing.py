@@ -1,13 +1,16 @@
 from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     ShopRepositoryProtocol,
+    ItemRepositoryProtocol,
+    RedisRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from todo_rpg.application.mappers import ShopMapper
 from todo_rpg.application.dto import ShopListingShortDTO, ShopListingCreateDTO
 from todo_rpg.application.exceptions import (
     SessionNotFoundError,
     ShopListingAlreadyExistsError,
+    ItemNotFoundError,
+    AccessDeniedError,
 )
 from todo_rpg.domain import Shop
 
@@ -15,11 +18,13 @@ from todo_rpg.domain import Shop
 class CreateCurrentUserShopListingInteractor:
     def __init__(
         self,
-        repo: ShopRepositoryProtocol,
+        shop_repo: ShopRepositoryProtocol,
+        item_repo: ItemRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
-        self.repo = repo
+        self.shop_repo = shop_repo
+        self.item_repo = item_repo
         self.cash_repo = cash_repo
         self.uow = uow
 
@@ -29,7 +34,16 @@ class CreateCurrentUserShopListingInteractor:
         user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        possible_shop_listing = await self.repo.get_shop_listing_by_item_id(dto.item_id)
+
+        item = await self.item_repo.get_item_by_id(dto.item_id)
+        if item is None:
+            raise ItemNotFoundError()
+        if item.user_id != user_id:
+            raise AccessDeniedError()
+
+        possible_shop_listing = await self.shop_repo.get_shop_listing_by_item_id(
+            dto.item_id
+        )
         if possible_shop_listing is not None:
             raise ShopListingAlreadyExistsError()
 
