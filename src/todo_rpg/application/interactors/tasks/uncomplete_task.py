@@ -42,9 +42,7 @@ class UncompleteTaskInteractor:
         if user_id is None:
             raise SessionNotFoundError()
 
-        tasks_history = await self.task_history_repo.get_recent_history_with_skills(
-            task_id, 2
-        )
+        tasks_history = await self.task_history_repo.get_recent_history(task_id, 2)
         if not tasks_history:
             raise TaskHistoryNotFoundError()
 

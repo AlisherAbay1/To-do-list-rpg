@@ -46,7 +46,6 @@ class UseCurrentUserInventoryItemInteractor:
         if inventory_item.quantity > 1:
             inventory_item.quantity -= 1
         else:
-            inventory_item.quantity = 0
             await self.inventory_repo.delete(inventory_item)
 
         item = await self.item_repo.get_item_by_id(inventory_item.item_id)

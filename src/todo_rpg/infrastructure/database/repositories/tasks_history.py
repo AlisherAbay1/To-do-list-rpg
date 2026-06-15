@@ -2,9 +2,8 @@ from typing import Sequence, Optional
 from uuid import UUID
 from datetime import datetime, timezone, timedelta
 
-from sqlalchemy import desc, select, func, and_
+from sqlalchemy import desc, select, func
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from todo_rpg.domain.value_objects import TaskReward
 from todo_rpg.domain import Skill, Task, TaskHistory
@@ -17,7 +16,7 @@ class TaskHistoryRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def get_recent_history_with_skills(
+    async def get_recent_history(
         self, task_id: UUID, limit: int
     ) -> Sequence[TaskHistory]:
         task_history = (
@@ -25,7 +24,6 @@ class TaskHistoryRepository:
             .where(TaskHistory.task_id == task_id)
             .order_by(desc(TaskHistory.completed_at))
             .limit(limit)
-            .options(selectinload(TaskHistory.skills))
             .with_for_update()
         )
 
@@ -69,11 +67,9 @@ class TaskHistoryRepository:
             select(func.count())
             .select_from(TaskHistory)
             .where(
-                and_(
-                    TaskHistory.user_id == user_id,
-                    TaskHistory.completed_at >= day_start,
-                    TaskHistory.completed_at < day_end,
-                )
+                TaskHistory.user_id == user_id,
+                TaskHistory.completed_at >= day_start,
+                TaskHistory.completed_at < day_end,
             )
         )
         result = await self._session.scalar(tasks_history)
@@ -92,11 +88,9 @@ class TaskHistoryRepository:
             select(func.count())
             .select_from(TaskHistory)
             .where(
-                and_(
-                    TaskHistory.user_id == user_id,
-                    TaskHistory.completed_at >= week_start,
-                    TaskHistory.completed_at < week_end,
-                )
+                TaskHistory.user_id == user_id,
+                TaskHistory.completed_at >= week_start,
+                TaskHistory.completed_at < week_end,
             )
         )
         result = await self._session.scalar(tasks_history)

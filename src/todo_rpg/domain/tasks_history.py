@@ -25,13 +25,13 @@ class TaskHistory(Base, kw_only=True):
 
     skills: Mapped[list["Skill"]] = relationship(
         secondary="tasks_history_to_skills",
-        lazy="noload",
+        lazy="selectin",
         init=False,
         default_factory=list,
     )
     items: Mapped[list["Item"]] = relationship(
         secondary="tasks_history_to_items",
-        lazy="noload",
+        lazy="selectin",
         init=False,
         default_factory=list,
     )

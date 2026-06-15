@@ -63,10 +63,10 @@ class Task(Base, kw_only=True):
     )
 
     skills: Mapped[list["Skill"]] = relationship(
-        secondary="tasks_to_skills", lazy="noload", init=False, default_factory=list
+        secondary="tasks_to_skills", lazy="selectin", init=False, default_factory=list
     )
     items: Mapped[list["Item"]] = relationship(
-        secondary="tasks_to_items", lazy="noload", init=False, default_factory=list
+        secondary="tasks_to_items", lazy="selectin", init=False, default_factory=list
     )
 
     def complete(self):

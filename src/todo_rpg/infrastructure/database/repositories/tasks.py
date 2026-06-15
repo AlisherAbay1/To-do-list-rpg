@@ -58,17 +58,15 @@ class TaskRepository:
         return result.all()
 
     async def get_deleted_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]:
-        tasks = select(Task).where(and_(Task.user_id == user_id, Task.deleted == True))
+        tasks = select(Task).where(Task.user_id == user_id, Task.deleted == True)
         result = await self._session.scalars(tasks)
         return result.all()
 
     async def get_overdue_tasks_by_user_id(self, user_id: UUID) -> Sequence[Task]:
         tasks = select(Task).where(
-            and_(
-                Task.user_id == user_id,
-                Task.deadline < datetime.now(tz=timezone.utc),
-                Task.deleted == False,
-            )
+            Task.user_id == user_id,
+            Task.deadline < datetime.now(tz=timezone.utc),
+            Task.deleted == False,
         )
         result = await self._session.scalars(tasks)
         m = result.all()

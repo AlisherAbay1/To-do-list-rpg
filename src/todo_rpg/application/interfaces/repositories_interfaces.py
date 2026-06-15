@@ -75,7 +75,7 @@ class TaskCategoriesRepositoryProtocol(Protocol):
 
 
 class TaskHistoryRepositoryProtocol(Protocol):
-    async def get_recent_history_with_skills(
+    async def get_recent_history(
         self, task_id: UUID, limit: int
     ) -> Sequence[TaskHistory]: ...
     async def save_completion(
