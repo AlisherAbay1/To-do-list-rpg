@@ -31,7 +31,7 @@ async def get_all_task_categories(
 
 
 @router.get("/me", response_model=list[TaskCategoriesSchema])
-async def get_current_user_task_catigories(
+async def get_current_user_task_categories(
     interactor: FromDishka[GetCurrentUserTaskCategoriesInteractor],
     session_token=Cookie(None),
 ):
@@ -41,7 +41,7 @@ async def get_current_user_task_catigories(
 
 
 @router.get("/me/{task_category_id}", response_model=TaskCategoryWithTasksSchema)
-async def get_current_user_task_catigory_by_id(
+async def get_current_user_task_category_by_id(
     interactor: FromDishka[GetCurrentUserTaskCategoryByIdInteractor],
     task_category_id: UUID,
     get_tasks: bool,

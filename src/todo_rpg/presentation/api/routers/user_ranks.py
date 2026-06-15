@@ -43,7 +43,7 @@ async def get_current_user_rank(
 
 
 @router.post("/me", response_model=UserRankSchemaRead)
-async def create_current_user_skill(
+async def create_current_user_rank(
     interactor: FromDishka[CreateCurrentUserRankInteractor],
     schema: UserRankSchemaCreate,
     session_token=Cookie(None),
@@ -55,7 +55,7 @@ async def create_current_user_skill(
 
 
 @router.patch("/me/{user_rank_id}", response_model=UserRankSchemaRead)
-async def update_current_user_skill(
+async def update_current_user_rank(
     interactor: FromDishka[UpdateCurrentUserRankInteractor],
     schema: UserRankSchemaUpdate,
     user_rank_id: UUID7,
@@ -67,12 +67,12 @@ async def update_current_user_skill(
     return await interactor(user_rank_id, session_token, dto)
 
 
-@router.delete("me/{user_rank_id}", status_code=204)
-async def delete_current_user_task(
-    task_id: UUID7,
+@router.delete("/me/{user_rank_id}", status_code=204)
+async def delete_current_user_rank(
+    user_rank_id: UUID7,
     interactor: FromDishka[DeleteCurrentUserRankInteractor],
     session_token=Cookie(None),
 ):
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
-    await interactor(session_token, task_id)
+    await interactor(session_token, user_rank_id)

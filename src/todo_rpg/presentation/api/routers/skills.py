@@ -65,6 +65,8 @@ async def delete_current_user_skill(
     interactor: FromDishka[DeleteCurrentUserSkillInteractor],
     session_token=Cookie(None),
 ):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
     await interactor(skill_id, session_token)
 
 
@@ -87,6 +89,8 @@ async def update_current_user_skill_by_id(
     interactor: FromDishka[UpdateCurrentUserSkillInteractor],
     session_token=Cookie(None),
 ):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
     dto = SkillSchemaMapper.to_update_dto(data)
     return await interactor(skill_id, dto, session_token)
 
