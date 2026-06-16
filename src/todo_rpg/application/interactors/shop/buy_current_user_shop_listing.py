@@ -13,9 +13,11 @@ from todo_rpg.application.exceptions import (
     AccessDeniedError,
     UserNotFoundError,
     ItemNotFoundError,
+)
+from todo_rpg.domain.exceptions import (
+    ShopListingAmountIsZeroError,
     UserBalanceNotEnoughError,
     UserDoesntFitSkillRequirementsError,
-    ShopListingAmountIsZeroError,
 )
 from todo_rpg.domain import Inventory, ShopTransaction
 from todo_rpg.application.mappers import ExtendedShopMapper

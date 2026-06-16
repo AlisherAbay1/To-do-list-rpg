@@ -26,11 +26,11 @@ class Skill(Base, kw_only=True):
 
     def apply_reward(self, xp: int):
         self.xp += xp
-        self.lvl = self.calculate_lvl(xp)
+        self.lvl = self.calculate_lvl(self.xp)
 
     def cancel_reward(self, xp: int):
         self.xp = max(0, self.xp - xp)
-        self.lvl = self.calculate_lvl(xp)
+        self.lvl = self.calculate_lvl(self.xp)
 
     def calculate_lvl(self, xp: int) -> int:
         return 1 + xp // 1000

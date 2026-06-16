@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid6 import uuid7
 
 from todo_rpg.domain.value_objects import TaskReward
-from todo_rpg.application.exceptions import (
+from todo_rpg.domain.exceptions import (
     TaskAlreadyDoneError,
     TaskExecutedTooEarlyError,
 )

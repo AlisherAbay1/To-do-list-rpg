@@ -55,7 +55,7 @@ class CompleteTaskInteractor:
 
         for skill in skills:
             skill.apply_reward(rewards.xp)
-        user.apply_rewards(rewards)
+        user.apply_rewards(rewards.xp, rewards.gold)
 
         await self.task_history_repo.save_completion(task, skills, rewards)
 

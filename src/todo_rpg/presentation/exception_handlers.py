@@ -1,27 +1,29 @@
 from todo_rpg.application.exceptions import (
     UserNotFoundError,
-    EmailAlreadyTakenError,
-    IncorrectPasswordError,
     TaskNotFoundError,
-    TaskAlreadyDoneError,
     SkillNotFoundError,
     ItemNotFoundError,
-    UsernameAlreadyTakenError,
     SessionNotFoundError,
     AccessDeniedError,
-    TaskExecutedTooEarlyError,
     TaskNotFoundInHistoryError,
     TaskCategoryNotFoundError,
     ShopListingNotFoundError,
     InventoryItemNotFoundError,
-    UserBalanceNotEnoughError,
-    UserDoesntFitSkillRequirementsError,
     ShopListingAlreadyExistsError,
     UserRankNotFoundError,
-    ShopListingAmountIsZeroError,
     ShopTransactionNotFoundError,
     TaskHistoryNotFoundError,
+)
+from todo_rpg.domain.exceptions import (
+    TaskAlreadyDoneError,
     SkillIsAlreadyInRequirementsError,
+    UserDoesntFitSkillRequirementsError,
+    TaskExecutedTooEarlyError,
+    EmailAlreadyTakenError,
+    IncorrectPasswordError,
+    UsernameAlreadyTakenError,
+    ShopListingAmountIsZeroError,
+    UserBalanceNotEnoughError,
 )
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse

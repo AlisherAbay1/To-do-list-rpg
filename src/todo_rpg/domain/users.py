@@ -5,7 +5,6 @@ from sqlalchemy import BigInteger, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 from uuid6 import uuid7
 
-from todo_rpg.domain.value_objects import TaskReward
 from todo_rpg.infrastructure.database.models.base import Base
 
 
@@ -27,14 +26,14 @@ class User(Base, kw_only=True):
     language: Mapped[str] = mapped_column(String(255), default="eng")
     timezone: Mapped[str] = mapped_column(String(255), default="UTC")
 
-    def apply_rewards(self, rewards: TaskReward):
-        self.xp += rewards.xp
-        self.lvl = self.calculate_lvl(rewards.xp)
-        self.gold += rewards.gold
+    def apply_rewards(self, xp_earned: int, gold_earned: int):
+        self.xp += xp_earned
+        self.lvl = self.calculate_lvl(self.xp)
+        self.gold += gold_earned
 
     def cancel_rewards(self, xp_earned: int, gold_earned: int):
         self.xp -= xp_earned
-        self.lvl = self.calculate_lvl(xp_earned)
+        self.lvl = self.calculate_lvl(self.xp)
         self.gold -= gold_earned
 
     def calculate_lvl(self, xp: int):

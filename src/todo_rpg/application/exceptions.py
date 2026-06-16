@@ -2,14 +2,6 @@ class UserNotFoundError(Exception):
     pass
 
 
-class EmailAlreadyTakenError(Exception):
-    pass
-
-
-class IncorrectPasswordError(Exception):
-    pass
-
-
 class TaskNotFoundError(Exception):
     pass
 
@@ -22,23 +14,11 @@ class TaskHistoryNotFoundError(Exception):
     pass
 
 
-class TaskAlreadyDoneError(Exception):
-    pass
-
-
-class TaskExecutedTooEarlyError(Exception):
-    pass
-
-
 class SkillNotFoundError(Exception):
     pass
 
 
 class ItemNotFoundError(Exception):
-    pass
-
-
-class UsernameAlreadyTakenError(Exception):
     pass
 
 
@@ -66,25 +46,9 @@ class InventoryItemNotFoundError(Exception):
     pass
 
 
-class UserBalanceNotEnoughError(Exception):
-    pass
-
-
-class UserDoesntFitSkillRequirementsError(Exception):
-    pass
-
-
 class ShopListingAlreadyExistsError(Exception):
     pass
 
 
-class ShopListingAmountIsZeroError(Exception):
-    pass
-
-
 class UserRankNotFoundError(Exception):
-    pass
-
-
-class SkillIsAlreadyInRequirementsError(Exception):
     pass

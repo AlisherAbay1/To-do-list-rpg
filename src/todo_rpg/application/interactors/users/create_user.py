@@ -1,5 +1,5 @@
 from todo_rpg.application.dto.common.users import CreateUserDTO, UserAuthDTO
-from todo_rpg.application.exceptions import (
+from todo_rpg.domain.exceptions import (
     EmailAlreadyTakenError,
     UsernameAlreadyTakenError,
 )

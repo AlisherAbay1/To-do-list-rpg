@@ -9,8 +9,8 @@ from todo_rpg.application.exceptions import (
     SessionNotFoundError,
     ItemNotFoundError,
     AccessDeniedError,
-    SkillIsAlreadyInRequirementsError,
 )
+from todo_rpg.domain.exceptions import SkillIsAlreadyInRequirementsError
 from todo_rpg.application.mappers import ItemExtendedMapper
 from uuid import UUID
 from todo_rpg.application.dto import ItemWithRequirementsDTO
