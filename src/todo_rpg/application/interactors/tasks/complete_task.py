@@ -9,12 +9,12 @@ from todo_rpg.application.exceptions import (
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from todo_rpg.application.interfaces.repositories_interfaces import (
     SkillRepositoryProtocol,
-    TaskHistoryRepositoryProtocol,
     TaskRepositoryProtocol,
     UserRepositoryProtocol,
 )
 from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.dto import TaskWithUserAndSkillsDTO
+from todo_rpg.domain import TaskHistory
 
 
 class CompleteTaskInteractor:
@@ -23,14 +23,12 @@ class CompleteTaskInteractor:
         task_repo: TaskRepositoryProtocol,
         user_repo: UserRepositoryProtocol,
         skill_repo: SkillRepositoryProtocol,
-        task_history_repo: TaskHistoryRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.task_repo = task_repo
         self.user_repo = user_repo
         self.skill_repo = skill_repo
-        self.task_history_repo = task_history_repo
         self.cash_repo = cash_repo
         self.uow = uow
 
@@ -57,7 +55,16 @@ class CompleteTaskInteractor:
             skill.apply_reward(rewards.xp)
         user.apply_rewards(rewards.xp, rewards.gold)
 
-        await self.task_history_repo.save_completion(task, skills, rewards)
+        task_history = TaskHistory(
+            user_id=task.user_id,
+            task_id=task.id,
+            title=task.title,
+            xp_earned=rewards.xp,
+            gold_earned=rewards.gold,
+        )
+        task_history.skills.extend(skills)
+
+        await self.uow.add(task_history)
 
         dto = ExtendedTaskMapper.to_dto_with_skills_and_user(task, user, skills)
 

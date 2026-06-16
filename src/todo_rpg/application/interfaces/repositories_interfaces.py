@@ -17,7 +17,6 @@ from todo_rpg.application.dto import (
     TaskSortParamsDTO,
     ShopTransactionFiltersDTO,
 )
-from todo_rpg.domain.value_objects import TaskReward
 
 
 class UserRepositoryProtocol(Protocol):
@@ -78,9 +77,6 @@ class TaskHistoryRepositoryProtocol(Protocol):
     async def get_recent_history(
         self, task_id: UUID, limit: int
     ) -> Sequence[TaskHistory]: ...
-    async def save_completion(
-        self, task: Task, skills: Sequence[Skill], rewards: TaskReward
-    ) -> None: ...
     async def get_amount_of_total_completed_tasks(
         self, user_id: UUID
     ) -> Optional[int]: ...

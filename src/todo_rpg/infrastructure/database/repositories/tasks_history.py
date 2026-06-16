@@ -5,9 +5,7 @@ from datetime import datetime, timezone, timedelta
 from sqlalchemy import desc, select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from todo_rpg.domain.value_objects import TaskReward
-from todo_rpg.domain import Skill, Task, TaskHistory
-from todo_rpg.infrastructure.database.models.relations import Tasks_history_to_skills
+from todo_rpg.domain import TaskHistory
 
 
 class TaskHistoryRepository:
@@ -29,25 +27,6 @@ class TaskHistoryRepository:
 
         results = await self._session.scalars(task_history)
         return results.all()
-
-    async def save_completion(
-        self, task: Task, skills: Sequence[Skill], rewards: TaskReward
-    ) -> None:
-        task_history = TaskHistory(
-            user_id=task.user_id,
-            task_id=task.id,
-            title=task.title,
-            xp_earned=rewards.xp,
-            gold_earned=rewards.gold,
-        )
-        self._session.add(task_history)
-        await self._session.flush()
-
-        for skill in skills:
-            skill_history = Tasks_history_to_skills(
-                task_history_id=task_history.id, skill_id=skill.id
-            )
-            self._session.add(skill_history)
 
     async def get_amount_of_total_completed_tasks(self, user_id: UUID) -> Optional[int]:
         tasks_history = (

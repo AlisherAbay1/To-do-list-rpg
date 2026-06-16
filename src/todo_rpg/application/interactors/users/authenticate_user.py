@@ -1,5 +1,6 @@
 from todo_rpg.application.dto.common.users import UserAuthDTO, SignInDTO
-from todo_rpg.application.exceptions import IncorrectPasswordError, UserNotFoundError
+from todo_rpg.application.exceptions import UserNotFoundError
+from todo_rpg.domain.exceptions import IncorrectPasswordError
 from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from todo_rpg.application.interfaces.repositories_interfaces import (
     UserRepositoryProtocol,
