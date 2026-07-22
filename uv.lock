@@ -446,14 +446,14 @@ wheels = [
 
 [[package]]
 name = "dature"
-version = "0.19.1"
+version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "adaptix" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6f/db/4bbcf65e3cd323ca116554ec9c32d7141e1bd3436d68617605c5480ef81c/dature-0.19.1.tar.gz", hash = "sha256:c9141ebe11b3a4cc95ae34f341f79e567db3d5723a687c167dac43f75f9e318f", size = 298899, upload-time = "2026-05-26T16:34:37.47Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/42/6a/10297ba2e990099546b15600fe2dcef22135a11d63bee1fcae1f819f99e8/dature-1.0.0.tar.gz", hash = "sha256:5fda6843e15348844e93041b6ff7c052b0119c61ef8caadf415159512ca59f2d", size = 377866, upload-time = "2026-07-20T17:33:27.766Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5b/e6/8119dc06e67f458832b86c4a316c23023a78cc087d01142bb4f33c4dae84/dature-0.19.1-py3-none-any.whl", hash = "sha256:70ec5bfb5e116fe8024a32417d22f795d11a787e16c125fc15dc39e5ca4cba8e", size = 107099, upload-time = "2026-05-26T16:34:35.971Z" },
+    { url = "https://files.pythonhosted.org/packages/40/2e/262fabc421055d4e92b550a252fa7ab33bf19a61031156868927db30d007/dature-1.0.0-py3-none-any.whl", hash = "sha256:2e790ade3d7e6a5e096256f5f79cd3bbaf5d88b9b4ca60292151937025b97787", size = 143153, upload-time = "2026-07-20T17:33:26.23Z" },
 ]
 
 [package.optional-dependencies]

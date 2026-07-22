@@ -1,3 +1,9 @@
+from todo_rpg.application.dto.common.users import UserDTO
+
+
+from todo_rpg.presentation.schemas.common.users import UserSuccessAuthSchema
+
+
 from dishka.integrations.fastapi import DishkaRoute, FromDishka
 from fastapi import APIRouter, Cookie, HTTPException, Response
 from pydantic import UUID7
@@ -18,7 +24,6 @@ from todo_rpg.application.interactors import (
     ChangeCurrentUserRankInteractor,
 )
 from todo_rpg.infrastructure.config import config
-from todo_rpg.core.security import IS_PRODUCTION
 from todo_rpg.presentation.mappers import UserSchemaMapper
 from todo_rpg.presentation.schemas import (
     MessageSchema,
@@ -28,7 +33,6 @@ from todo_rpg.presentation.schemas import (
     UserSchemaPatchPassword,
     UserSchemaRead,
     UserSignInSchema,
-    UserSuccessAuthSchema,
 )
 
 router = APIRouter(prefix="/users", route_class=DishkaRoute)
@@ -37,14 +41,14 @@ router = APIRouter(prefix="/users", route_class=DishkaRoute)
 @router.get("", response_model=list[UserSchemaRead])
 async def get_all_users(
     interactor: FromDishka[GetAllUsersInteractor], limit: int = 20, offset: int = 0
-):
+) -> list[UserDTO]:
     return await interactor(limit, offset)
 
 
 @router.get("/me", response_model=UserSchemaRead)
 async def get_current_user(
     interactor: FromDishka[GetCurrentUser], session_token=Cookie(None)
-):
+) -> UserDTO:
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
     return await interactor(session_token)
@@ -60,7 +64,7 @@ async def create_user(
     response: Response,
     credentials: UserSchemaCreateAuth,
     interactor: FromDishka[CreateUserInteractor],
-):
+) -> UserSuccessAuthSchema:
     dto = UserSchemaMapper.to_create_dto(credentials)
     user_result = await interactor(dto)
 
@@ -70,7 +74,7 @@ async def create_user(
         httponly=True,
         max_age=config.redis.max_age,
         samesite="lax",
-        secure=IS_PRODUCTION,
+        secure=config.fastapi.is_production,
     )
 
     return UserSuccessAuthSchema(
@@ -95,7 +99,7 @@ async def sign_in_account(
         httponly=True,
         max_age=config.redis.max_age,
         samesite="lax",
-        secure=IS_PRODUCTION,
+        secure=config.fastapi.is_production,
     )
 
     return UserSuccessAuthSchema(

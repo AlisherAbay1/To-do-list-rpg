@@ -1,0 +1,32 @@
+services:
+  to_do_rpg:
+    build: .
+    ports: 
+      - "8000:8000"
+    environment:
+      - PAPER=${PAPER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./src:/todo_rpg/src
+      - ./alembic:/todo_rpg/alembic
+  db:
+    image: postgres:18
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=to-do-list-rpg
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+  redis:
+    image: redis:8-alpine
+    ports: 
+      - "6379:6379"
+
+volumes:
+  postgres_data:

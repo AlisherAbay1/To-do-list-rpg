@@ -1,13 +1,9 @@
 from passlib.hash import argon2
-from dotenv import dotenv_values
-
-IS_PRODUCTION = dotenv_values(r".env")["IS_PRODUCTION"] == "TRUE"
+from todo_rpg.infrastructure.config import config
 
 
 def hash_password(password: str):
-    paper = dotenv_values(r".env")["PAPER"]
-    if not paper:
-        paper = ""
+    paper = config.security.paper
     password_hash = argon2.using(
         time_cost=1, memory_cost=64 * 1024, parallelism=2
     ).hash(password + paper)
@@ -15,7 +11,5 @@ def hash_password(password: str):
 
 
 def password_verify(password: str, password_hash: str):
-    paper = dotenv_values(r".env")["PAPER"]
-    if not paper:
-        paper = ""
+    paper = config.security.paper
     return argon2.verify(password + paper, password_hash)

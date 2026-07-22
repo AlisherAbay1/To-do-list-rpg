@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
-from dature import load, Toml10Source, EnvFileSource, F
+from dature import load, Toml10Source, EnvFileSource, F, EnvSource
 from dature.fields.secret_str import SecretStr
 from sqlalchemy.engine import URL
 
@@ -37,21 +37,48 @@ class RedisConfig:
 
 
 @dataclass
+class FastapiConfig:
+    is_production: bool
+
+
+@dataclass
+class SecurityConfig:
+    paper: SecretStr
+
+
+@dataclass
 class Config:
     database: DatabaseConfig
     redis: RedisConfig
+    fastapi: FastapiConfig
+    security: SecurityConfig
 
 
 def load_config():
     database = load(
         EnvFileSource(
-            file=_ENV_FILE, field_mapping={F[DatabaseConfig].password: "DB_PASSWORD"}
+            file=_ENV_FILE,
+            field_mapping={F[DatabaseConfig].password: "DB_PASSWORD"},
+            skip_if_missing=True,
         ),
+        EnvSource(field_mapping={F[DatabaseConfig].password: "DB_PASSWORD"}),
         Toml10Source(file=_TOML_FILE, prefix="database"),
         schema=DatabaseConfig,
     )
     redis = load(Toml10Source(file=_TOML_FILE, prefix="redis"), schema=RedisConfig)
-    config = Config(database=database, redis=redis)
+    fastapi = load(
+        Toml10Source(file=_TOML_FILE, prefix="fastapi"), schema=FastapiConfig
+    )
+    security = load(
+        EnvFileSource(
+            file=_ENV_FILE,
+            field_mapping={F[SecurityConfig].paper: "PAPER"},
+            skip_if_missing=True,
+        ),
+        EnvSource(field_mapping={F[SecurityConfig].paper: "PAPER"}),
+        schema=SecurityConfig,
+    )
+    config = Config(database=database, redis=redis, fastapi=fastapi, security=security)
     return config
 
 
