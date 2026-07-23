@@ -2,7 +2,8 @@
 
 A gamified task management API built with FastAPI, PostgreSQL, Redis, and Docker.
 
-Users can create and organize tasks while progressing through an RPG-inspired system. Completing tasks grants experience and gold, allowing users to level up, improve skills, purchase items from the shop, and track their overall progress.
+Users can create and organize tasks while progressing through an RPG-inspired system. Completing tasks grants experience and gold, allowing users to level up, improve skills, purchase items from the shop, and track their overall progress. 
+Also clear exception handling.
 
 ## Quick start
 
@@ -40,6 +41,13 @@ http://127.0.0.1:8000/docs#/
 - Alembic
 - Taskiq
 - Docker & Docker Compose
+- Pytest
+
+## Architecture
+
+The project aims to follow the principles of Clean Architecture, although it makes a few pragmatic compromises.
+
+One notable compromise is the use of SQLAlchemy declarative models as domain entities. I considered this acceptable because the application still interacts with regular Python objects, while SQLAlchemy provides the metadata required for ORM mapping.
 
 ## Features
 
