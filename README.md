@@ -1,4 +1,3 @@
-````md
 # To-Do List RPG
 
 A gamified task management application built with FastAPI, PostgreSQL, Redis, and Docker.
@@ -27,4 +26,3 @@ The first launch may take a few minutes because Docker will download the require
 After the application starts, the Swagger UI will be available at:
 
 http://127.0.0.1:8000/docs#/
-````
