@@ -118,6 +118,7 @@ dependencies = [
 "src/todo_rpg/infrastructure/database/repositories/*.py" = ["E712"]
 
 [tool.pytest.ini_options]
+testpaths = ["tests"]
 pythonpath = ["."]
 addopts = ["-vv"]
 
