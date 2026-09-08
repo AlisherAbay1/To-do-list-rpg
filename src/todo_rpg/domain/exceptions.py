@@ -1,34 +1,38 @@
-class TaskAlreadyDoneError(Exception):
+class ToDoRpgBaseException(Exception):
     pass
 
 
-class TaskExecutedTooEarlyError(Exception):
+class TaskAlreadyDoneError(ToDoRpgBaseException):
     pass
 
 
-class EmailAlreadyTakenError(Exception):
+class TaskExecutedTooEarlyError(ToDoRpgBaseException):
     pass
 
 
-class IncorrectPasswordError(Exception):
+class EmailAlreadyTakenError(ToDoRpgBaseException):
     pass
 
 
-class UsernameAlreadyTakenError(Exception):
+class IncorrectPasswordError(ToDoRpgBaseException):
     pass
 
 
-class ShopListingAmountIsZeroError(Exception):
+class UsernameAlreadyTakenError(ToDoRpgBaseException):
     pass
 
 
-class UserBalanceNotEnoughError(Exception):
+class ShopListingAmountIsZeroError(ToDoRpgBaseException):
     pass
 
 
-class UserDoesntFitSkillRequirementsError(Exception):
+class UserBalanceNotEnoughError(ToDoRpgBaseException):
     pass
 
 
-class SkillIsAlreadyInRequirementsError(Exception):
+class UserDoesntFitSkillRequirementsError(ToDoRpgBaseException):
+    pass
+
+
+class SkillIsAlreadyInRequirementsError(ToDoRpgBaseException):
     pass

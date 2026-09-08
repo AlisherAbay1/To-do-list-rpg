@@ -1,54 +1,57 @@
-class UserNotFoundError(Exception):
+from todo_rpg.domain.exceptions import ToDoRpgBaseException
+
+
+class UserNotFoundError(ToDoRpgBaseException):
     pass
 
 
-class TaskNotFoundError(Exception):
+class TaskNotFoundError(ToDoRpgBaseException):
     pass
 
 
-class TaskNotFoundInHistoryError(Exception):
+class TaskNotFoundInHistoryError(ToDoRpgBaseException):
     pass
 
 
-class TaskHistoryNotFoundError(Exception):
+class TaskHistoryNotFoundError(ToDoRpgBaseException):
     pass
 
 
-class SkillNotFoundError(Exception):
+class SkillNotFoundError(ToDoRpgBaseException):
     pass
 
 
-class ItemNotFoundError(Exception):
+class ItemNotFoundError(ToDoRpgBaseException):
     pass
 
 
-class SessionNotFoundError(Exception):
+class SessionNotFoundError(ToDoRpgBaseException):
     pass
 
 
-class AccessDeniedError(Exception):
+class AccessDeniedError(ToDoRpgBaseException):
     pass
 
 
-class TaskCategoryNotFoundError(Exception):
+class TaskCategoryNotFoundError(ToDoRpgBaseException):
     pass
 
 
-class ShopListingNotFoundError(Exception):
+class ShopListingNotFoundError(ToDoRpgBaseException):
     pass
 
 
-class ShopTransactionNotFoundError(Exception):
+class ShopTransactionNotFoundError(ToDoRpgBaseException):
     pass
 
 
-class InventoryItemNotFoundError(Exception):
+class InventoryItemNotFoundError(ToDoRpgBaseException):
     pass
 
 
-class ShopListingAlreadyExistsError(Exception):
+class ShopListingAlreadyExistsError(ToDoRpgBaseException):
     pass
 
 
-class UserRankNotFoundError(Exception):
+class UserRankNotFoundError(ToDoRpgBaseException):
     pass

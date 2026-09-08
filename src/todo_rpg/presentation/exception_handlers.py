@@ -35,7 +35,7 @@ def register_exeptions(app: FastAPI):
         request: Request, exc: SkillIsAlreadyInRequirementsError
     ):
         return JSONResponse(
-            status_code=404, content={"detail": "Skill is already in requirements"}
+            status_code=409, content={"detail": "Skill is already in requirements"}
         )
 
     @app.exception_handler(ShopListingAmountIsZeroError)
@@ -43,7 +43,7 @@ def register_exeptions(app: FastAPI):
         request: Request, exc: ShopListingAmountIsZeroError
     ):
         return JSONResponse(
-            status_code=404, content={"detail": "Shop listing amount is zero"}
+            status_code=409, content={"detail": "Shop listing amount is zero"}
         )
 
     @app.exception_handler(UserNotFoundError)
@@ -65,7 +65,7 @@ def register_exeptions(app: FastAPI):
     @app.exception_handler(TaskExecutedTooEarlyError)
     async def task_executed_too_early(request: Request, exc: TaskNotFoundError):
         return JSONResponse(
-            status_code=404, content={"detail": "Task executed too early"}
+            status_code=429, content={"detail": "Task executed too early"}
         )
 
     @app.exception_handler(TaskAlreadyDoneError)
