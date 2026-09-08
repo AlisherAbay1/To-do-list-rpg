@@ -18,7 +18,7 @@ from todo_rpg.infrastructure.database.repositories import (
 )
 from collections.abc import AsyncGenerator
 from todo_rpg.infrastructure.config import config
-from todo_rpg.core.security import PasswordManager
+from todo_rpg.infrastructure.security import PasswordManager
 
 
 class AppProvider(Provider):
