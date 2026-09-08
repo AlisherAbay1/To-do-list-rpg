@@ -1,5 +1,5 @@
 from dishka import Provider, provide, Scope
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     ShopRepositoryProtocol,
     ShopTransactionRepositoryProtocol,
 )

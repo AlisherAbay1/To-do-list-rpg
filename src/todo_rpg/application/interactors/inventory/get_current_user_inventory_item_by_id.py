@@ -1,8 +1,8 @@
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     InventoryRepositoryProtocol,
     ItemRepositoryProtocol,
+    RedisRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from todo_rpg.application.mappers import ExtendedInventoryMapper
 from todo_rpg.application.dto import InventoryShortWithItemDTO
 from todo_rpg.application.exceptions import (

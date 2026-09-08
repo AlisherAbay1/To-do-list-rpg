@@ -1,4 +1,4 @@
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     UserRepositoryProtocol,
 )
 from todo_rpg.application.mappers.common import UserMapper

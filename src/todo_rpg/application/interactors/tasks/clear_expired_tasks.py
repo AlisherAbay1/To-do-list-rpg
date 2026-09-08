@@ -1,7 +1,4 @@
-from todo_rpg.application.interfaces.repositories_interfaces import (
-    TaskRepositoryProtocol,
-)
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
+from todo_rpg.application.interfaces import TaskRepositoryProtocol, UoWProtocol
 
 
 class ClearExpiredTasksInteractor:

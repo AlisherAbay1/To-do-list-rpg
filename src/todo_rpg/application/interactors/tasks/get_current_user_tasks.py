@@ -1,9 +1,9 @@
 from todo_rpg.application.mappers.common import TaskMapper
 from todo_rpg.application.dto import TaskDetailDTO
 from todo_rpg.application.exceptions import SessionNotFoundError
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     TaskRepositoryProtocol,
+    RedisRepositoryProtocol,
 )
 
 

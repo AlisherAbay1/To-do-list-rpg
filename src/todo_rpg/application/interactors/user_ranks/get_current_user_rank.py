@@ -3,9 +3,9 @@ from todo_rpg.application.exceptions import (
     AccessDeniedError,
     UserRankNotFoundError,
 )
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     UserRankRepositoryProtocol,
+    RedisRepositoryProtocol,
 )
 from todo_rpg.application.mappers import UserRankMapper
 from uuid import UUID

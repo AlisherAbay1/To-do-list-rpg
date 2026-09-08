@@ -1,5 +1,5 @@
 from todo_rpg.application.exceptions import SessionNotFoundError
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
+from todo_rpg.application.interfaces import RedisRepositoryProtocol
 from todo_rpg.application.dto.shared import MessageDTO
 
 

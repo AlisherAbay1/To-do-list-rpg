@@ -10,8 +10,8 @@ from todo_rpg.application.interfaces import (
     SkillRepositoryProtocol,
     RedisRepositoryProtocol,
     UserRepositoryProtocol,
+    UoWProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 
 
 class DeleteSkillInteractor:

@@ -1,5 +1,5 @@
 from todo_rpg.application.exceptions import ItemNotFoundError
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     ItemRepositoryProtocol,
 )
 from todo_rpg.application.mappers.common import ItemMapper

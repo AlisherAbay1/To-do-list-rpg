@@ -1,7 +1,7 @@
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     InventoryRepositoryProtocol,
+    RedisRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from todo_rpg.application.mappers import InventoryMapper
 from todo_rpg.application.dto import InventoryShortDTO
 from todo_rpg.application.exceptions import SessionNotFoundError

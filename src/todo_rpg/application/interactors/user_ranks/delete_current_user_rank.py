@@ -3,8 +3,8 @@ from uuid import UUID
 from todo_rpg.application.interfaces import (
     UserRankRepositoryProtocol,
     RedisRepositoryProtocol,
+    UoWProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.exceptions import (
     AccessDeniedError,
     SessionNotFoundError,

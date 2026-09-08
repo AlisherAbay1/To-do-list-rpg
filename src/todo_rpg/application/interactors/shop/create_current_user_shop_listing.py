@@ -1,8 +1,8 @@
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.interfaces import (
     ShopRepositoryProtocol,
     ItemRepositoryProtocol,
     RedisRepositoryProtocol,
+    UoWProtocol,
 )
 from todo_rpg.application.mappers import ShopMapper
 from todo_rpg.application.dto import ShopListingShortDTO, ShopListingCreateDTO

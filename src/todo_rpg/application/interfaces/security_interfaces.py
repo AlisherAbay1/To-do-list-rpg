@@ -1,0 +1,6 @@
+from typing import Protocol
+
+
+class PasswordManagerProtocol(Protocol):
+    def hash_password(self, password: str): ...
+    def password_verify(self, password: str, password_hash: str): ...

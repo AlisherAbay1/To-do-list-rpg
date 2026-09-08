@@ -1,9 +1,9 @@
 from todo_rpg.application.dto import UserRankCreateDTO
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     UserRankRepositoryProtocol,
+    RedisRepositoryProtocol,
+    UoWProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.domain import UserRank
 from todo_rpg.application.exceptions import SessionNotFoundError
 from todo_rpg.application.mappers.common import UserRankMapper

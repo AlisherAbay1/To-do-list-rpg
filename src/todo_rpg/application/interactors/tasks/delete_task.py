@@ -1,11 +1,11 @@
 from uuid import UUID
 
 from todo_rpg.application.exceptions import TaskNotFoundError, SessionNotFoundError
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     TaskRepositoryProtocol,
+    UoWProtocol,
+    RedisRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 
 
 class DeleteCurrentUserTaskInteractor:

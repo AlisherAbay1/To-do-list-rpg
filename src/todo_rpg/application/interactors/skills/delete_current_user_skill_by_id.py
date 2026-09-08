@@ -5,11 +5,11 @@ from todo_rpg.application.exceptions import (
     SessionNotFoundError,
     AccessDeniedError,
 )
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     SkillRepositoryProtocol,
+    UoWProtocol,
+    RedisRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from uuid import UUID
 
 

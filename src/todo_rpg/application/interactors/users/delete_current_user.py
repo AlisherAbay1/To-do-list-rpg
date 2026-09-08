@@ -1,9 +1,9 @@
 from todo_rpg.application.exceptions import UserNotFoundError
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     UserRepositoryProtocol,
+    UoWProtocol,
+    RedisRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 
 
 class DeleteCurrentUserInteractor:

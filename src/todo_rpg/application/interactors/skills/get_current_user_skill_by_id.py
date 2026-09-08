@@ -1,8 +1,8 @@
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     SkillRepositoryProtocol,
     TaskRepositoryProtocol,
+    RedisRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from todo_rpg.application.mappers import ExtendedSkillMapper
 from uuid import UUID
 from todo_rpg.application.exceptions import (

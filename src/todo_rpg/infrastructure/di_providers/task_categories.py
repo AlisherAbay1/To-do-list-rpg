@@ -2,7 +2,7 @@ from dishka import Provider, provide, Scope
 from todo_rpg.infrastructure.database.repositories.task_categories import (
     TaskCategoriesRepository,
 )
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     TaskCategoriesRepositoryProtocol,
 )
 from todo_rpg.application.interactors.task_categories import (

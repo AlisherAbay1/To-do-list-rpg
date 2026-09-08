@@ -9,8 +9,8 @@ from todo_rpg.application.interfaces import (
     SkillRepositoryProtocol,
     ItemRepositoryProtocol,
     TaskCategoriesRepositoryProtocol,
+    UoWProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.domain import Task
 from todo_rpg.application.mappers.common import TaskMapper
 from todo_rpg.application.dto import TaskDTO

@@ -1,4 +1,4 @@
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
+from todo_rpg.application.interfaces import RedisRepositoryProtocol
 
 
 class DeleteSessionInteractor:

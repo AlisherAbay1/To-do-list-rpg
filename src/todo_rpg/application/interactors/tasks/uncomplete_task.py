@@ -6,15 +6,15 @@ from todo_rpg.application.exceptions import (
     UserNotFoundError,
     TaskHistoryNotFoundError,
 )
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     SkillRepositoryProtocol,
     TaskHistoryRepositoryProtocol,
     TaskRepositoryProtocol,
     UserRepositoryProtocol,
+    RedisRepositoryProtocol,
+    UoWProtocol,
 )
 from todo_rpg.application.dto import TaskWithUserAndSkillsDTO
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.mappers import ExtendedTaskMapper
 
 

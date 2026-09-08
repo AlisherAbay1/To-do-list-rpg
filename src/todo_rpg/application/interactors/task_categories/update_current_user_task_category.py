@@ -1,7 +1,7 @@
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     TaskCategoriesRepositoryProtocol,
+    UoWProtocol,
+    RedisRepositoryProtocol,
 )
 from todo_rpg.application.exceptions import SessionNotFoundError
 from todo_rpg.application.dto import UpdateTaskCategoryDTO, TaskCategoryDTO

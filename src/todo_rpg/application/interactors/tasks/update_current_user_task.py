@@ -2,11 +2,11 @@ from uuid import UUID
 
 from todo_rpg.application.dto import TaskDTO, TaskUpdateDTO
 from todo_rpg.application.exceptions import TaskNotFoundError, SessionNotFoundError
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     TaskRepositoryProtocol,
+    RedisRepositoryProtocol,
+    UoWProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.application.dto.sentinel_types import Unset
 from todo_rpg.application.mappers.common import TaskMapper
 

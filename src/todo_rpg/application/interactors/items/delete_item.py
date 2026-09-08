@@ -1,9 +1,6 @@
 from uuid import UUID
 
-from todo_rpg.application.interfaces.repositories_interfaces import (
-    ItemRepositoryProtocol,
-)
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
+from todo_rpg.application.interfaces import ItemRepositoryProtocol, UoWProtocol
 
 
 class DeleteItemInteractor:

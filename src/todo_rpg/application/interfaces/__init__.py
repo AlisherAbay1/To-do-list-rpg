@@ -12,6 +12,7 @@ from .repositories_interfaces import (
 )
 from .cash_interfaces import RedisRepositoryProtocol
 from .transaction_interfaces import UoWProtocol
+from .security_interfaces import PasswordManagerProtocol
 
 __all__ = (
     "ItemRepositoryProtocol",
@@ -26,4 +27,5 @@ __all__ = (
     "UoWProtocol",
     "UserRankRepositoryProtocol",
     "ShopTransactionRepositoryProtocol",
+    "PasswordManagerProtocol",
 )

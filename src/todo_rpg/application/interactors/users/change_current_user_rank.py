@@ -8,8 +8,8 @@ from todo_rpg.application.interfaces import (
     RedisRepositoryProtocol,
     UserRepositoryProtocol,
     UserRankRepositoryProtocol,
+    UoWProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from uuid import UUID
 
 

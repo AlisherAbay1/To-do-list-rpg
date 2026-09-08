@@ -1,10 +1,10 @@
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     UserRepositoryProtocol,
     TaskRepositoryProtocol,
     SkillRepositoryProtocol,
     TaskHistoryRepositoryProtocol,
+    RedisRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from todo_rpg.application.exceptions import SessionNotFoundError, UserNotFoundError
 from todo_rpg.application.mappers import StatsMapper
 from todo_rpg.application.dto import StatsOverviewDTO

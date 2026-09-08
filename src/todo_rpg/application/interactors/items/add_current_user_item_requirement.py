@@ -2,8 +2,8 @@ from todo_rpg.application.interfaces import (
     ItemRepositoryProtocol,
     SkillRepositoryProtocol,
     RedisRepositoryProtocol,
+    UoWProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
 from todo_rpg.domain import ItemRequirement
 from todo_rpg.application.exceptions import (
     SessionNotFoundError,

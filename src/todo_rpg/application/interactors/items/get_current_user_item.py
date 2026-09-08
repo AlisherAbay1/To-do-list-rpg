@@ -3,9 +3,9 @@ from todo_rpg.application.exceptions import (
     ItemNotFoundError,
     AccessDeniedError,
 )
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     ItemRepositoryProtocol,
+    RedisRepositoryProtocol,
 )
 from todo_rpg.application.mappers import ItemExtendedMapper
 from uuid import UUID

@@ -7,14 +7,18 @@ from sqlalchemy.ext.asyncio import (
 )
 from sqlalchemy.engine import URL
 from redis.asyncio import Redis, ConnectionPool
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
+from todo_rpg.application.interfaces import (
+    RedisRepositoryProtocol,
+    UoWProtocol,
+    PasswordManagerProtocol,
+)
 from todo_rpg.infrastructure.database.repositories import (
     RedisRepository,
     UoW,
 )
 from collections.abc import AsyncGenerator
 from todo_rpg.infrastructure.config import config
+from todo_rpg.core.security import PasswordManager
 
 
 class AppProvider(Provider):
@@ -61,3 +65,6 @@ class AppProvider(Provider):
         RedisRepository, scope=Scope.REQUEST, provides=RedisRepositoryProtocol
     )
     uow = provide(UoW, scope=Scope.REQUEST, provides=UoWProtocol)
+    password_manager = provide(
+        PasswordManager, scope=Scope.APP, provides=PasswordManagerProtocol
+    )

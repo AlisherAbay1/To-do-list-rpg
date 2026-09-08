@@ -3,7 +3,7 @@ from todo_rpg.infrastructure.database.repositories import (
     TaskRepository,
     TaskHistoryRepository,
 )
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     TaskRepositoryProtocol,
     TaskHistoryRepositoryProtocol,
 )

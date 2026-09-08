@@ -4,12 +4,12 @@ from todo_rpg.application.exceptions import (
     UserNotFoundError,
 )
 from todo_rpg.domain.exceptions import IncorrectPasswordError
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     UserRepositoryProtocol,
+    RedisRepositoryProtocol,
+    PasswordManagerProtocol,
+    UoWProtocol,
 )
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
-from todo_rpg.core.security import hash_password, password_verify
 
 
 class UpdateCurrentUserPasswordInteractor:
@@ -17,10 +17,12 @@ class UpdateCurrentUserPasswordInteractor:
         self,
         repo: UserRepositoryProtocol,
         cash_repo: RedisRepositoryProtocol,
+        password_manager: PasswordManagerProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.repo = repo
         self.cash_repo = cash_repo
+        self.password_manager = password_manager
         self.uow = uow
 
     async def __call__(self, dto: UserPasswordDTO, session_token: str) -> None:
@@ -30,7 +32,7 @@ class UpdateCurrentUserPasswordInteractor:
         user = await self.repo.get_user(user_id)
         if not user:
             raise UserNotFoundError()
-        if not password_verify(dto.old_password, user.password):
+        if not self.password_manager.password_verify(dto.old_password, user.password):
             raise IncorrectPasswordError()
-        user.password = hash_password(dto.new_password)
+        user.password = self.password_manager.hash_password(dto.new_password)
         await self.uow.commit()

@@ -1,8 +1,8 @@
-from todo_rpg.application.interfaces.transaction_interfaces import UoWProtocol
-from todo_rpg.application.interfaces.repositories_interfaces import (
+from todo_rpg.application.interfaces import (
     SkillRepositoryProtocol,
+    UoWProtocol,
+    RedisRepositoryProtocol,
 )
-from todo_rpg.application.interfaces.cash_interfaces import RedisRepositoryProtocol
 from todo_rpg.application.dto import SkillUpdateDTO, SkillDTO
 from todo_rpg.application.mappers import SkillMapper
 from uuid import UUID
