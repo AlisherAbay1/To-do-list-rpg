@@ -1,19 +1,17 @@
 from fastapi import FastAPI
 from dishka import make_async_container
 from dishka.integrations.fastapi import setup_dishka
-from todo_rpg.presentation.api.routers.users import router as users_router
-from todo_rpg.presentation.api.routers.tasks import router as tasks_router
-from todo_rpg.presentation.api.routers.skills import router as skills_router
-from todo_rpg.presentation.api.routers.items import router as items_router
-from todo_rpg.presentation.api.routers.inventory import router as inventory_router
-from todo_rpg.presentation.api.routers.shop import router as shop_router
-from todo_rpg.presentation.api.routers.task_categories import (
-    router as task_categories_router,
-)
-from todo_rpg.presentation.api.routers.stats import router as stats_router
-from todo_rpg.presentation.api.routers.user_ranks import router as user_ranks_router
-from todo_rpg.presentation.api.routers.shop_transaction import (
-    router as shop_transactions_router,
+from todo_rpg.presentation.api.routers import (
+    users_router,
+    shop_router,
+    items_router,
+    stats_router,
+    tasks_router,
+    skills_router,
+    inventory_router,
+    user_ranks_router,
+    task_categories_router,
+    shop_transactions_router,
 )
 from todo_rpg.presentation.exception_handlers import register_exeptions
 from contextlib import asynccontextmanager
