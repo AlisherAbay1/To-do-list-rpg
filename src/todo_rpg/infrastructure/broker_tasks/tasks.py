@@ -1,8 +1,8 @@
-from todo_rpg.core.taskiq import broker
 from todo_rpg.application.interactors import (
     ClearExpiredSkillsInteractor,
     ClearExpiredTasksInteractor,
 )
+from todo_rpg.infrastructure.broker import broker
 from dishka.integrations.taskiq import FromDishka
 
 

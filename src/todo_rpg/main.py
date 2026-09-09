@@ -16,7 +16,6 @@ from todo_rpg.presentation.api.routers.shop_transaction import (
     router as shop_transactions_router,
 )
 from todo_rpg.presentation.exception_handlers import register_exeptions
-from todo_rpg.core.taskiq import broker
 from contextlib import asynccontextmanager
 import asyncio
 from todo_rpg.infrastructure.di_providers import (
@@ -35,15 +34,11 @@ from todo_rpg.infrastructure.di_providers import (
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    if not broker.is_worker_process:
-        await broker.startup()
     yield
     await app.state.dishka_container.close()
-    if not broker.is_worker_process:
-        await broker.shutdown()
 
 
-async def set_up_fastapi_routers(app: FastAPI):
+async def setup_fastapi_routers(app: FastAPI):
     app.include_router(router=users_router, tags=["users"])
     app.include_router(router=tasks_router, tags=["tasks"])
     app.include_router(router=skills_router, tags=["skills"])
@@ -74,7 +69,7 @@ async def get_dishka_container():
 
 async def main():
     app = FastAPI(lifespan=lifespan)
-    set_up_fastapi_routers(app)
+    setup_fastapi_routers(app)
     register_exeptions(app)
     container = get_dishka_container()
     setup_dishka(container, app)
