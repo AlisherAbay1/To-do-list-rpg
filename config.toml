@@ -4,11 +4,11 @@ is_production=false
 [database]
 name="to-do-list-rpg"
 username="postgres"
-host="db"
-port=5432
+host="localhost"
+port=5433
 
 [redis]
-host="redis"
+host="localhost"
 port=6379
 max_age=3600
 encoding="utf-8"

@@ -3,7 +3,7 @@ from todo_rpg.presentation.schemas import (
     ShopListingSchemaUpdate,
 )
 from todo_rpg.application.dto import ShopListingCreateDTO, ShopListingUpdateDTO
-from todo_rpg.application.dto.sentinel_types import UNSET
+from todo_rpg.domain.sentinel_types import UNSET
 
 
 class ShopSchemaMapper:

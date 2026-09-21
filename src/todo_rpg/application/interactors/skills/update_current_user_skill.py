@@ -11,7 +11,7 @@ from todo_rpg.application.exceptions import (
     SkillNotFoundError,
     AccessDeniedError,
 )
-from todo_rpg.application.dto.sentinel_types import Unset
+from todo_rpg.domain.sentinel_types import Unset
 
 
 class UpdateCurrentUserSkillInteractor:

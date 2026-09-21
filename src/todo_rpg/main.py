@@ -15,7 +15,6 @@ from todo_rpg.presentation.api.routers import (
 )
 from todo_rpg.presentation.exception_handlers import register_exeptions
 from contextlib import asynccontextmanager
-import asyncio
 from todo_rpg.infrastructure.di_providers import (
     AppProvider,
     UserProvider,
@@ -36,7 +35,7 @@ async def lifespan(app: FastAPI):
     await app.state.dishka_container.close()
 
 
-async def setup_fastapi_routers(app: FastAPI):
+def setup_fastapi_routers(app: FastAPI):
     app.include_router(router=users_router, tags=["users"])
     app.include_router(router=tasks_router, tags=["tasks"])
     app.include_router(router=skills_router, tags=["skills"])
@@ -49,7 +48,7 @@ async def setup_fastapi_routers(app: FastAPI):
     app.include_router(router=shop_transactions_router, tags=["shop_transactions"])
 
 
-async def get_dishka_container():
+def get_dishka_container():
     container = make_async_container(
         AppProvider(),
         UserProvider(),
@@ -65,13 +64,10 @@ async def get_dishka_container():
     return container
 
 
-async def main():
-    app = FastAPI(lifespan=lifespan)
-    setup_fastapi_routers(app)
-    register_exeptions(app)
-    container = get_dishka_container()
-    setup_dishka(container, app)
+app = FastAPI(lifespan=lifespan)
 
+setup_fastapi_routers(app)
+register_exeptions(app)
 
-if __name__ == "__main__":
-    asyncio.run(main())
+container = get_dishka_container()
+setup_dishka(container, app)

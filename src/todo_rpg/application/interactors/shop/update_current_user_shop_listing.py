@@ -10,7 +10,7 @@ from todo_rpg.application.exceptions import (
     ShopListingNotFoundError,
     AccessDeniedError,
 )
-from todo_rpg.application.dto.sentinel_types import Unset
+from todo_rpg.domain.sentinel_types import Unset
 from uuid import UUID
 
 

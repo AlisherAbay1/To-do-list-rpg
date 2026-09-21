@@ -8,7 +8,7 @@ from todo_rpg.domain.enums import (
     TaskPriority,
 )
 from datetime import datetime
-from todo_rpg.application.dto.sentinel_types import Unset, UNSET
+from todo_rpg.domain.sentinel_types import Unset, UNSET
 
 
 @dataclass(slots=True)

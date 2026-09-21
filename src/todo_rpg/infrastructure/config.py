@@ -44,6 +44,9 @@ class FastapiConfig:
 @dataclass
 class SecurityConfig:
     paper: SecretStr
+    time_cost: int = 1
+    memory_cost: int = 64 * 1024
+    parallelism: int = 2
 
 
 @dataclass

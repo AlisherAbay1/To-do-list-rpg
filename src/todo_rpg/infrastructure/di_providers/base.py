@@ -17,7 +17,7 @@ from todo_rpg.infrastructure.database.repositories import (
     UoW,
 )
 from collections.abc import AsyncGenerator
-from todo_rpg.infrastructure.config import config
+from todo_rpg.infrastructure.config import config, Config
 from todo_rpg.infrastructure.security import PasswordManager
 
 
@@ -60,6 +60,10 @@ class AppProvider(Provider):
         redis = Redis.from_pool(pool)
         yield redis
         await redis.aclose()
+
+    @provide(scope=Scope.APP)
+    async def get_config(self) -> Config:
+        return config
 
     redis_session = provide(
         RedisRepository, scope=Scope.REQUEST, provides=RedisRepositoryProtocol

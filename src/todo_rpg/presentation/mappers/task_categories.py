@@ -3,7 +3,7 @@ from todo_rpg.presentation.schemas import (
     CreateTaskCategorySchema,
     UpdateTaskCategorySchema,
 )
-from todo_rpg.application.dto.sentinel_types import UNSET
+from todo_rpg.domain.sentinel_types import UNSET
 
 
 class TaskCategoriesSchemaMapper:

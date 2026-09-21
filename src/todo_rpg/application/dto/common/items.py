@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 from uuid import UUID
 from datetime import datetime
-from todo_rpg.application.dto.sentinel_types import Unset, UNSET
+from todo_rpg.domain.sentinel_types import Unset, UNSET
 
 
 @dataclass(slots=True)

@@ -7,7 +7,7 @@ from todo_rpg.application.interfaces import (
     RedisRepositoryProtocol,
     UoWProtocol,
 )
-from todo_rpg.application.dto.sentinel_types import Unset
+from todo_rpg.domain.sentinel_types import Unset
 from todo_rpg.application.mappers.common import TaskMapper
 
 

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from uuid import UUID
-from todo_rpg.application.dto.sentinel_types import Unset, UNSET
+from todo_rpg.domain.sentinel_types import Unset, UNSET
 
 
 @dataclass(slots=True)

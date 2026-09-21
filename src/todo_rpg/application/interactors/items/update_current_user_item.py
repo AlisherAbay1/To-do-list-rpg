@@ -8,7 +8,7 @@ from todo_rpg.application.mappers.common import ItemMapper
 from uuid import UUID
 from todo_rpg.application.dto import ItemUpdateDTO
 from todo_rpg.application.exceptions import ItemNotFoundError, AccessDeniedError
-from todo_rpg.application.dto.sentinel_types import Unset
+from todo_rpg.domain.sentinel_types import Unset
 from todo_rpg.application.dto import ItemDTO
 
 

@@ -11,7 +11,7 @@ from todo_rpg.application.interfaces import (
 from todo_rpg.application.mappers import UserRankMapper
 from uuid import UUID
 from todo_rpg.application.dto import UserRankUpdateDTO
-from todo_rpg.application.dto.sentinel_types import Unset
+from todo_rpg.domain.sentinel_types import Unset
 from todo_rpg.application.dto import UserRankDTO
 
 

@@ -6,7 +6,7 @@ from todo_rpg.application.interfaces import (
 from todo_rpg.application.exceptions import SessionNotFoundError
 from todo_rpg.application.dto import UpdateTaskCategoryDTO, TaskCategoryDTO
 from uuid import UUID
-from todo_rpg.application.dto.sentinel_types import Unset
+from todo_rpg.domain.sentinel_types import Unset
 from todo_rpg.application.exceptions import AccessDeniedError, TaskCategoryNotFoundError
 from todo_rpg.application.mappers.common import TaskCategoriesMapper
 

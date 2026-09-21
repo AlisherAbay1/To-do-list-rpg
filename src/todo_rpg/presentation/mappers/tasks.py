@@ -10,7 +10,7 @@ from todo_rpg.application.dto import (
     TaskCreateDTO,
     TaskUpdateDTO,
 )
-from todo_rpg.application.dto.sentinel_types import UNSET
+from todo_rpg.domain.sentinel_types import UNSET
 
 
 class TaskSchemaMapper:

@@ -1,6 +1,6 @@
 from todo_rpg.presentation.schemas import SkillSchemaCreate, SkillSchemaUpdate
 from todo_rpg.application.dto import SkillCreateDTO, SkillUpdateDTO
-from todo_rpg.application.dto.sentinel_types import UNSET
+from todo_rpg.domain.sentinel_types import UNSET
 
 
 class SkillSchemaMapper:
