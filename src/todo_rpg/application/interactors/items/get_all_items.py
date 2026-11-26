@@ -1,5 +1,6 @@
 from todo_rpg.application.interfaces import (
     ItemRepositoryProtocol,
+    SessionRepositoryProtocol,
 )
 from todo_rpg.application.mappers.common import ItemMapper
 from todo_rpg.application.dto import ItemDTO
@@ -11,8 +12,11 @@ from todo_rpg.application.exceptions import (
 
 
 class GetAllItemsInteractor:
-    def __init__(self, repo: ItemRepositoryProtocol) -> None:
+    def __init__(
+        self, repo: ItemRepositoryProtocol, session_repo: SessionRepositoryProtocol
+    ) -> None:
         self.repo = repo
+        self.session_repo = session_repo
 
     async def __call__(
         self, limit: int, offset: int, session_token: str

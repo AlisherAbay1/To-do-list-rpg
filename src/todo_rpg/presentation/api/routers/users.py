@@ -61,9 +61,13 @@ async def get_current_user(
 
 @router.get("/{user_id}", response_model=UserSchemaRead)
 async def get_user(
-    interactor: FromDishka[GetUserInteractor], user_id: UUID7
+    interactor: FromDishka[GetUserInteractor],
+    user_id: UUID7,
+    session_token=Cookie(None),
 ) -> UserDTO:
-    return await interactor(user_id)
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(user_id, session_token)
 
 
 @router.post("/auth/registration", response_model=UserSuccessAuthSchema)

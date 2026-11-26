@@ -24,7 +24,7 @@ class GetAllUsersInteractor:
         user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
-        user = await self.user_repo.get_user(user_id)
+        user = await self.repo.get_user(user_id)
         if user is None:
             raise UserNotFoundError()
         if not user.is_admin:
