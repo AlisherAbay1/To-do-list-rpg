@@ -49,6 +49,29 @@ The project aims to follow the principles of Clean Architecture, although it mak
 
 One notable compromise is the use of SQLAlchemy declarative models as domain entities. I considered this acceptable because the application still interacts with regular Python objects, while SQLAlchemy provides the metadata required for ORM mapping.
 
+## Background tasks
+
+The project uses [Taskiq](https://taskiq-python.github.io/) with Redis for background and scheduled tasks.
+The worker and the scheduler run as separate processes.
+
+### Worker
+
+Executes tasks from the queue:
+
+```bash
+uv run taskiq worker todo_rpg.infrastructure.broker:broker todo_rpg.infrastructure.broker_tasks --workers 1
+```
+
+### Scheduler
+
+Sends scheduled tasks (cron) to the queue:
+
+```bash
+uv run taskiq scheduler todo_rpg.infrastructure.broker:schedule todo_rpg.infrastructure.broker_tasks --skip-first-run
+```
+
+> `todo_rpg.infrastructure.broker_tasks` must be passed to both commands so that tasks are registered in each process.
+
 ## Features
 
 ### Authentication & User Management

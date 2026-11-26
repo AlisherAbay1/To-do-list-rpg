@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from dishka import make_async_container
 from dishka.integrations.fastapi import setup_dishka
 from todo_rpg.presentation.api.routers import (
     users_router,
@@ -15,18 +14,7 @@ from todo_rpg.presentation.api.routers import (
 )
 from todo_rpg.presentation.exception_handlers import register_exeptions
 from contextlib import asynccontextmanager
-from todo_rpg.infrastructure.di_providers import (
-    AppProvider,
-    UserProvider,
-    TaskProvider,
-    SkillProvider,
-    ItemProvider,
-    TaskCategoriesProvider,
-    StatsProvider,
-    ShopProvider,
-    InventoryProvider,
-    UserRankProvider,
-)
+from todo_rpg.infrastructure.di import get_dishka_container
 
 
 @asynccontextmanager
@@ -46,22 +34,6 @@ def setup_fastapi_routers(app: FastAPI):
     app.include_router(router=stats_router, tags=["stats"])
     app.include_router(router=user_ranks_router, tags=["user_ranks"])
     app.include_router(router=shop_transactions_router, tags=["shop_transactions"])
-
-
-def get_dishka_container():
-    container = make_async_container(
-        AppProvider(),
-        UserProvider(),
-        TaskProvider(),
-        SkillProvider(),
-        ItemProvider(),
-        TaskCategoriesProvider(),
-        StatsProvider(),
-        ShopProvider(),
-        InventoryProvider(),
-        UserRankProvider(),
-    )
-    return container
 
 
 app = FastAPI(lifespan=lifespan)
