@@ -1,4 +1,4 @@
-from dishka import make_async_container
+from dishka import AsyncContainer, make_async_container
 from todo_rpg.infrastructure.di_providers import (
     AppProvider,
     UserProvider,
@@ -13,7 +13,7 @@ from todo_rpg.infrastructure.di_providers import (
 )
 
 
-def get_dishka_container():
+def get_dishka_container() -> AsyncContainer:
     container = make_async_container(
         AppProvider(),
         UserProvider(),

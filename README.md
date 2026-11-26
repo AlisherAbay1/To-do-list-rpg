@@ -59,7 +59,7 @@ The worker and the scheduler run as separate processes.
 Executes tasks from the queue:
 
 ```bash
-uv run taskiq worker todo_rpg.infrastructure.broker:broker todo_rpg.infrastructure.broker_tasks --workers 1
+uv run taskiq worker todo_rpg.worker:broker --workers 1
 ```
 
 ### Scheduler
@@ -67,10 +67,8 @@ uv run taskiq worker todo_rpg.infrastructure.broker:broker todo_rpg.infrastructu
 Sends scheduled tasks (cron) to the queue:
 
 ```bash
-uv run taskiq scheduler todo_rpg.infrastructure.broker:schedule todo_rpg.infrastructure.broker_tasks --skip-first-run
+uv run taskiq scheduler todo_rpg.worker:scheduler todo_rpg.infrastructure.broker_tasks --skip-first-run
 ```
-
-> `todo_rpg.infrastructure.broker_tasks` must be passed to both commands so that tasks are registered in each process.
 
 ## Features
 

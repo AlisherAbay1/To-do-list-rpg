@@ -140,7 +140,7 @@ class TaskRepository:
     async def delete_all_tasks_deleted_more_than_year(self) -> None:
         year_ago = datetime.now(tz=timezone.utc) - timedelta(days=365)
         stmt = delete(Task).where(Task.deleted_at < year_ago)
-        await self._session.delete(stmt)
+        await self._session.execute(stmt)
 
     async def get_amount_of_overdue_tasks(self, user_id: UUID) -> Optional[int]:
         tasks = (
