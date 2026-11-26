@@ -51,7 +51,7 @@ One notable compromise is the use of SQLAlchemy declarative models as domain ent
 
 ## Background tasks
 
-The project uses [Taskiq](https://taskiq-python.github.io/) with Redis for background and scheduled tasks.
+The project uses Taskiq with Redis for background and scheduled tasks.
 The worker and the scheduler run as separate processes.
 
 ### Worker
