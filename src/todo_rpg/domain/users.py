@@ -19,7 +19,7 @@ class User(Base, kw_only=True):
     xp: Mapped[int] = mapped_column(BigInteger, default=0)
     is_admin: Mapped[bool] = mapped_column(default=False)
     current_rank_id: Mapped[Optional[UUID]] = mapped_column(
-        ForeignKey("rank.id", use_alter=True), default=None
+        ForeignKey("rank.id", use_alter=True, ondelete="SET NULL"), default=None
     )
     profile_picture: Mapped[Optional[str]] = mapped_column(default=None)
     gold: Mapped[int] = mapped_column(BigInteger, default=0)
