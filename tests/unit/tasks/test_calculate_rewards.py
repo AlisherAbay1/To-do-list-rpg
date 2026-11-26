@@ -1,5 +1,5 @@
 from todo_rpg.domain.enums import TaskDifficulty, TaskPriority, TaskType
-from tests.fabrics import make_task
+from tests.factories import make_task
 import pytest
 import pytest_check
 from typing import Optional

@@ -1,5 +1,5 @@
 import pytest_check
-from tests.fabrics import make_task
+from tests.factories import make_task
 
 
 def test_task_delete():

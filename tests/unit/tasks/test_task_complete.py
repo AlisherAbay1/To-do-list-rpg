@@ -1,5 +1,5 @@
 import pytest
-from tests.fabrics import make_task
+from tests.factories import make_task
 from todo_rpg.domain.exceptions import (
     TaskAlreadyDoneError,
     TaskExecutedTooEarlyError,
