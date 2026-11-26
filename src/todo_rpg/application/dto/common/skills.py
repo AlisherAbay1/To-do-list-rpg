@@ -11,7 +11,7 @@ class SkillDTO:
     user_id: UUID
     title: str
     description: Optional[str]
-    ico: Optional[str]
+    icon: Optional[str]
     lvl: int
     xp: int
     deleted: bool
@@ -22,7 +22,7 @@ class SkillDTO:
 class SkillCreateDTO:
     title: str
     description: Optional[str]
-    ico: Optional[str]
+    icon: Optional[str]
     lvl: int
     xp: int
 
@@ -31,7 +31,7 @@ class SkillCreateDTO:
 class SkillUpdateDTO:
     title: str | Unset = UNSET
     description: Optional[str] | Unset = UNSET
-    ico: Optional[str] | Unset = UNSET
+    icon: Optional[str] | Unset = UNSET
     lvl: int | Unset = UNSET
     xp: int | Unset = UNSET
 
@@ -41,7 +41,7 @@ class SkillShortDTO:
     id: UUID
     title: str
     description: Optional[str]
-    ico: Optional[str]
+    icon: Optional[str]
     lvl: int
     xp: int
 

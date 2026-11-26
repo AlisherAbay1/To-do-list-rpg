@@ -11,7 +11,7 @@ class SkillWithTasksAndNextLvlXpDTO:
     user_id: UUID
     title: str
     description: Optional[str]
-    ico: Optional[str]
+    icon: Optional[str]
     lvl: int
     xp: int
     deleted: bool

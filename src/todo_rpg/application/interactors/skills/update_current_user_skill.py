@@ -41,8 +41,8 @@ class UpdateCurrentUserSkillInteractor:
             skill.title = dto.title
         if not isinstance(dto.description, Unset):
             skill.description = dto.description
-        if not isinstance(dto.ico, Unset):
-            skill.ico = dto.ico
+        if not isinstance(dto.icon, Unset):
+            skill.icon = dto.icon
         if not isinstance(dto.xp, Unset) and dto.xp is not None:
             skill.xp = dto.xp
         if not isinstance(dto.lvl, Unset) and dto.lvl is not None:

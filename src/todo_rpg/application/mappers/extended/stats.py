@@ -37,7 +37,7 @@ class StatsMapper:
                     id=skill.id,
                     title=skill.title,
                     description=skill.description,
-                    ico=skill.ico,
+                    icon=skill.icon,
                     lvl=skill.lvl,
                     xp=skill.xp,
                 )

@@ -16,7 +16,7 @@ class Skill(Base, kw_only=True):
     user_id: Mapped[UUID] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
     title: Mapped[str] = mapped_column(String(255))
     description: Mapped[Optional[str]] = mapped_column(default=None)
-    ico: Mapped[Optional[str]] = mapped_column(default=None)
+    icon: Mapped[Optional[str]] = mapped_column(default=None)
     lvl: Mapped[int] = mapped_column(default=1)
     xp: Mapped[int] = mapped_column(default=0)
     deleted: Mapped[bool] = mapped_column(default=False)

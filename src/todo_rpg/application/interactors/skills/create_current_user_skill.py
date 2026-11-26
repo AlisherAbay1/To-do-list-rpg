@@ -29,7 +29,7 @@ class CreateCurrentUserSkillInteractor:
             user_id=user_id,
             title=dto.title,
             description=dto.description,
-            ico=dto.ico,
+            icon=dto.icon,
             lvl=dto.lvl,
             xp=dto.xp,
         )

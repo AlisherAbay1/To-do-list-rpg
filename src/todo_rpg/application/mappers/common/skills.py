@@ -11,7 +11,7 @@ class SkillMapper:
             user_id=domain.user_id,
             title=domain.title,
             description=domain.description,
-            ico=domain.ico,
+            icon=domain.icon,
             lvl=domain.lvl,
             xp=domain.xp,
             deleted=domain.deleted,
@@ -29,7 +29,7 @@ class SkillMapper:
             id=domain.id,
             title=domain.title,
             description=domain.description,
-            ico=domain.ico,
+            icon=domain.icon,
             lvl=domain.lvl,
             xp=domain.xp,
         )

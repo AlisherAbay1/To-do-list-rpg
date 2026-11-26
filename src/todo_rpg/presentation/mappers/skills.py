@@ -9,7 +9,7 @@ class SkillSchemaMapper:
         dto = SkillCreateDTO(
             title=schema.title,
             description=schema.description,
-            ico=schema.ico,
+            icon=schema.icon,
             lvl=schema.lvl,
             xp=schema.xp,
         )
@@ -21,7 +21,7 @@ class SkillSchemaMapper:
         dto = SkillUpdateDTO(
             title=clean_data.get("title", UNSET),
             description=clean_data.get("description", UNSET),
-            ico=clean_data.get("ico", UNSET),
+            icon=clean_data.get("icon", UNSET),
             lvl=clean_data.get("lvl", UNSET),
             xp=clean_data.get("xp", UNSET),
         )

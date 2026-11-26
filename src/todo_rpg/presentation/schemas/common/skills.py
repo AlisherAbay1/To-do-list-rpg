@@ -9,7 +9,7 @@ class SkillSchemaRead(BaseModel):
     user_id: UUID
     title: str
     description: Optional[str]
-    ico: Optional[str]
+    icon: Optional[str]
     lvl: int
     xp: int
     deleted: bool
@@ -19,7 +19,7 @@ class SkillSchemaRead(BaseModel):
 class SkillSchemaCreate(BaseModel):
     title: str
     description: Optional[str]
-    ico: Optional[str] = None
+    icon: Optional[str] = None
     lvl: int = 1
     xp: int = 0
 
@@ -27,7 +27,7 @@ class SkillSchemaCreate(BaseModel):
 class SkillSchemaUpdate(BaseModel):
     title: str | None = None
     description: Optional[str] = None
-    ico: Optional[str] = None
+    icon: Optional[str] = None
     lvl: int | None = None
     xp: int | None = None
 
@@ -36,7 +36,7 @@ class SkillShortSchema(BaseModel):
     id: UUID
     title: str
     description: Optional[str]
-    ico: Optional[str]
+    icon: Optional[str]
     lvl: int
     xp: int
 
