@@ -10,5 +10,5 @@ setup_dishka(broker=broker, container=container)
 
 
 @broker.on_event(TaskiqEvents.WORKER_SHUTDOWN)
-async def startup():
+async def shutdown():
     await container.close()

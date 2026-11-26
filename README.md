@@ -67,7 +67,7 @@ uv run taskiq worker todo_rpg.worker:broker --workers 1
 Sends scheduled tasks (cron) to the queue:
 
 ```bash
-uv run taskiq scheduler todo_rpg.worker:scheduler todo_rpg.infrastructure.broker_tasks --skip-first-run
+uv run taskiq scheduler todo_rpg.infrastructure.broker:scheduler todo_rpg.infrastructure.broker_tasks --skip-first-run
 ```
 
 ## Features
