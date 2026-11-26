@@ -1,5 +1,6 @@
 from todo_rpg.application.exceptions import (
     UserNotFoundError,
+    TargetUserNotFoundError,
     TaskNotFoundError,
     SkillNotFoundError,
     ItemNotFoundError,
@@ -49,6 +50,12 @@ def register_exceptions(app: FastAPI):
     @app.exception_handler(UserNotFoundError)
     async def user_not_found(request: Request, exc: UserNotFoundError):
         return JSONResponse(status_code=404, content={"detail": "User not found"})
+
+    @app.exception_handler(TargetUserNotFoundError)
+    async def target_user_not_found(request: Request, exc: TargetUserNotFoundError):
+        return JSONResponse(
+            status_code=404, content={"detail": "Target user not found"}
+        )
 
     @app.exception_handler(EmailAlreadyTakenError)
     async def email_already_taken(request: Request, exc: EmailAlreadyTakenError):

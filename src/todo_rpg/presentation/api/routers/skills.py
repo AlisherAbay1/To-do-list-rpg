@@ -20,7 +20,7 @@ from todo_rpg.presentation.schemas import (
     SkillSchemaUpdate,
 )
 
-router = APIRouter(prefix="/skill", route_class=DishkaRoute)
+router = APIRouter(prefix="/skills", route_class=DishkaRoute)
 
 
 @router.get("", response_model=list[SkillSchemaRead])

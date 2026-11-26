@@ -5,6 +5,10 @@ class UserNotFoundError(ToDoRpgBaseException):
     pass
 
 
+class TargetUserNotFoundError(ToDoRpgBaseException):
+    pass
+
+
 class TaskNotFoundError(ToDoRpgBaseException):
     pass
 

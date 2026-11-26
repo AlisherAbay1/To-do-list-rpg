@@ -16,7 +16,7 @@ from todo_rpg.presentation.schemas import (
     UserRankSchemaUpdate,
 )
 
-router = APIRouter(prefix="/rank", route_class=DishkaRoute)
+router = APIRouter(prefix="/ranks", route_class=DishkaRoute)
 
 
 @router.get("/me", response_model=list[UserRankSchemaRead])

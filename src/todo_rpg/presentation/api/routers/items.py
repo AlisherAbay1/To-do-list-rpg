@@ -22,14 +22,19 @@ from todo_rpg.presentation.schemas import (
     ItemSchemaUpdate,
 )
 
-router = APIRouter(prefix="/item", route_class=DishkaRoute)
+router = APIRouter(prefix="/items", route_class=DishkaRoute)
 
 
 @router.get("", response_model=list[ItemSchemaRead])
 async def get_all_items(
-    interactor: FromDishka[GetAllItemsInteractor], limit: int = 20, offset: int = 0
+    interactor: FromDishka[GetAllItemsInteractor],
+    limit: int = 20,
+    offset: int = 0,
+    session_token=Cookie(None),
 ):
-    return await interactor(limit, offset)
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(limit, offset, session_token)
 
 
 @router.get("/me", response_model=list[ItemSchemaRead])
@@ -69,8 +74,14 @@ async def get_current_user_item(
 
 
 @router.get("/{item_id}", response_model=ItemSchemaRead)
-async def get_item(item_id: UUID7, interactor: FromDishka[GetItemInteractor]):
-    return await interactor(item_id)
+async def get_item(
+    item_id: UUID7,
+    interactor: FromDishka[GetItemInteractor],
+    session_token=Cookie(None),
+):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(item_id, session_token)
 
 
 @router.patch("/me/{item_id}", response_model=ItemSchemaRead)

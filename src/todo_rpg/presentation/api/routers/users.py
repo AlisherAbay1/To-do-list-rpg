@@ -40,9 +40,14 @@ router = APIRouter(prefix="/users", route_class=DishkaRoute)
 
 @router.get("", response_model=list[UserSchemaRead])
 async def get_all_users(
-    interactor: FromDishka[GetAllUsersInteractor], limit: int = 20, offset: int = 0
+    interactor: FromDishka[GetAllUsersInteractor],
+    limit: int = 20,
+    offset: int = 0,
+    session_token=Cookie(None),
 ) -> list[UserDTO]:
-    return await interactor(limit, offset)
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(session_token, limit, offset)
 
 
 @router.get("/me", response_model=UserSchemaRead)
@@ -55,7 +60,9 @@ async def get_current_user(
 
 
 @router.get("/{user_id}", response_model=UserSchemaRead)
-async def get_user(interactor: FromDishka[GetUserInteractor], user_id: UUID7):
+async def get_user(
+    interactor: FromDishka[GetUserInteractor], user_id: UUID7
+) -> UserDTO:
     return await interactor(user_id)
 
 
@@ -113,6 +120,8 @@ async def sign_in_account(
 async def get_session_time(
     interactor: FromDishka[GetSessionTimeInteractor], session_token: str = Cookie(None)
 ):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
     return await interactor(session_token)
 
 
@@ -121,6 +130,8 @@ async def refresh(
     interactor: FromDishka[RefreshSessionTokenInteractor],
     session_token: str = Cookie(None),
 ):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
     return await interactor(session_token)
 
 

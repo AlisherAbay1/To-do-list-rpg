@@ -11,7 +11,7 @@ from todo_rpg.presentation.schemas import (
 from todo_rpg.presentation.mappers import ShopTransactionSchemaMapper
 from uuid import UUID
 
-router = APIRouter(prefix="/shop_transaction", route_class=DishkaRoute)
+router = APIRouter(prefix="/shop_transactions", route_class=DishkaRoute)
 
 
 @router.get("/me", response_model=list[ShopTransactionSchemaRead])
