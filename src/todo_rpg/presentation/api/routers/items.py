@@ -97,7 +97,7 @@ async def update_current_user_item(
     return await interactor(item_id, session_token, dto)
 
 
-@router.delete("/{item_id}", status_code=204)
+@router.delete("/me/{item_id}", status_code=204)
 async def delete_current_user_item(
     item_id: UUID7,
     interactor: FromDishka[DeleteCurrentUserItemInteractor],
@@ -134,5 +134,11 @@ async def delete_current_user_item_requirement(
 
 
 @router.delete("/{item_id}", status_code=204)
-async def delete_item(item_id: UUID7, interactor: FromDishka[DeleteItemInteractor]):
-    return await interactor(item_id)
+async def delete_item(
+    item_id: UUID7,
+    interactor: FromDishka[DeleteItemInteractor],
+    session_token=Cookie(None),
+):
+    if session_token is None:
+        raise HTTPException(401, "Not authenticated")
+    return await interactor(item_id, session_token)
