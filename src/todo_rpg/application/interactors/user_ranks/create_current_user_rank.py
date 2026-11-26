@@ -27,6 +27,6 @@ class CreateCurrentUserRankInteractor:
             raise SessionNotFoundError()
         user_rank = UserRank(user_id=user_id, title=dto.title)
         output_dto = UserRankMapper.to_dto(user_rank)
-        await self.uow.add(user_rank)
+        self.uow.add(user_rank)
         await self.uow.commit()
         return output_dto

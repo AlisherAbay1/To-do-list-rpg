@@ -12,7 +12,7 @@ class UoW:
     async def flush(self) -> None:
         await self._session.flush()
 
-    async def add(self, model: Base) -> None:
+    def add(self, model: Base) -> None:
         self._session.add(model)
 
     async def delete(self, model: Base) -> None:

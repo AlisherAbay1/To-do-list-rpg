@@ -56,7 +56,7 @@ class UseCurrentUserInventoryItemInteractor:
             user_id=user_id, item_id=inventory_item.item_id, title=item.title
         )
 
-        await self.uow.add(item_usage_history)
+        self.uow.add(item_usage_history)
 
         dto = ExtendedInventoryMapper.to_inventory_item_with_item(inventory_item, item)
 

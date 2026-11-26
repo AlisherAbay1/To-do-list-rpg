@@ -64,7 +64,7 @@ class CompleteTaskInteractor:
         )
         task_history.skills.extend(skills)
 
-        await self.uow.add(task_history)
+        self.uow.add(task_history)
 
         dto = ExtendedTaskMapper.to_dto_with_skills_and_user(task, user, skills)
 

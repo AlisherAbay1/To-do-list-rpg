@@ -27,6 +27,6 @@ class CreateCurrentUserItemInteractor:
             raise SessionNotFoundError()
         item = Item(user_id=user_id, title=dto.title, description=dto.description)
         output_dto = ItemMapper.to_dto(item)
-        await self.uow.add(item)
+        self.uow.add(item)
         await self.uow.commit()
         return output_dto

@@ -81,7 +81,7 @@ class BuyCurrentUserShopListingInteractor:
                 user_id=user_id, item_id=shop_listing.item_id, quantity=1
             )
 
-            await self.uow.add(inventory)
+            self.uow.add(inventory)
         else:
             inventory.quantity += 1
 
@@ -93,7 +93,7 @@ class BuyCurrentUserShopListingInteractor:
             price=shop_listing.price,
         )
 
-        await self.uow.add(shop_transaction)
+        self.uow.add(shop_transaction)
 
         dto = ExtendedShopMapper.to_shop_listing_with_short_inventory_item(
             shop_listing_domain=shop_listing,

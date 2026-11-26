@@ -34,6 +34,6 @@ class CreateCurrentUserSkillInteractor:
             xp=dto.xp,
         )
         output_dto = SkillMapper.to_dto(skill)
-        await self.uow.add(skill)
+        self.uow.add(skill)
         await self.uow.commit()
         return output_dto

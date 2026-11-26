@@ -20,6 +20,6 @@ class CreateCurrentUserTaskCategoryInteractor:
             raise SessionNotFoundError()
         task_category = TaskCategory(user_id=user_id, title=dto.title, color=dto.color)
         output_dto = TaskCategoriesMapper.to_dto(task_category)
-        await self.uow.add(task_category)
+        self.uow.add(task_category)
         await self.uow.commit()
         return output_dto

@@ -50,7 +50,7 @@ class CreateCurrentUserShopListingInteractor:
         shop_listing = Shop(
             user_id=user_id, item_id=dto.item_id, price=dto.price, quantity=dto.quantity
         )
-        await self.uow.add(shop_listing)
+        self.uow.add(shop_listing)
         output_dto = ShopMapper.to_short_dto(shop_listing)
         await self.uow.commit()
         return output_dto

@@ -67,7 +67,7 @@ class CreateCurrentUserTaskInteractor:
 
         output_dto = TaskMapper.to_dto(task)
 
-        await self.uow.add(task)
+        self.uow.add(task)
         await self.uow.commit()
 
         return output_dto
