@@ -4,7 +4,7 @@ from todo_rpg.domain.exceptions import (
     UsernameAlreadyTakenError,
 )
 from todo_rpg.application.interfaces import (
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
     UserRepositoryProtocol,
     PasswordManagerProtocol,
     UoWProtocol,
@@ -17,19 +17,19 @@ class CreateUserInteractor:
     def __init__(
         self,
         repo: UserRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         password_manager: PasswordManagerProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.repo = repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.password_manager = password_manager
         self.uow = uow
 
     async def __call__(self, dto: CreateUserDTO) -> UserAuthDTO:
-        if await self.repo.does_username_exists(dto.username):
+        if await self.repo.is_username_taken(dto.username):
             raise UsernameAlreadyTakenError()
-        if await self.repo.does_email_exists(dto.email):
+        if await self.repo.is_email_taken(dto.email):
             raise EmailAlreadyTakenError()
         hashed_password = self.password_manager.hash_password(dto.password)
         user = User(
@@ -39,7 +39,7 @@ class CreateUserInteractor:
         )
         self.repo.save(user)
 
-        session_token = await self.cash_repo.create_session(str(user.id))
+        session_token = await self.session_repo.create_session(str(user.id))
         user_result = UserMapper.to_auth_dto(domain=user, session_token=session_token)
 
         await self.uow.commit()

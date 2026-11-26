@@ -38,7 +38,7 @@ class UserSchemaPatchEmail(BaseModel):
     password: str
 
     @field_validator("password")
-    def is_lenght_correct_schema(cls, password: str):
+    def validate_password_length(cls, password: str) -> str:
         if len(password) > 3 and len(password) < 50:
             return password
         raise HTTPException(
@@ -51,7 +51,7 @@ class UserSchemaPatchPassword(BaseModel):
     new_password: str
 
     @field_validator("new_password")
-    def is_lenght_correct_schema(cls, password: str):
+    def validate_password_length(cls, password: str) -> str:
         if len(password) > 3 and len(password) < 50:
             return password
         raise HTTPException(
@@ -81,7 +81,7 @@ class UserSchemaCreateAuth(BaseModel):
     password: str
 
     @field_validator("username")
-    def has_valid_chars_schema(cls, username: str):
+    def validate_username_chars(cls, username: str) -> str:
         pattern = r"^[a-zA-Z][a-zA-Z0-9!#$%^&*_-]+$"
         if match(pattern, username):
             return username
@@ -91,7 +91,7 @@ class UserSchemaCreateAuth(BaseModel):
         )
 
     @field_validator("username")
-    def is_correct_lenght_schema(cls, username: str):
+    def validate_username_length(cls, username: str):
         if len(username) > 3 and len(username) < 16:
             return username
         raise HTTPException(
@@ -99,7 +99,7 @@ class UserSchemaCreateAuth(BaseModel):
         )
 
     @field_validator("password")
-    def is_lenght_correct_schema(cls, password: str):
+    def validate_password_length(cls, password: str) -> str:
         if len(password) > 3 and len(password) < 50:
             return password
         raise HTTPException(

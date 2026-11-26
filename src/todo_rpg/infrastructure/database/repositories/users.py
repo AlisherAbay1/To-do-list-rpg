@@ -43,13 +43,13 @@ class UserRepository:
             raise UserNotFoundError()
         await self._session.delete(user)
 
-    async def does_username_exists(self, username: str) -> Optional[bool]:
+    async def is_username_taken(self, username: str) -> Optional[bool]:
         does_exist = await self._session.scalar(
             select(exists().where(User.username == username))
         )
         return does_exist
 
-    async def does_email_exists(self, email: str) -> Optional[bool]:
+    async def is_email_taken(self, email: str) -> Optional[bool]:
         does_exist = await self._session.scalar(
             select(exists().where(User.email == email))
         )

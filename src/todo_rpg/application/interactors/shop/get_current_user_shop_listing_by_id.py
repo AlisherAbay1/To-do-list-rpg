@@ -1,7 +1,7 @@
 from todo_rpg.application.interfaces import (
     ShopRepositoryProtocol,
     ItemRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
 )
 from todo_rpg.application.mappers import ExtendedShopMapper
 from todo_rpg.application.dto import ShopListingShortWithFitRequirementsDTO
@@ -19,16 +19,16 @@ class GetCurrentUserShopListingByIdInteractor:
         self,
         shop_repo: ShopRepositoryProtocol,
         item_repo: ItemRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
     ) -> None:
         self.shop_repo = shop_repo
         self.item_repo = item_repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
 
     async def __call__(
         self, session_token: str, shop_listing_id: UUID
     ) -> ShopListingShortWithFitRequirementsDTO:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
 

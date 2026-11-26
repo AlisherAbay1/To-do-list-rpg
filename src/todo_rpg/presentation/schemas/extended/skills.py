@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 from uuid import UUID
-from todo_rpg.presentation.schemas import TaskSchemaReadable
+from todo_rpg.presentation.schemas import TaskShortSchema
 
 
 class SkillWithTasksAndNextLvlXpSchemaRead(BaseModel):
@@ -18,4 +18,4 @@ class SkillWithTasksAndNextLvlXpSchemaRead(BaseModel):
 
     xp_for_next_lvl: int
 
-    tasks: list[TaskSchemaReadable]
+    tasks: list[TaskShortSchema]

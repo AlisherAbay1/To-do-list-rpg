@@ -1,5 +1,5 @@
 from todo_rpg.application.dto.common import (
-    SkillRequirementsWithFitRequiremenetDTO,
+    SkillRequirementsWithFitRequirementDTO,
     ShopListingShortDTO,
     InventoryShortDTO,
 )
@@ -14,7 +14,7 @@ class ShopListingShortWithFitRequirementsDTO:
     price: int
     quantity: int
     fit_requirements: bool
-    skill_requirements: list[SkillRequirementsWithFitRequiremenetDTO]
+    skill_requirements: list[SkillRequirementsWithFitRequirementDTO]
 
 
 @dataclass(slots=True)

@@ -53,7 +53,7 @@ class SkillRequirementsDTO:
 
 
 @dataclass(slots=True)
-class SkillRequirementsWithFitRequiremenetDTO:
+class SkillRequirementsWithFitRequirementDTO:
     skill: SkillShortDTO
     required_lvl: int
     fit_requirement: bool

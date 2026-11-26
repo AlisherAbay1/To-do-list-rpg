@@ -21,5 +21,5 @@ class ItemRequirement(Base, kw_only=True):
 
     skill: Mapped[Skill] = relationship(lazy="joined", init=False)
 
-    def does_fit_requirement(self):
+    def is_requirement_met(self):
         return self.required_lvl <= self.skill.lvl

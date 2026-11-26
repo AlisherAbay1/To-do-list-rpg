@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import ForeignKey
 
 
-class Tasks_to_skills(Base):
+class TasksToSkills(Base):
     __tablename__ = "tasks_to_skills"
 
     task_id: Mapped[UUID] = mapped_column(
@@ -15,7 +15,7 @@ class Tasks_to_skills(Base):
     )
 
 
-class Tasks_to_items(Base):
+class TasksToItems(Base):
     __tablename__ = "tasks_to_items"
 
     task_id: Mapped[UUID] = mapped_column(
@@ -26,7 +26,7 @@ class Tasks_to_items(Base):
     )
 
 
-class Tasks_history_to_items(Base):
+class TasksHistoryToItems(Base):
     __tablename__ = "tasks_history_to_items"
 
     task_history_id: Mapped[UUID] = mapped_column(
@@ -37,7 +37,7 @@ class Tasks_history_to_items(Base):
     )
 
 
-class Tasks_history_to_skills(Base):
+class TasksHistoryToSkills(Base):
     __tablename__ = "tasks_history_to_skills"
 
     task_history_id: Mapped[UUID] = mapped_column(

@@ -1,7 +1,7 @@
 from todo_rpg.application.exceptions import SessionNotFoundError
 from todo_rpg.application.interfaces import (
     ItemRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
 )
 from todo_rpg.application.mappers.common import ItemMapper
 from todo_rpg.application.dto import ItemDTO
@@ -9,15 +9,15 @@ from todo_rpg.application.dto import ItemDTO
 
 class GetCurrentUserItemsInteractor:
     def __init__(
-        self, repo: ItemRepositoryProtocol, cash_repo: RedisRepositoryProtocol
+        self, repo: ItemRepositoryProtocol, session_repo: SessionRepositoryProtocol
     ) -> None:
         self.repo = repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
 
     async def __call__(
         self, session_token: str, limit: int, offset: int, get_deleted: bool
     ) -> list[ItemDTO]:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         items = await self.repo.get_items_by_user_id(

@@ -1,9 +1,9 @@
-from todo_rpg.application.interfaces import RedisRepositoryProtocol
+from todo_rpg.application.interfaces import SessionRepositoryProtocol
 
 
 class DeleteSessionInteractor:
-    def __init__(self, cash_repo: RedisRepositoryProtocol) -> None:
-        self.cash_repo = cash_repo
+    def __init__(self, session_repo: SessionRepositoryProtocol) -> None:
+        self.session_repo = session_repo
 
     async def __call__(self, session_token: str) -> None:
-        await self.cash_repo.delete_session(session_token)
+        await self.session_repo.delete_session(session_token)

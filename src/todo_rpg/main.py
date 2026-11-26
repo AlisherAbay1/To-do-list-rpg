@@ -12,7 +12,7 @@ from todo_rpg.presentation.api.routers import (
     task_categories_router,
     shop_transactions_router,
 )
-from todo_rpg.presentation.exception_handlers import register_exeptions
+from todo_rpg.presentation.exception_handlers import register_exceptions
 from contextlib import asynccontextmanager
 from todo_rpg.infrastructure.di import get_dishka_container
 
@@ -39,7 +39,7 @@ def setup_fastapi_routers(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 setup_fastapi_routers(app)
-register_exeptions(app)
+register_exceptions(app)
 
 container = get_dishka_container()
 setup_dishka(container, app)

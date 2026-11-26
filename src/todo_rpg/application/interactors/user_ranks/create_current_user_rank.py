@@ -1,7 +1,7 @@
 from todo_rpg.application.dto import UserRankCreateDTO
 from todo_rpg.application.interfaces import (
     UserRankRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
     UoWProtocol,
 )
 from todo_rpg.domain import UserRank
@@ -14,15 +14,15 @@ class CreateCurrentUserRankInteractor:
     def __init__(
         self,
         repo: UserRankRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.repo = repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.uow = uow
 
     async def __call__(self, session_token: str, dto: UserRankCreateDTO) -> UserRankDTO:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         user_rank = UserRank(user_id=user_id, title=dto.title)

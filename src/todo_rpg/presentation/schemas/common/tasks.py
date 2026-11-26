@@ -30,7 +30,7 @@ class TaskSchemaRead(BaseModel):
     deleted_at: Optional[datetime]
 
 
-class TaskSchemaReadable(BaseModel):
+class TaskShortSchema(BaseModel):
     id: UUID
     user_id: UUID
     title: str

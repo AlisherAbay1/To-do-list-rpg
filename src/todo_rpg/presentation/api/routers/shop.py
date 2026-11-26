@@ -12,7 +12,7 @@ from todo_rpg.presentation.schemas import (
     ShopListingShortSchemaRead,
     ShopListingSchemaCreate,
     ShopListingSchemaUpdate,
-    ShopListingShortWithFitRequiremenetsSchema,
+    ShopListingShortWithFitRequirementsSchema,
     ShopListingShortWithShortInventoryItemSchema,
 )
 from todo_rpg.presentation.mappers import ShopSchemaMapper
@@ -34,7 +34,7 @@ async def get_current_user_shop_listings(
 
 
 @router.get(
-    "/me/{shop_listing_id}", response_model=ShopListingShortWithFitRequiremenetsSchema
+    "/me/{shop_listing_id}", response_model=ShopListingShortWithFitRequirementsSchema
 )
 async def get_current_user_shop_listing_by_id(
     interactor: FromDishka[GetCurrentUserShopListingByIdInteractor],

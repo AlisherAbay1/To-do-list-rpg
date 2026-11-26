@@ -1,4 +1,4 @@
-from ...redis import RedisRepository
+from ...redis import RedisSessionRepository
 from ..uow import UoW
 from .items import ItemRepository
 from .skills import SkillRepository
@@ -17,7 +17,7 @@ __all__ = (
     "SkillRepository",
     "TaskRepository",
     "ItemRepository",
-    "RedisRepository",
+    "RedisSessionRepository",
     "UoW",
     "TaskHistoryRepository",
     "TaskCategoriesRepository",

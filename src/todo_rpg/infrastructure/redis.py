@@ -5,7 +5,7 @@ from todo_rpg.infrastructure.config import config
 from typing import Optional
 
 
-class RedisRepository:
+class RedisSessionRepository:
     __slots__ = ("_session",)
 
     def __init__(self, session: Redis):

@@ -29,7 +29,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 
-def register_exeptions(app: FastAPI):
+def register_exceptions(app: FastAPI):
     @app.exception_handler(SkillIsAlreadyInRequirementsError)
     async def skill_is_already_in_requirements(
         request: Request, exc: SkillIsAlreadyInRequirementsError

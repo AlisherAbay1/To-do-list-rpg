@@ -15,7 +15,7 @@ from todo_rpg.application.interactors import (
     DeleteCurrentUserInteractor,
     DeleteSessionInteractor,
     GetAllUsersInteractor,
-    GetCurrentUser,
+    GetCurrentUserInteractor,
     GetSessionTimeInteractor,
     GetUserInteractor,
     RefreshSessionTokenInteractor,
@@ -47,7 +47,7 @@ async def get_all_users(
 
 @router.get("/me", response_model=UserSchemaRead)
 async def get_current_user(
-    interactor: FromDishka[GetCurrentUser], session_token=Cookie(None)
+    interactor: FromDishka[GetCurrentUserInteractor], session_token=Cookie(None)
 ) -> UserDTO:
     if session_token is None:
         raise HTTPException(401, "Not authenticated")
@@ -109,7 +109,7 @@ async def sign_in_account(
     )
 
 
-@router.patch("/auth/get_session_time", response_model=MessageSchema)
+@router.get("/auth/get_session_time", response_model=MessageSchema)
 async def get_session_time(
     interactor: FromDishka[GetSessionTimeInteractor], session_token: str = Cookie(None)
 ):
@@ -176,7 +176,7 @@ async def delete_current_user(
     await interactor(session_token)
 
 
-@router.patch("/me/change-rank/")
+@router.patch("/me/change-rank")
 async def change_rank(
     interactor: FromDishka[ChangeCurrentUserRankInteractor],
     rank_id: UUID7,

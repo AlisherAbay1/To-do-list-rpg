@@ -1,7 +1,7 @@
 from todo_rpg.application.interfaces import (
     SkillRepositoryProtocol,
     UoWProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
 )
 from todo_rpg.application.dto import SkillUpdateDTO, SkillDTO
 from todo_rpg.application.mappers import SkillMapper
@@ -18,17 +18,17 @@ class UpdateCurrentUserSkillInteractor:
     def __init__(
         self,
         repo: SkillRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.repo = repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.uow = uow
 
     async def __call__(
         self, skill_id: UUID, dto: SkillUpdateDTO, session_token: str
     ) -> SkillDTO:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         skill = await self.repo.get_skill_by_id(skill_id)

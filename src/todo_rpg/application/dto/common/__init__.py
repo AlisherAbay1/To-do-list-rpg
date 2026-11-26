@@ -5,7 +5,7 @@ from .skills import (
     SkillUpdateDTO,
     SkillShortDTO,
     SkillRequirementsDTO,
-    SkillRequirementsWithFitRequiremenetDTO,
+    SkillRequirementsWithFitRequirementDTO,
 )
 from .task_categories import (
     TaskCategoryDTO,
@@ -78,7 +78,7 @@ __all__ = (
     "ShopListingDTO",
     "ShopListingCreateDTO",
     "ShopListingUpdateDTO",
-    "SkillRequirementsWithFitRequiremenetDTO",
+    "SkillRequirementsWithFitRequirementDTO",
     "InventoryDTO",
     "InventoryCreateDTO",
     "InventoryShortDTO",

@@ -5,7 +5,7 @@ from todo_rpg.application.exceptions import (
     AccessDeniedError,
 )
 from todo_rpg.application.interfaces import (
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
     UserRepositoryProtocol,
     UserRankRepositoryProtocol,
     UoWProtocol,
@@ -18,16 +18,16 @@ class ChangeCurrentUserRankInteractor:
         self,
         user_repo: UserRepositoryProtocol,
         user_rank_repo: UserRankRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.user_repo = user_repo
         self.user_rank_repo = user_rank_repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.uow = uow
 
     async def __call__(self, session_token: str, rank_id: UUID) -> str:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
 

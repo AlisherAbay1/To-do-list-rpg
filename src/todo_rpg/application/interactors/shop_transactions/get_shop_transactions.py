@@ -1,5 +1,5 @@
 from todo_rpg.application.interfaces import (
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
     ShopTransactionRepositoryProtocol,
 )
 from todo_rpg.application.dto import ShopTransactionDTO, ShopTransactionFiltersDTO
@@ -11,10 +11,10 @@ class GetShopTransactionsInteractor:
     def __init__(
         self,
         repo: ShopTransactionRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
     ) -> None:
         self.repo = repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
 
     async def __call__(
         self,
@@ -23,7 +23,7 @@ class GetShopTransactionsInteractor:
         offset: int,
         filters: ShopTransactionFiltersDTO,
     ) -> list[ShopTransactionDTO]:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         shop_transactions = await self.repo.get_shop_transactions_by_user_id(

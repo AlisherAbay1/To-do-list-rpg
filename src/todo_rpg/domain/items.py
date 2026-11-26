@@ -30,7 +30,7 @@ class Item(Base, kw_only=True):
         self.deleted = True
         self.deleted_at = datetime.now(tz=timezone.utc)
 
-    def does_fit_requirements(self) -> bool:
+    def are_requirements_met(self) -> bool:
         return all(
-            [requirement.does_fit_requirement() for requirement in self.requirements]
+            [requirement.is_requirement_met() for requirement in self.requirements]
         )

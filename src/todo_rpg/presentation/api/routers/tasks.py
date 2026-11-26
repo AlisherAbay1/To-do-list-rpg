@@ -21,7 +21,7 @@ from todo_rpg.presentation.schemas import (
     TaskFilterParams,
     TaskSchemaCreate,
     TaskSchemaRead,
-    TaskSchemaReadable,
+    TaskShortSchema,
     TaskSchemaUpdate,
     TaskSortParams,
     TaskWithSkillsAndItemsSchemaRead,
@@ -110,7 +110,7 @@ async def get_current_user_task(
     )
 
 
-@router.post("/me", response_model=TaskSchemaReadable)
+@router.post("/me", response_model=TaskShortSchema)
 async def create_current_user_task(
     interactor: FromDishka[CreateCurrentUserTaskInteractor],
     data: TaskSchemaCreate,
@@ -145,7 +145,7 @@ async def uncomplete_task(
     return await interactor(task_id, session_token)
 
 
-@router.patch("/me/{task_id}", response_model=TaskSchemaReadable)
+@router.patch("/me/{task_id}", response_model=TaskShortSchema)
 async def patch_task(
     interactor: FromDishka[UpdateCurrentUserTaskInteractor],
     task_id: UUID7,

@@ -1,7 +1,7 @@
 from todo_rpg.domain import Shop, Item, Inventory
 from todo_rpg.application.dto import (
     ShopListingShortWithFitRequirementsDTO,
-    SkillRequirementsWithFitRequiremenetDTO,
+    SkillRequirementsWithFitRequirementDTO,
     ShopListingShortWithShortInventoryItemDTO,
 )
 from todo_rpg.application.mappers import SkillMapper, ShopMapper, InventoryMapper
@@ -15,12 +15,12 @@ class ExtendedShopMapper:
             item_id=shop_domain.item_id,
             price=shop_domain.price,
             quantity=shop_domain.quantity,
-            fit_requirements=item_domain.does_fit_requirements(),
+            fit_requirements=item_domain.are_requirements_met(),
             skill_requirements=[
-                SkillRequirementsWithFitRequiremenetDTO(
+                SkillRequirementsWithFitRequirementDTO(
                     skill=SkillMapper.to_short_dto(requirement_domain.skill),
                     required_lvl=requirement_domain.required_lvl,
-                    fit_requirement=requirement_domain.does_fit_requirement(),
+                    fit_requirement=requirement_domain.is_requirement_met(),
                 )
                 for requirement_domain in item_domain.requirements
             ],

@@ -5,7 +5,7 @@ from todo_rpg.application.exceptions import (
 )
 from todo_rpg.application.interfaces import (
     ItemRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
 )
 from todo_rpg.application.mappers import ItemExtendedMapper
 from uuid import UUID
@@ -14,15 +14,15 @@ from todo_rpg.application.dto import ItemWithRequirementsDTO
 
 class GetCurrentUserItemInteractor:
     def __init__(
-        self, repo: ItemRepositoryProtocol, cash_repo: RedisRepositoryProtocol
+        self, repo: ItemRepositoryProtocol, session_repo: SessionRepositoryProtocol
     ) -> None:
         self.repo = repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
 
     async def __call__(
         self, item_id: UUID, session_token: str
     ) -> ItemWithRequirementsDTO:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         item = await self.repo.get_item_by_id(item_id)

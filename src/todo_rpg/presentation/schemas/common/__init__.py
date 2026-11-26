@@ -5,14 +5,14 @@ from .skills import (
     SkillSchemaUpdate,
     SkillShortSchema,
     SkillRequirementsSchema,
-    SkillRequirementsWithFitRequiremenetSchema,
+    SkillRequirementsWithFitRequirementSchema,
 )
 from .tasks import (
     TaskSchemaRead,
     TaskSchemaCreate,
     TaskSortParams,
     TaskFilterParams,
-    TaskSchemaReadable,
+    TaskShortSchema,
     TaskSchemaUpdate,
 )
 from .users import (
@@ -58,7 +58,7 @@ __all__ = (
     "UserSchemaPatchPassword",
     "TaskSortParams",
     "TaskFilterParams",
-    "TaskSchemaReadable",
+    "TaskShortSchema",
     "TaskSchemaUpdate",
     "UpdateTaskCategorySchema",
     "UserSuccessAuthSchema",
@@ -74,7 +74,7 @@ __all__ = (
     "ShopListingShortSchemaRead",
     "ShopListingSchemaRead",
     "ShopListingSchemaUpdate",
-    "SkillRequirementsWithFitRequiremenetSchema",
+    "SkillRequirementsWithFitRequirementSchema",
     "InventorySchemaRead",
     "InventoryShortSchemaRead",
     "UserRankSchemaCreate",

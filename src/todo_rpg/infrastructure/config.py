@@ -43,7 +43,7 @@ class FastapiConfig:
 
 @dataclass
 class SecurityConfig:
-    paper: SecretStr
+    pepper: SecretStr
     time_cost: int = 1
     memory_cost: int = 64 * 1024
     parallelism: int = 2
@@ -75,10 +75,10 @@ def load_config():
     security = load(
         EnvFileSource(
             file=_ENV_FILE,
-            field_mapping={F[SecurityConfig].paper: "PAPER"},
+            field_mapping={F[SecurityConfig].pepper: "PEPPER"},
             skip_if_missing=True,
         ),
-        EnvSource(field_mapping={F[SecurityConfig].paper: "PAPER"}),
+        EnvSource(field_mapping={F[SecurityConfig].pepper: "PEPPER"}),
         schema=SecurityConfig,
     )
     config = Config(database=database, redis=redis, fastapi=fastapi, security=security)

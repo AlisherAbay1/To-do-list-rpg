@@ -9,7 +9,7 @@ from todo_rpg.domain.exceptions import (
 )
 from todo_rpg.application.interfaces import (
     UserRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
     UoWProtocol,
     PasswordManagerProtocol,
 )
@@ -19,17 +19,17 @@ class UpdateCurrentUserEmailInteractor:
     def __init__(
         self,
         repo: UserRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         uow: UoWProtocol,
         password_manager: PasswordManagerProtocol,
     ) -> None:
         self.repo = repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.uow = uow
         self.password_manager = password_manager
 
     async def __call__(self, dto: UserEmailDTO, session_token: str) -> str:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         user = await self.repo.get_user(user_id)

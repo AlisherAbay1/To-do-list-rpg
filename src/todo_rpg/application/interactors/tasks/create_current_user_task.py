@@ -4,7 +4,7 @@ from todo_rpg.application.exceptions import (
     TaskCategoryNotFoundError,
 )
 from todo_rpg.application.interfaces import (
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
     TaskRepositoryProtocol,
     SkillRepositoryProtocol,
     ItemRepositoryProtocol,
@@ -23,18 +23,18 @@ class CreateCurrentUserTaskInteractor:
         task_category_repo: TaskCategoriesRepositoryProtocol,
         skill_repo: SkillRepositoryProtocol,
         item_repo: ItemRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.task_repo = task_repo
         self.task_category_repo = task_category_repo
         self.skill_repo = skill_repo
         self.item_repo = item_repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.uow = uow
 
     async def __call__(self, session_token, dto: TaskCreateDTO) -> TaskDTO:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         if dto.category_id is not None:

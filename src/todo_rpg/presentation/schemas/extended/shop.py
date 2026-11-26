@@ -1,5 +1,5 @@
 from todo_rpg.presentation.schemas.common import (
-    SkillRequirementsWithFitRequiremenetSchema,
+    SkillRequirementsWithFitRequirementSchema,
     ShopListingShortSchemaRead,
     InventoryShortSchemaRead,
 )
@@ -7,13 +7,13 @@ from pydantic import BaseModel
 from uuid import UUID
 
 
-class ShopListingShortWithFitRequiremenetsSchema(BaseModel):
+class ShopListingShortWithFitRequirementsSchema(BaseModel):
     id: UUID
     item_id: UUID
     price: int
     quantity: int
     fit_requirements: bool
-    skill_requirements: list[SkillRequirementsWithFitRequiremenetSchema]
+    skill_requirements: list[SkillRequirementsWithFitRequirementSchema]
 
 
 class ShopListingShortWithShortInventoryItemSchema(BaseModel):

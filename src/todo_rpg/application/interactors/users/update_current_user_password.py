@@ -6,7 +6,7 @@ from todo_rpg.application.exceptions import (
 from todo_rpg.domain.exceptions import IncorrectPasswordError
 from todo_rpg.application.interfaces import (
     UserRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
     PasswordManagerProtocol,
     UoWProtocol,
 )
@@ -16,17 +16,17 @@ class UpdateCurrentUserPasswordInteractor:
     def __init__(
         self,
         repo: UserRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         password_manager: PasswordManagerProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.repo = repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.password_manager = password_manager
         self.uow = uow
 
     async def __call__(self, dto: UserPasswordDTO, session_token: str) -> None:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         user = await self.repo.get_user(user_id)

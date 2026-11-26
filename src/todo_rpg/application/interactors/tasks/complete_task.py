@@ -10,7 +10,7 @@ from todo_rpg.application.interfaces import (
     SkillRepositoryProtocol,
     TaskRepositoryProtocol,
     UserRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
     UoWProtocol,
 )
 from todo_rpg.application.dto import TaskWithUserAndSkillsDTO
@@ -23,19 +23,19 @@ class CompleteTaskInteractor:
         task_repo: TaskRepositoryProtocol,
         user_repo: UserRepositoryProtocol,
         skill_repo: SkillRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.task_repo = task_repo
         self.user_repo = user_repo
         self.skill_repo = skill_repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.uow = uow
 
     async def __call__(
         self, task_id: UUID, session_token: str
     ) -> TaskWithUserAndSkillsDTO:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         task = await self.task_repo.get_task_by_id(task_id, user_id)

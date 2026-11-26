@@ -1,7 +1,7 @@
 from todo_rpg.application.interfaces import (
     SkillRepositoryProtocol,
     TaskRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
 )
 from todo_rpg.application.mappers import ExtendedSkillMapper
 from uuid import UUID
@@ -18,16 +18,16 @@ class GetCurrentUserSkillInteractor:
         self,
         skill_repo: SkillRepositoryProtocol,
         task_repo: TaskRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
     ) -> None:
         self.skill_repo = skill_repo
         self.task_repo = task_repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
 
     async def __call__(
         self, skill_id: UUID, session_token: str, get_related_tasks: bool
     ) -> SkillWithTasksAndNextLvlXpDTO:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         skill = await self.skill_repo.get_skill_by_id(skill_id)

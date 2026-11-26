@@ -3,7 +3,7 @@ from .create_user import CreateUserInteractor
 from .delete_current_user import DeleteCurrentUserInteractor
 from .delete_session import DeleteSessionInteractor
 from .get_all_users import GetAllUsersInteractor
-from .get_current_user import GetCurrentUser
+from .get_current_user import GetCurrentUserInteractor
 from .get_session_time import GetSessionTimeInteractor
 from .get_user import GetUserInteractor
 from .refresh_session_token import RefreshSessionTokenInteractor
@@ -16,7 +16,7 @@ __all__ = (
     "CreateUserInteractor",
     "DeleteCurrentUserInteractor",
     "DeleteSessionInteractor",
-    "GetCurrentUser",
+    "GetCurrentUserInteractor",
     "GetSessionTimeInteractor",
     "GetUserInteractor",
     "RefreshSessionTokenInteractor",

@@ -1,7 +1,7 @@
 from todo_rpg.application.interfaces import (
     TaskCategoriesRepositoryProtocol,
     TaskRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
 )
 from uuid import UUID
 from todo_rpg.application.exceptions import (
@@ -18,16 +18,16 @@ class GetCurrentUserTaskCategoryByIdInteractor:
         self,
         task_category_repo: TaskCategoriesRepositoryProtocol,
         task_repo: TaskRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
     ) -> None:
         self.task_category_repo = task_category_repo
         self.task_repo = task_repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
 
     async def __call__(
         self, session_token: str, task_category_id: UUID, get_tasks: bool
     ) -> TaskCategoryWithTasksDTO:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         task_category = await self.task_category_repo.get_task_category_by_id(

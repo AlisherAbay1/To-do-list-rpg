@@ -3,7 +3,7 @@ from todo_rpg.application.interfaces import (
     TaskRepositoryProtocol,
     SkillRepositoryProtocol,
     TaskHistoryRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
 )
 from todo_rpg.application.exceptions import SessionNotFoundError, UserNotFoundError
 from todo_rpg.application.mappers import StatsMapper
@@ -23,16 +23,16 @@ class GetStatsOverviewInteractor:
         task_repo: TaskRepositoryProtocol,
         task_history_repo: TaskHistoryRepositoryProtocol,
         skill_repo: SkillRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
     ) -> None:
         self.user_repo = user_repo
         self.task_repo = task_repo
         self.task_history_repo = task_history_repo
         self.skill_repo = skill_repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
 
     async def __call__(self, session_token: str) -> StatsOverviewDTO:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         user = await self.user_repo.get_user(user_id)

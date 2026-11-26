@@ -3,7 +3,7 @@ from todo_rpg.application.interfaces import (
     InventoryRepositoryProtocol,
     ItemRepositoryProtocol,
     UserRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
     UoWProtocol,
 )
 from uuid import UUID
@@ -31,20 +31,20 @@ class BuyCurrentUserShopListingInteractor:
         inventory_repo: InventoryRepositoryProtocol,
         item_repo: ItemRepositoryProtocol,
         user_repo: UserRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.shop_repo = shop_repo
         self.inventory_repo = inventory_repo
         self.item_repo = item_repo
         self.user_repo = user_repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.uow = uow
 
     async def __call__(
         self, session_token: str, shop_listing_id: UUID
     ) -> ShopListingShortWithShortInventoryItemDTO:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
 
@@ -64,7 +64,7 @@ class BuyCurrentUserShopListingInteractor:
 
         if user.gold < shop_listing.price:
             raise UserBalanceNotEnoughError()
-        if not item.does_fit_requirements():
+        if not item.are_requirements_met():
             raise UserDoesntFitSkillRequirementsError()
         if shop_listing.quantity == 0:
             raise ShopListingAmountIsZeroError()

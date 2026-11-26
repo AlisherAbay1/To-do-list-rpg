@@ -1,5 +1,5 @@
 from todo_rpg.application.interfaces import (
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
     ShopTransactionRepositoryProtocol,
     InventoryRepositoryProtocol,
     ShopRepositoryProtocol,
@@ -24,18 +24,18 @@ class CancelTransactionInteractor:
         inventory_repo: InventoryRepositoryProtocol,
         shop_repo: ShopRepositoryProtocol,
         user_repo: UserRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.shop_transaction_repo = shop_transaction_repo
         self.inventory_repo = inventory_repo
         self.shop_repo = shop_repo
         self.user_repo = user_repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.uow = uow
 
     async def __call__(self, session_token: str, shop_transaction_id: UUID) -> None:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         shop_transaction = await self.shop_transaction_repo.get_shop_transaction_by_id(

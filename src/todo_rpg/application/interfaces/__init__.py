@@ -10,7 +10,7 @@ from .repositories_interfaces import (
     UserRankRepositoryProtocol,
     ShopTransactionRepositoryProtocol,
 )
-from .cash_interfaces import RedisRepositoryProtocol
+from .session_interface import SessionRepositoryProtocol
 from .transaction_interfaces import UoWProtocol
 from .security_interfaces import PasswordManagerProtocol
 
@@ -23,7 +23,7 @@ __all__ = (
     "InventoryRepositoryProtocol",
     "TaskHistoryRepositoryProtocol",
     "TaskCategoriesRepositoryProtocol",
-    "RedisRepositoryProtocol",
+    "SessionRepositoryProtocol",
     "UoWProtocol",
     "UserRankRepositoryProtocol",
     "ShopTransactionRepositoryProtocol",

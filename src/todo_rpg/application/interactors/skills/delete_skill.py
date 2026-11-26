@@ -8,7 +8,7 @@ from todo_rpg.application.exceptions import (
 )
 from todo_rpg.application.interfaces import (
     SkillRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
     UserRepositoryProtocol,
     UoWProtocol,
 )
@@ -19,16 +19,16 @@ class DeleteSkillInteractor:
         self,
         skill_repo: SkillRepositoryProtocol,
         user_repo: UserRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.skill_repo = skill_repo
         self.user_repo = user_repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.uow = uow
 
     async def __call__(self, session_token: str, skill_id: UUID) -> None:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         user = await self.user_repo.get_user(user_id)

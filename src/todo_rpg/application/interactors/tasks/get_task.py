@@ -6,7 +6,7 @@ from todo_rpg.application.interfaces import (
     ItemRepositoryProtocol,
     SkillRepositoryProtocol,
     TaskRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
 )
 from todo_rpg.application.dto import TaskWithSkillsAndItemsDTO
 
@@ -17,12 +17,12 @@ class GetCurrentUserTaskInteractor:
         task_repo: TaskRepositoryProtocol,
         skill_repo: SkillRepositoryProtocol,
         item_repo: ItemRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
     ) -> None:
         self.task_repo = task_repo
         self.skill_repo = skill_repo
         self.item_repo = item_repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
 
     async def __call__(
         self,
@@ -31,7 +31,7 @@ class GetCurrentUserTaskInteractor:
         get_related_skills: bool,
         get_related_items: bool,
     ) -> TaskWithSkillsAndItemsDTO:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         task = await self.task_repo.get_task_by_id(task_id, user_id)

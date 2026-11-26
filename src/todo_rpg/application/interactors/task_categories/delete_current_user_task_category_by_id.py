@@ -1,7 +1,7 @@
 from todo_rpg.application.interfaces import (
     TaskCategoriesRepositoryProtocol,
     UoWProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
 )
 from uuid import UUID
 from todo_rpg.application.exceptions import SessionNotFoundError
@@ -11,15 +11,15 @@ class DeleteCurrentUserTaskCategoryByIdInteractor:
     def __init__(
         self,
         repo: TaskCategoriesRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.repo = repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.uow = uow
 
-    async def __call__(self, session_id: str, task_category_id: UUID) -> None:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_id)
+    async def __call__(self, session_token: str, task_category_id: UUID) -> None:
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
         await self.repo.delete_current_user_task_category_by_id(

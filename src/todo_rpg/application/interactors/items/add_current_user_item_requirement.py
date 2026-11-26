@@ -1,7 +1,7 @@
 from todo_rpg.application.interfaces import (
     ItemRepositoryProtocol,
     SkillRepositoryProtocol,
-    RedisRepositoryProtocol,
+    SessionRepositoryProtocol,
     UoWProtocol,
 )
 from todo_rpg.domain import ItemRequirement
@@ -21,18 +21,18 @@ class AddCurrentUserItemRequirementInteractor:
         self,
         item_repo: ItemRepositoryProtocol,
         skill_repo: SkillRepositoryProtocol,
-        cash_repo: RedisRepositoryProtocol,
+        session_repo: SessionRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.item_repo = item_repo
         self.skill_repo = skill_repo
-        self.cash_repo = cash_repo
+        self.session_repo = session_repo
         self.uow = uow
 
     async def __call__(
         self, item_id: UUID, skill_id: UUID, requirement_lvl: int, session_token: str
     ) -> ItemWithRequirementsDTO:
-        user_id = await self.cash_repo.get_user_id_by_session_token(session_token)
+        user_id = await self.session_repo.get_user_id_by_session_token(session_token)
         if user_id is None:
             raise SessionNotFoundError()
 
@@ -41,7 +41,7 @@ class AddCurrentUserItemRequirementInteractor:
             raise ItemNotFoundError()
         if item.user_id != user_id:
             raise AccessDeniedError()
-        if skill_id in [reqirement.skill_id for reqirement in item.requirements]:
+        if skill_id in [requirement.skill_id for requirement in item.requirements]:
             raise SkillIsAlreadyInRequirementsError()
         item_requirement = ItemRequirement(
             item_id=item_id, skill_id=skill_id, required_lvl=requirement_lvl
