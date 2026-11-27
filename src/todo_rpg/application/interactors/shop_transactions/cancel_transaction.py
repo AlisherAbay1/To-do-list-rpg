@@ -65,8 +65,9 @@ class CancelTransactionInteractor:
                 if inventory.quantity > 0:
                     inventory.quantity -= 1
                     user.gold += shop_transaction.price
-
-            shop_listing.quantity += 1
+                    shop_listing.quantity += 1
+                if inventory.quantity == 0:
+                    await self.uow.delete(inventory)
 
         elif shop_transaction.item_id:
             raise ShopListingNotFoundError()
