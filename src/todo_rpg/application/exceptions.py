@@ -53,6 +53,10 @@ class InventoryItemNotFoundError(ToDoRpgBaseException):
     pass
 
 
+class InventoryItemAlreadyUsedError(ToDoRpgBaseException):
+    pass
+
+
 class ShopListingAlreadyExistsError(ToDoRpgBaseException):
     pass
 

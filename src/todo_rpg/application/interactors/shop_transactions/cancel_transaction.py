@@ -10,7 +10,7 @@ from todo_rpg.application.exceptions import (
     SessionNotFoundError,
     ShopTransactionNotFoundError,
     ShopListingNotFoundError,
-    InventoryItemNotFoundError,
+    InventoryItemAlreadyUsedError,
     UserNotFoundError,
     AccessDeniedError,
 )
@@ -61,7 +61,7 @@ class CancelTransactionInteractor:
                     shop_transaction.item_id, user_id
                 )
                 if inventory is None:
-                    raise InventoryItemNotFoundError()
+                    raise InventoryItemAlreadyUsedError()
                 if inventory.quantity > 0:
                     inventory.quantity -= 1
                     user.gold += shop_transaction.price
