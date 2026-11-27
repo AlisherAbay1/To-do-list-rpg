@@ -71,11 +71,6 @@ class Task(Base, kw_only=True):
 
     def complete(self):
         current_time = datetime.now(timezone.utc)
-        if self.repeat_limit is not None:
-            if self.repeat_limit <= 0:
-                raise TaskAlreadyDoneError()
-            if self.repeat_limit > 0:
-                self.repeat_limit -= 1
         if self.last_completed_at is not None:
             match self.repeat_frequency:
                 case TaskRepeatFrequency.DAILY:
@@ -87,6 +82,11 @@ class Task(Base, kw_only=True):
                 case TaskRepeatFrequency.WEEKLY:
                     if current_time < self.last_completed_at + timedelta(days=7):
                         raise TaskExecutedTooEarlyError()
+        if self.repeat_limit is not None:
+            if self.repeat_limit <= 0:
+                raise TaskAlreadyDoneError()
+            if self.repeat_limit > 0:
+                self.repeat_limit -= 1
         self.last_completed_at = current_time
 
     def calculate_task_rewards(self) -> TaskReward:
