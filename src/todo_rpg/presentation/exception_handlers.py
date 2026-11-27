@@ -141,11 +141,11 @@ def register_exceptions(app: FastAPI):
         )
 
     @app.exception_handler(ShopTransactionCannotBeCancelledError)
-    async def inventory_item_already_used(
+    async def shop_transaction_cannot_be_cancelled(
         request: Request, exc: ShopTransactionCannotBeCancelledError
     ):
         return JSONResponse(
-            status_code=404, content={"detail": "Shop transaction cannot be cancelled."}
+            status_code=409, content={"detail": "Shop transaction cannot be cancelled."}
         )
 
     @app.exception_handler(TaskHistoryNotFoundError)

@@ -53,20 +53,21 @@ class CancelTransactionInteractor:
             inventory = await self.inventory_repo.get_inventory_item_by_item_id(
                 shop_transaction.item_id, user_id
             )
-            if inventory is None:
+            if inventory is None or inventory.quantity <= 0:
                 raise ShopTransactionCannotBeCancelledError()
-            if inventory.quantity > 0:
-                inventory.quantity -= 1
-                user.gold += shop_transaction.price
-                if shop_transaction.shop_listing_id:
-                    shop_listing = await self.shop_repo.get_shop_listing_by_id(
-                        shop_transaction.shop_listing_id
-                    )
-                    if shop_listing is None:
-                        raise ShopListingNotFoundError()
-                    shop_listing.quantity += 1
+            inventory.quantity -= 1
+            user.gold += shop_transaction.price
+            if shop_transaction.shop_listing_id:
+                shop_listing = await self.shop_repo.get_shop_listing_by_id(
+                    shop_transaction.shop_listing_id
+                )
+                if shop_listing is None:
+                    raise ShopListingNotFoundError()
+                shop_listing.quantity += 1
             if inventory.quantity == 0:
                 await self.uow.delete(inventory)
+        else:
+            raise ShopTransactionCannotBeCancelledError()
 
         await self.uow.delete(shop_transaction)
         await self.uow.commit()
