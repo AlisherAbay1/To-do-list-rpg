@@ -109,7 +109,7 @@ def register_exceptions(app: FastAPI):
 
     @app.exception_handler(AccessDeniedError)
     async def task_access_denied(request: Request, exc: AccessDeniedError):
-        return JSONResponse(status_code=403, content={"detail": "Task access denied"})
+        return JSONResponse(status_code=403, content={"detail": "Access denied"})
 
     @app.exception_handler(TaskCategoryNotFoundError)
     async def task_category_not_found(request: Request, exc: TaskCategoryNotFoundError):
