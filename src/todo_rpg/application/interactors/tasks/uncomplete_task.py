@@ -7,7 +7,6 @@ from todo_rpg.application.exceptions import (
     TaskHistoryNotFoundError,
 )
 from todo_rpg.application.interfaces import (
-    SkillRepositoryProtocol,
     TaskHistoryRepositoryProtocol,
     TaskRepositoryProtocol,
     UserRepositoryProtocol,
@@ -23,14 +22,12 @@ class UncompleteTaskInteractor:
         self,
         task_repo: TaskRepositoryProtocol,
         user_repo: UserRepositoryProtocol,
-        skill_repo: SkillRepositoryProtocol,
         task_history_repo: TaskHistoryRepositoryProtocol,
         session_repo: SessionRepositoryProtocol,
         uow: UoWProtocol,
     ) -> None:
         self.task_repo = task_repo
         self.user_repo = user_repo
-        self.skill_repo = skill_repo
         self.task_history_repo = task_history_repo
         self.session_repo = session_repo
         self.uow = uow
@@ -42,7 +39,9 @@ class UncompleteTaskInteractor:
         if user_id is None:
             raise SessionNotFoundError()
 
-        tasks_history = await self.task_history_repo.get_recent_history(task_id, 2)
+        tasks_history = await self.task_history_repo.get_recent_history(
+            user_id, task_id, 2
+        )
         if not tasks_history:
             raise TaskHistoryNotFoundError()
 
@@ -64,13 +63,13 @@ class UncompleteTaskInteractor:
         if user is None:
             raise UserNotFoundError()
 
-        skills = await self.skill_repo.get_skills_by_task_id(task_id)
-
         user.cancel_rewards(previous.xp_earned, previous.gold_earned)
         for skill in previous.skills:
             skill.cancel_reward(previous.xp_earned)
 
-        dto = ExtendedTaskMapper.to_dto_with_skills_and_user(task, user, skills)
+        dto = ExtendedTaskMapper.to_dto_with_skills_and_user(
+            task, user, previous.skills
+        )
 
         await self.uow.delete(tasks_history[0])
 

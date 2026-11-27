@@ -15,11 +15,11 @@ class TaskHistoryRepository:
         self._session = session
 
     async def get_recent_history(
-        self, task_id: UUID, limit: int
+        self, user_id: UUID, task_id: UUID, limit: int
     ) -> Sequence[TaskHistory]:
         task_history = (
             select(TaskHistory)
-            .where(TaskHistory.task_id == task_id)
+            .where(TaskHistory.user_id == user_id, TaskHistory.task_id == task_id)
             .order_by(desc(TaskHistory.completed_at))
             .limit(limit)
             .with_for_update()
