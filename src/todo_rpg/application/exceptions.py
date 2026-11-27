@@ -53,7 +53,7 @@ class InventoryItemNotFoundError(ToDoRpgBaseException):
     pass
 
 
-class InventoryItemAlreadyUsedError(ToDoRpgBaseException):
+class ShopTransactionCannotBeCancelledError(ToDoRpgBaseException):
     pass
 
 

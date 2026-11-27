@@ -10,7 +10,7 @@ from todo_rpg.application.exceptions import (
     SessionNotFoundError,
     ShopTransactionNotFoundError,
     ShopListingNotFoundError,
-    InventoryItemAlreadyUsedError,
+    ShopTransactionCannotBeCancelledError,
     UserNotFoundError,
     AccessDeniedError,
 )
@@ -48,29 +48,25 @@ class CancelTransactionInteractor:
         user = await self.user_repo.get_user(user_id)
         if user is None:
             raise UserNotFoundError()
-        if shop_transaction.shop_listing_id:
-            shop_listing = await self.shop_repo.get_shop_listing_by_id(
-                shop_transaction.shop_listing_id
+
+        if shop_transaction.item_id is not None:
+            inventory = await self.inventory_repo.get_inventory_item_by_item_id(
+                shop_transaction.item_id, user_id
             )
-
-            if shop_listing is None:
-                raise ShopListingNotFoundError()
-
-            if shop_transaction.item_id is not None:
-                inventory = await self.inventory_repo.get_inventory_item_by_item_id(
-                    shop_transaction.item_id, user_id
-                )
-                if inventory is None:
-                    raise InventoryItemAlreadyUsedError()
-                if inventory.quantity > 0:
-                    inventory.quantity -= 1
-                    user.gold += shop_transaction.price
+            if inventory is None:
+                raise ShopTransactionCannotBeCancelledError()
+            if inventory.quantity > 0:
+                inventory.quantity -= 1
+                user.gold += shop_transaction.price
+                if shop_transaction.shop_listing_id:
+                    shop_listing = await self.shop_repo.get_shop_listing_by_id(
+                        shop_transaction.shop_listing_id
+                    )
+                    if shop_listing is None:
+                        raise ShopListingNotFoundError()
                     shop_listing.quantity += 1
-                if inventory.quantity == 0:
-                    await self.uow.delete(inventory)
-
-        elif shop_transaction.item_id:
-            raise ShopListingNotFoundError()
+            if inventory.quantity == 0:
+                await self.uow.delete(inventory)
 
         await self.uow.delete(shop_transaction)
         await self.uow.commit()

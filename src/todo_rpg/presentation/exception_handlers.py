@@ -10,7 +10,7 @@ from todo_rpg.application.exceptions import (
     TaskCategoryNotFoundError,
     ShopListingNotFoundError,
     InventoryItemNotFoundError,
-    InventoryItemAlreadyUsedError,
+    ShopTransactionCannotBeCancelledError,
     ShopListingAlreadyExistsError,
     UserRankNotFoundError,
     ShopTransactionNotFoundError,
@@ -140,12 +140,12 @@ def register_exceptions(app: FastAPI):
             status_code=404, content={"detail": "Inventory item not found"}
         )
 
-    @app.exception_handler(InventoryItemAlreadyUsedError)
+    @app.exception_handler(ShopTransactionCannotBeCancelledError)
     async def inventory_item_already_used(
-        request: Request, exc: InventoryItemAlreadyUsedError
+        request: Request, exc: ShopTransactionCannotBeCancelledError
     ):
         return JSONResponse(
-            status_code=404, content={"detail": "Inventory item already used."}
+            status_code=404, content={"detail": "Shop transaction cannot be cancelled."}
         )
 
     @app.exception_handler(TaskHistoryNotFoundError)
